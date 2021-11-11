@@ -1,9 +1,9 @@
 import React from "react";
-import { RiGamepadLine } from "react-icons/ri";
-import { Avatar, Box, Button, Icon } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, useColorMode } from "@chakra-ui/react";
 import "./styles.css";
 
 const NavigationBar = (props) => {
+    const { colorMode, toggleColorMode } = useColorMode();
     const [navSize, setNavSize] = React.useState("small");
     return (
         <div className="navigation-wrapperr">
@@ -15,29 +15,73 @@ const NavigationBar = (props) => {
                         : { width: "min-content" }
                 }
             >
-                <Button
-                    className="menu-alt"
-                    onClick={() =>
-                        navSize === "small"
-                            ? setNavSize("large")
-                            : setNavSize("small")
-                    }
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 icon "
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                <Flex>
+                    <Button
+                        className="menu-alt"
+                        onClick={() =>
+                            navSize === "small"
+                                ? setNavSize("large")
+                                : setNavSize("small")
+                        }
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 6h16M4 12h16M4 18h7"
-                        />
-                    </svg>
-                </Button>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 icon"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6h16M4 12h16M4 18h7"
+                            />
+                        </svg>
+                    </Button>
+                    {navSize === "large" ? (
+                        <Button
+                            mx="5"
+                            className="menu-alt"
+                            size="lg"
+                            onClick={() => toggleColorMode()}
+                        >
+                            {colorMode === "dark" ? (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 icon"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                                    />
+                                </svg>
+                            ) : (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 icon"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                                    />
+                                </svg>
+                            )}
+                        </Button>
+                    ) : (
+                        ""
+                    )}
+                </Flex>
                 <div className="item">
                     <Box mx="5">
                         <svg
@@ -152,7 +196,7 @@ const NavigationBar = (props) => {
                                     className="h-6 w-6 icon"
                                     fill="none"
                                     viewBox="0 0 24 24"
-                                    stroke="#ffffff"
+                                    stroke="currentColor"
                                 >
                                     <path
                                         strokeLinecap="round"

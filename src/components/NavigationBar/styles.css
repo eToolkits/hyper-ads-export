@@ -14,7 +14,7 @@
 .navigation-wrapperr .options {
 	display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 	height: 100%;
 	width: 200px;
 	transition: all 0.2s linear;
@@ -23,7 +23,6 @@
 	width: 60px;
 	height: 60px;
 	border-radius: 10px;
-	align-self: flex-start;
 }
 .navigation-wrapperr .options .item {
 	margin-top: 10px;
@@ -35,6 +34,7 @@
 	border-radius: 10px;
 	transition: all 0.2s linear;
 	line-height: 20px;
+	background: var(--chakra-colors-whiteAlpha-200);
 }
 .navigation-wrapperr .options .item:hover {
 	background-color: var(--teal-200);
@@ -47,6 +47,7 @@
 	align-items: center;
 	border-radius: 10px;
     width: 100%;
+	background: var(--chakra-colors-whiteAlpha-200);
 	transition: all 0.2s linear;
 }
 
