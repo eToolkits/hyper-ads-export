@@ -2,46 +2,49 @@
 	display: flex;
     align-items: center;
 	flex-direction: column;
-	padding: 15px;
-	border-right: 1px solid rgba(255, 255, 255, 0.308);
+	margin: 10px 0;
+	padding: 20px;
+	/* border: 1px solid rgba(255, 255, 255, 0.308); */
+	box-shadow: 0px 0px 10px #6b6b6b2d;
 	width: fit-content;
-	height: 100vh;
-}
-.navigation-wrapperr .options {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-	list-style: none;
-	height: 100%;
-}
-.navigation-wrapperr .options .logo {
-	width: 100px;
-	margin: 30px;
-}
-
-.navigation-wrapperr .options .item {
-	margin: 5px;
-	width: 200px;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	padding: 20px 20px;
-    padding-left: 10px;
+	height: calc(100vh - 20px);
 	border-radius: 10px;
 	transition: all 0.2s linear;
 }
-.navigation-wrapperr .options .item svg {
-	margin: 0 20px;
-	height: 20px;
+.navigation-wrapperr .options {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+	height: 100%;
+	width: 200px;
+	transition: all 0.2s linear;
 }
-
+.navigation-wrapperr .options .menu-alt {
+	width: 60px;
+	height: 60px;
+	border-radius: 10px;
+	align-self: flex-start;
+}
+.navigation-wrapperr .options .item {
+	margin-top: 10px;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 20px 0;
+	border-radius: 10px;
+	transition: all 0.2s linear;
+	line-height: 20px;
+}
 .navigation-wrapperr .options .item:hover {
-	background-color: rgb(83, 215, 255);
+	background-color: var(--teal-200);
+	color: var(--teal-900);
 	transition: all 0.2s linear;
 }
 
 .navigation-wrapperr .user-wrapper {
 	display: flex;
+	align-items: center;
 	border-radius: 10px;
     width: 100%;
 	transition: all 0.2s linear;
@@ -55,15 +58,18 @@
 	width: fit-content;
 }
 .navigation-wrapperr .user-wrapper:hover {
-	background-color: aquamarine;
+	background-color: var(--teal-500);
 	transition: all 0.2s linear;
 }
 .navigation-wrapperr .user-wrapper .user .sign-out {
-	margin: 10px;
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+.sign-out p{
+	margin: 0 10px;
+	line-height: 32px;
 }
 /* .navigation-wrapperr .sign-out:first-child{
     padding: 20px;
