@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Flex,
     Box,
@@ -15,7 +16,9 @@ import {
 } from "@chakra-ui/react";
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 
-const Login = () => {
+const Login = (props) => {
+    let navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -34,6 +37,7 @@ const Login = () => {
             // setIsLoading(false);
             // setShowPassword(false);
             console.log("login")
+            navigate("/home")
         } catch (error) {
             setError("Invalid username or password");
             setIsLoading(false);

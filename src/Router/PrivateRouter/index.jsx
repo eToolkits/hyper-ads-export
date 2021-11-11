@@ -1,15 +1,12 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import AuthenicationScreen from "../../screen/Authentication";
+import HomeScreen from "../../screen/Home";
+
 
 const PrivateRouter = (props) => {
-    // let his  = useHistory();
-    // console.log(his);
     return (
         <Routes>
-            <Route path="/" element={<AuthenicationScreen />} />
-            <Route path="/login" element={<AuthenicationScreen />} />
-            <Route element={<AuthenicationScreen />} />
+            <Route exact path="/" element={<HomeScreen />} />
         </Routes>
     );
 };

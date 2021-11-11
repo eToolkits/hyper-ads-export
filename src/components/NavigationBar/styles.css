@@ -1,0 +1,78 @@
+.navigation-wrapperr {
+	display: flex;
+    align-items: center;
+	flex-direction: column;
+	padding: 15px;
+	border-right: 1px solid rgba(255, 255, 255, 0.308);
+	width: fit-content;
+	height: 100vh;
+}
+.navigation-wrapperr .options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	list-style: none;
+	height: 100%;
+}
+.navigation-wrapperr .options .logo {
+	width: 100px;
+	margin: 30px;
+}
+
+.navigation-wrapperr .options .item {
+	margin: 5px;
+	width: 200px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 20px 20px;
+    padding-left: 10px;
+	border-radius: 10px;
+	transition: all 0.2s linear;
+}
+.navigation-wrapperr .options .item svg {
+	margin: 0 20px;
+	height: 20px;
+}
+
+.navigation-wrapperr .options .item:hover {
+	background-color: rgb(83, 215, 255);
+	transition: all 0.2s linear;
+}
+
+.navigation-wrapperr .user-wrapper {
+	display: flex;
+	border-radius: 10px;
+    width: 100%;
+	transition: all 0.2s linear;
+}
+
+.navigation-wrapperr .user-wrapper .user {
+	display: flex;
+	align-items: center;
+	margin: 0 auto;
+	padding: 10px;
+	width: fit-content;
+}
+.navigation-wrapperr .user-wrapper:hover {
+	background-color: aquamarine;
+	transition: all 0.2s linear;
+}
+.navigation-wrapperr .user-wrapper .user .sign-out {
+	margin: 10px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/* .navigation-wrapperr .sign-out:first-child{
+    padding: 20px;
+} */
+/* .navigation-wrapperr {
+}
+.navigation-wrapperr {
+}
+.navigation-wrapperr {
+}
+.navigation-wrapperr {
+} */
