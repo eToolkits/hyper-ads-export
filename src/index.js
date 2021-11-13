@@ -9,7 +9,6 @@ import rootReducer from './reducer';
 
 import './index.css'
 import App from './App'
-import { extendTheme } from "@chakra-ui/react"
 import { ColorModeScript } from "@chakra-ui/react"
 import theme from "./Theme"
 const store = createStore(rootReducer);

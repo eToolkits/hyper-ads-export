@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Login from "../../components/Login/index.jsx";
-import "./styles.css";
+import { AuthContainerStyle } from "./styles";
 const AuthenticationContainer = (props) => {
-	return (
-		<div className="AuthScreen-Container">
-			<Login />
-		</div>
-	);
+    return (
+        <AuthContainerStyle>
+            <Login />
+        </AuthContainerStyle>
+    );
 };
 
 AuthenticationContainer.propTypes = {};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Button,
     FormControl,
@@ -8,25 +8,30 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { SaveToContainer } from "./styles";
-import { remote } from "electron";
 import { connect } from "react-redux";
 import { SaveDirectoryAction } from "../../action";
 import { ExportAds } from "../../function";
-let dialog = remote.dialog;
+
+//use import syntax wil error
+const electron = window.require("electron");
+let dialog = electron.remote.dialog;
+
 const SaveTo = (props) => {
     const toast = useToast();
     const { saveDirectory, fileStore } = props;
-    const [directoryState, setDirectoryState] = React.useState("Not selected yet");
-    const [nameGameState, setNameGameState] = React.useState("sky");
-    const [ideaGameState, setIdeaGameState] = React.useState("");
+    const [directoryState, setDirectoryState] = useState("Not selected yet");
+    const [nameGameState, setNameGameState] = useState("sky");
+    const [ideaGameState, setIdeaGameState] = useState("");
 
     const handleDirectory = async () => {
         const result = await dialog.showOpenDialog({
             properties: ["openDirectory"],
         });
-        console.log("directories selected", result.filePaths);
-        saveDirectory(result.filePaths);
-        setDirectoryState((pre) => result.filePaths);
+        console.log("directories selected", result);
+        if (result.filePaths.length > 0) {
+            saveDirectory(result.filePaths);
+            setDirectoryState((pre) => result.filePaths);
+        }
     };
     const handleNameGame = (e) => {
         setNameGameState(e.target.value);
@@ -52,7 +57,7 @@ const SaveTo = (props) => {
         } else if (
             !nameGameState ||
             !ideaGameState ||
-            directoryState == "Not selected yet"
+            directoryState === "Not selected yet"
         ) {
             toast({
                 title: "Please complete all fields!",
@@ -80,6 +85,7 @@ const SaveTo = (props) => {
                     <FormControl isRequired id="country" className="mgr30">
                         <FormLabel>Select Game</FormLabel>
                         <Select
+                            w="50%"
                             placeholder="Select Game"
                             onChange={handleNameGame}
                             value={nameGameState}
@@ -105,6 +111,7 @@ const SaveTo = (props) => {
                 </div>
                 <div className="save-dir">
                     <Input
+                        w="50%"
                         className="mgr30"
                         isDisabled
                         placeholder="medium size"
@@ -112,6 +119,7 @@ const SaveTo = (props) => {
                         value={directoryState}
                     />
                     <Button
+                        mx="5"
                         colorScheme="teal"
                         variant="outline"
                         onClick={handleDirectory}

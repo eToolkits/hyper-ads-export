@@ -6,7 +6,7 @@ export const DragContainer = styled.div`
     justify-content: center;
     align-items: center;
     /* padding: 20px; */
-    border: 2px dashed #000;
+    border: 2px dashed;
     margin: 30px;
     width: calc(100%-30px);
     .dropzone{
