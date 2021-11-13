@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Box, Button, Flex, useColorMode } from "@chakra-ui/react";
-import "./styles.css";
-
+import { Link, useLocation } from "react-router-dom";
+import { NaviStyle } from "./styles";
 const NavigationBar = (props) => {
+    let getlocation = useLocation();
+
     const { colorMode, toggleColorMode } = useColorMode();
-    const [navSize, setNavSize] = React.useState("small");
+    const [navSize, setNavSize] = useState("small");
+    const [location, setLocation] = useState("/home");
+
+    useEffect(() => {
+        setLocation(getlocation.pathname);
+    }, [getlocation]);
+    
     return (
-        <div className="navigation-wrapperr">
+        <NaviStyle>
             <div
                 className="options"
                 style={
@@ -160,25 +168,31 @@ const NavigationBar = (props) => {
                     </Box>
                     {navSize === "large" ? <p>Home</p> : ""}
                 </div>
-                <div className="item">
-                    <Box mx="5">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6 icon"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                            />
-                        </svg>
-                    </Box>
-                    {navSize === "large" ? <p>Home</p> : ""}
-                </div>
+                <Link to="/export">
+                    <div
+                        className={
+                            location === "/export" ? "item active" : "item"
+                        }
+                    >
+                        <Box mx="5">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6 icon"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                                />
+                            </svg>
+                        </Box>
+                        {navSize === "large" ? <p>Export</p> : ""}
+                    </div>
+                </Link>
             </div>
             <div className="user-wrapper">
                 <div className="user">
@@ -212,7 +226,7 @@ const NavigationBar = (props) => {
                     )}
                 </div>
             </div>
-        </div>
+        </NaviStyle>
     );
 };
 
