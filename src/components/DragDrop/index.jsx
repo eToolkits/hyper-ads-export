@@ -10,7 +10,7 @@ const DragDrop = (props) => {
     React.useEffect(() => {
         console.log(acceptedFiles)
         if (acceptedFiles[0]) {
-            sendFileDispatch(acceptedFiles[0]);
+            sendFileDispatch(acceptedFiles);
         }
     }, [acceptedFiles]);
 
@@ -24,8 +24,8 @@ const DragDrop = (props) => {
             <div {...getRootProps({ className: "dropzone" })}>
                 <input {...getInputProps()} />
                 <p>
-                    Drag 'n' drop file here, or click to select files <br />{" "}
-                    <i>(Only *.html will be accepted)</i>
+                    Drag 'n' drop folder here, or click to select folder<br />{" "}
+                    <i></i>
                 </p>
             </div>
             <aside>

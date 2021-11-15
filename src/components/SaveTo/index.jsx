@@ -11,6 +11,7 @@ import { SaveToContainer } from "./styles";
 import { connect } from "react-redux";
 import { SaveDirectoryAction } from "../../action";
 import { ExportAds } from "../../function/export";
+import { CombineAndExport } from "../../function/combineSingle";
 
 //use import syntax wil error
 const electron = window.require("electron");
@@ -67,7 +68,7 @@ const SaveTo = (props) => {
                 isClosable: true,
             });
         } else {
-            ExportAds(fileStore, nameGameState, ideaGameState, directoryState);
+            CombineAndExport(fileStore, nameGameState, ideaGameState, directoryState);
             toast({
                 title: "Export Ads successfully!",
                 status: "success",
