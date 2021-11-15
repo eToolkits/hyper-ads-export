@@ -6,10 +6,9 @@ import { DragContainer } from "./styles";
 
 const DragDrop = (props) => {
     const { sendFileDispatch } = props;
-    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-        accept: ".html",
-    });
+    const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
     React.useEffect(() => {
+        console.log(acceptedFiles)
         if (acceptedFiles[0]) {
             sendFileDispatch(acceptedFiles[0]);
         }
