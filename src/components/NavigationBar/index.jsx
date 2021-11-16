@@ -16,6 +16,8 @@ import {
     Sun1,
     Moon,
     Logout,
+    GalleryEdit,
+    AudioSquare,
 } from "iconsax-react";
 import { NaviStyle } from "./styles";
 const NavigationBar = (props) => {
@@ -88,35 +90,43 @@ const NavigationBar = (props) => {
                     </Box>
                     {navSize === "large" ? <p>Home</p> : ""}
                 </div>
+                <Link to="/addgame">
+                    <div
+                        className={
+                            location === "/addgame" ? "item active" : "item"
+                        }
+                    >
+                        <Box mx="5">
+                            <Game
+                                size="20"
+                                color="currentColor"
+                                variant={
+                                    location === "/addgame" ? "Bold" : "Outline"
+                                }
+                            />
+                        </Box>
+                        {navSize === "large" ? <p>Add Game</p> : ""}
+                    </div>
+                </Link>
                 <div className="item">
                     <Box mx="5">
-                        <Game
+                        <GalleryEdit
                             size="20"
                             color="currentColor"
                             variant="Outline"
                         />
                     </Box>
-                    {navSize === "large" ? <p>Game</p> : ""}
+                    {navSize === "large" ? <p>Change Assets</p> : ""}
                 </div>
                 <div className="item">
                     <Box mx="5">
-                        <Game
+                        <AudioSquare
                             size="20"
                             color="currentColor"
                             variant="Outline"
                         />
                     </Box>
-                    {navSize === "large" ? <p>Source</p> : ""}
-                </div>
-                <div className="item">
-                    <Box mx="5">
-                        <Game
-                            size="20"
-                            color="currentColor"
-                            variant="Outline"
-                        />
-                    </Box>
-                    {navSize === "large" ? <p>Home</p> : ""}
+                    {navSize === "large" ? <p>Change Sounds</p> : ""}
                 </div>
                 <Link to="/export">
                     <div
