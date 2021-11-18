@@ -68,7 +68,12 @@ const SaveTo = (props) => {
                 isClosable: true,
             });
         } else {
-            CombineAndExport(fileStore, nameGameState, ideaGameState, directoryState);
+            CombineAndExport(
+                fileStore,
+                nameGameState,
+                ideaGameState,
+                directoryState
+            );
             toast({
                 title: "Export Ads successfully!",
                 status: "success",
@@ -104,6 +109,7 @@ const SaveTo = (props) => {
                     <FormControl id="ideaGame" isRequired>
                         <FormLabel>Idea for game</FormLabel>
                         <Input
+                            w="70%"
                             placeholder="Ex: Sky solo squad..."
                             onChange={handlIdeaGame}
                             value={ideaGameState}

@@ -7,10 +7,23 @@ import {
     Stack,
     Button,
     Text,
-    VStack
+    VStack,
+    Table,
+    Thead,
+    Tbody,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    Box,
 } from "@chakra-ui/react";
+import { ArrowDown2, ArrowUp2 } from "iconsax-react";
 import { AddGameContainerStyle } from "./style";
 const AddGameContainer = (props) => {
+    const [showTable, setShowTable] = React.useState(false);
+    const handleShowTable = () => {
+        setShowTable(!showTable);
+    };
     return (
         <AddGameContainerStyle>
             <VStack>
@@ -18,13 +31,83 @@ const AddGameContainer = (props) => {
                     ADD GAME
                 </Text>
             </VStack>
-            <FormControl id="ideaGame" mx="5">
+            <Box mb="5">
+                <Button
+                    mx="5"
+                    mb="5"
+                    onClick={handleShowTable}
+                    colorScheme="teal"
+                >
+                    <Text mr="3">Show My Games</Text>
+
+                    {showTable ? (
+                        <ArrowUp2 size="20" color="currentColor" />
+                    ) : (
+                        <ArrowDown2 size="20" color="currentColor" />
+                    )}
+                </Button>
+
+                {showTable ? (
+                    <>
+                        {" "}
+                        <Table variant="striped" colorScheme="gray" mx="5">
+                            <TableCaption>
+                                * Click to EDIT the link
+                            </TableCaption>
+                            <Thead>
+                                <Tr>
+                                    <Th>Name Game</Th>
+                                    <Th>Link IOS</Th>
+                                    <Th>Link Android</Th>
+                                    <Th>Remove</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                <Tr>
+                                    <Td>inches</Td>
+                                    <Td>
+                                        {" "}
+                                        <Input
+                                            variant="flushed"
+                                            placeholder="Flushed"
+                                            value="data:base64//"
+                                        />
+                                    </Td>
+                                    <Td>
+                                        <Input
+                                            variant="flushed"
+                                            placeholder="Flushed"
+                                            value="data:base64//"
+                                        />
+                                    </Td>
+                                    <Td>
+                                        <Button colorScheme="red">
+                                            Delete
+                                        </Button>
+                                    </Td>
+                                </Tr>
+                            </Tbody>
+                        </Table>
+                        <Button
+                            mx="5"
+                            mb="5"
+                            colorScheme="orange"
+                            onClick={handleShowTable}
+                        >
+                            Save
+                        </Button>{" "}
+                    </>
+                ) : (
+                    ""
+                )}
+            </Box>
+            <FormControl id="ideaGame" mx="5" isRequired>
                 <Stack>
-                    <FormLabel>Idea for game</FormLabel>
+                    <FormLabel>Name game</FormLabel>
                     <Input
                         isRequired
                         width="50%"
-                        placeholder="Ex: Sky solo squad..."
+                        placeholder="Ex: Juice Blending"
                         // onChange={handlIdeaGame}
                         // value={ideaGameState}
                     />

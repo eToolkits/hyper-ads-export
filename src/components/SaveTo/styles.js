@@ -5,12 +5,12 @@ export const SaveToContainer = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    padding: 50px;
+    /* padding: 50px; */
     .setup{
         display: flex;
-        width: 70%;
         flex-direction: column;
         margin: 30px 0;
+        width: 100%;
         .name-idea{
             width: 100%;
             display: flex;

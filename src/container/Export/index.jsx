@@ -3,6 +3,7 @@ import {VStack, Text} from "@chakra-ui/react";
 import DragDrop from "../../components/DragDrop";
 import SaveTo from "../../components/SaveTo";
 import { ExportContainerStyle } from "./style";
+import ChangeSounds from "../../components/ChangeSounds";
 
 const ExportContainer = (props) => {
     return (
@@ -13,6 +14,7 @@ const ExportContainer = (props) => {
                 </Text>
             </VStack>
             <DragDrop />
+            <ChangeSounds />
             <SaveTo />
         </ExportContainerStyle>
     );
