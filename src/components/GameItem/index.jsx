@@ -17,6 +17,7 @@ import {
     ModalFooter,
 } from "@chakra-ui/react";
 import { ArrowDown3 } from "iconsax-react";
+import { Link } from "react-router-dom";
 const GameItem = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -64,9 +65,11 @@ const GameItem = (props) => {
                 </ModalContent>
             </Modal>
             <Box display="flex" flexWrap="nowrap">
-                <Button borderRightRadius="0" colorScheme="teal">
-                    <Text>Sky Raptor</Text>
-                </Button>
+                <Link to="editgame">
+                    <Button borderRightRadius="0" colorScheme="teal">
+                        <Text>Sky Raptor</Text>
+                    </Button>
+                </Link>
                 <Button
                     px="0"
                     borderLeftRadius="0"

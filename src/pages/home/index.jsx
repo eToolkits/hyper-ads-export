@@ -19,7 +19,6 @@ import {
     ModalFooter,
 } from "@chakra-ui/react";
 import { SearchNormal1, AddSquare } from "iconsax-react";
-import { HomePageStyle } from "./styles";
 import GameItem from "../../components/GameItem";
 const HomePage = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,7 +26,7 @@ const HomePage = (props) => {
     const initialRef = React.useRef();
     const finalRef = React.useRef();
     return (
-        <HomePageStyle>
+        <>
             <Box my="5">
                 <InputGroup mx="3">
                     <InputLeftElement
@@ -96,7 +95,7 @@ const HomePage = (props) => {
                 <GameItem />
                 <GameItem />
             </Box>
-        </HomePageStyle>
+        </>
     );
 };
 

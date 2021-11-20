@@ -2,7 +2,7 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import PropTypes from "prop-types";
 import {
-    Input,
+    Image,
     Button,
     Text,
     Table,
@@ -14,9 +14,9 @@ import {
     TableCaption,
     Box,
 } from "@chakra-ui/react";
-import { ArrowDown2, ArrowUp2, AudioSquare } from "iconsax-react";
+import { ArrowDown2, ArrowUp2, GalleryEdit } from "iconsax-react";
 
-const ChangeSounds = (props) => {
+const ChangeAssets = (props) => {
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
         accept: ".js",
         maxFiles: 1,
@@ -34,12 +34,12 @@ const ChangeSounds = (props) => {
         <>
             <Box mb="5" w="100%">
                 <Button
-                    leftIcon={<AudioSquare color="currentColor" />}
+                    leftIcon={<GalleryEdit color="currentColor" />}
                     mb="5"
                     onClick={handleShowTable}
                     colorScheme="teal"
                 >
-                    <Text mr="3">Change Sounds</Text>
+                    <Text mr="3">Change Assets</Text>
 
                     {showTable ? (
                         <ArrowUp2 size="20" color="currentColor" />
@@ -51,6 +51,7 @@ const ChangeSounds = (props) => {
                 {showTable ? (
                     <>
                         <Box
+                            w="100%"
                             border="2px dashed"
                             p="10px"
                             {...getRootProps({
@@ -62,42 +63,57 @@ const ChangeSounds = (props) => {
                                 {files.length ? (
                                     <aside>
                                         <h4 className="path-select">
-                                            New Sounds file selected path /:{" "}
+                                            New Assets file selected path /:{" "}
                                             <span>{files}</span>
                                         </h4>
                                     </aside>
                                 ) : (
                                     <p>
-                                        Drag 'n' drop new file sound here <br />
+                                        Drag 'n' drop new file assets here{" "}
+                                        <br />
                                     </p>
                                 )}
                             </p>
                         </Box>
-                        <Table my="5" variant="striped" colorScheme="gray">
+                        <Table
+                            w="100%"
+                            my="5"
+                            variant="striped"
+                            colorScheme="gray"
+                        >
                             <TableCaption>
                                 * Click to EDIT the link
                             </TableCaption>
                             <Thead>
                                 <Tr>
-                                    <Th>Name Sound</Th>
-                                    <Th>Current Sound</Th>
-                                    <Th>New Sound</Th>
+                                    <Th>Name Asset</Th>
+                                    <Th>Current Asset</Th>
+                                    <Th>Current Size</Th>
+                                    <Th>New Asset</Th>
+                                    <Th>New Size</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
                                 <Tr>
                                     <Td>inches</Td>
                                     <Td>
-                                        {" "}
-                                        <audio controls>
-                                            <source src="horse.ogg" />
-                                        </audio>
+                                        <Image
+                                            boxSize="100px"
+                                            objectFit="cover"
+                                            src="https://bit.ly/sage-adebayo"
+                                            alt="Segun Adebayo"
+                                        />
                                     </Td>
+                                    <Td>30x50</Td>
                                     <Td>
-                                        <audio controls>
-                                            <source src="horse.ogg" />
-                                        </audio>
+                                        <Image
+                                            boxSize="100px"
+                                            objectFit="cover"
+                                            src="https://bit.ly/sage-adebayo"
+                                            alt="Segun Adebayo"
+                                        />
                                     </Td>
+                                    <Td>30x50</Td>
                                 </Tr>
                             </Tbody>
                         </Table>
@@ -126,6 +142,6 @@ const ChangeSounds = (props) => {
     );
 };
 
-ChangeSounds.propTypes = {};
+ChangeAssets.propTypes = {};
 
-export default ChangeSounds;
+export default ChangeAssets;
