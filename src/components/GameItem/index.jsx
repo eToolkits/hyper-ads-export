@@ -15,6 +15,7 @@ import {
     FormControl,
     FormLabel,
     ModalFooter,
+    FormErrorMessage,
 } from "@chakra-ui/react";
 import { ArrowDown3 } from "iconsax-react";
 import { Link } from "react-router-dom";
@@ -37,22 +38,21 @@ const GameItem = (props) => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <FormControl isRequired>
-                            <FormLabel>Name game</FormLabel>
+                            <FormLabel mt={4}>Name game</FormLabel>
                             <Input
                                 ref={initialRef}
                                 placeholder="Ex: Sky Raptor"
                             />
-                        </FormControl>
-                        <FormControl mt={4} isRequired>
-                            <FormLabel>Link store IOS</FormLabel>
+                            <FormErrorMessage>
+                                Vui lòng nhập tên game
+                            </FormErrorMessage>
+                            <FormLabel mt={4}>Link store IOS</FormLabel>
                             <Input placeholder="Ex: https://apps.apple.com/us/app/sky-raptor/id1518974662" />
-                        </FormControl>
-                        <FormControl mt={4} isRequired>
-                            <FormLabel>Link store CHPlay</FormLabel>
+
+                            <FormLabel mt={4}>Link store CHPlay</FormLabel>
                             <Input placeholder="Ex: https://play.google.com/store/apps/details?id=com.skyraptor.spaceshooter" />
-                        </FormControl>
-                        <FormControl mt={4} isRequired>
-                            <FormLabel>Link Base code folder</FormLabel>
+
+                            <FormLabel mt={4}>Link Base code folder</FormLabel>
                             <Input placeholder="Ex: D:\Base\SkyRaptor" />
                         </FormControl>
                     </ModalBody>
