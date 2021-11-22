@@ -24,7 +24,9 @@
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.1",
     "redux": "^4.1.2",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "uuid": "^8.3.2",
+    "yup": "^0.32.11"
   },
   "main": "public/main.js",
   "homepage": "./",

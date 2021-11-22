@@ -1,147 +1,84 @@
 import React from "react";
-import { useDropzone } from "react-dropzone";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
-	Image,
-	Button,
-	Text,
-	Table,
-	Thead,
-	Tbody,
-	Tr,
-	Th,
-	Td,
-	TableCaption,
-	Box,
+    Image,
+    Button,
+    Table,
+    Thead,
+    Tbody,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    Box,
+    Flex,
 } from "@chakra-ui/react";
-import { ArrowDown2, ArrowUp2, GalleryEdit } from "iconsax-react";
+import DragDrop from "../DragDrop";
 
 const ChangeAssets = (props) => {
-	const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-		accept: ".js",
-		maxFiles: 1,
-	});
-	const files = acceptedFiles.map((file) => (
-		<li key={file.path}>
-			{file.path} - {file.size} bytes
-		</li>
-	));
-	const [showTable, setShowTable] = React.useState(false);
-	const handleShowTable = () => {
-		setShowTable(!showTable);
-	};
-	return (
-		<>
-			<Box mb="5">
-				<Button
-					w="300px"
-					p="50px"
-					leftIcon={<GalleryEdit color="currentColor" />}
-					mb="5"
-					onClick={handleShowTable}
-					colorScheme="teal"
-				>
-					<Text mr="3">Change Assets</Text>
-
-					{showTable ? (
-						<ArrowUp2 size="20" color="currentColor" />
-					) : (
-						<ArrowDown2 size="20" color="currentColor" />
-					)}
-				</Button>
-
-				{showTable ? (
-					<>
-						<Box
-							w="100%"
-							border="2px dashed"
-							p="10px"
-							{...getRootProps({
-								className: "dropzone",
-							})}
-						>
-							<input {...getInputProps()} />
-							<p>
-								{files.length ? (
-									<aside>
-										<h4 className="path-select">
-											New Assets file selected path /:{" "}
-											<span>{files}</span>
-										</h4>
-									</aside>
-								) : (
-									<p>
-										Drag 'n' drop new file assets here{" "}
-										<br />
-									</p>
-								)}
-							</p>
-						</Box>
-						<Table
-							w="100%"
-							my="5"
-							variant="striped"
-							colorScheme="gray"
-						>
-							<TableCaption>
-								* Click to EDIT the link
-							</TableCaption>
-							<Thead>
-								<Tr>
-									<Th>Name Asset</Th>
-									<Th>Current Asset</Th>
-									<Th>Current Size</Th>
-									<Th>New Asset</Th>
-									<Th>New Size</Th>
-								</Tr>
-							</Thead>
-							<Tbody>
-								<Tr>
-									<Td>inches</Td>
-									<Td>
-										<Image
-											boxSize="100px"
-											objectFit="cover"
-											src="https://bit.ly/sage-adebayo"
-											alt="Segun Adebayo"
-										/>
-									</Td>
-									<Td>30x50</Td>
-									<Td>
-										<Image
-											boxSize="100px"
-											objectFit="cover"
-											src="https://bit.ly/sage-adebayo"
-											alt="Segun Adebayo"
-										/>
-									</Td>
-									<Td>30x50</Td>
-								</Tr>
-							</Tbody>
-						</Table>
-						<Button
-							mx="5"
-							mb="5"
-							colorScheme="green"
-							onClick={handleShowTable}
-						>
-							Save
-						</Button>{" "}
-						<Button
-							mx="5"
-							mb="5"
-							colorScheme="red"
-							onClick={handleShowTable}
-						>
-							Close
-						</Button>{" "}
-					</>
-				) : (
-					""
-				)}
-			</Box>
-		</>
-	);
+    
+    return (
+        <>
+            <Box mb="5">
+                <DragDrop text="assets" />
+                <Table w="100%" my="5" variant="striped" colorScheme="gray">
+                    <TableCaption>* Click to EDIT the link</TableCaption>
+                    <Thead>
+                        <Tr>
+                            <Th>Name Asset</Th>
+                            <Th>Current Asset</Th>
+                            <Th>Current Size</Th>
+                            <Th>New Asset</Th>
+                            <Th>New Size</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        <Tr>
+                            <Td>inches</Td>
+                            <Td>
+                                <Image
+                                    boxSize="100px"
+                                    objectFit="cover"
+                                    src="https://bit.ly/sage-adebayo"
+                                    alt="Segun Adebayo"
+                                />
+                            </Td>
+                            <Td>30x50</Td>
+                            <Td>
+                                <Image
+                                    boxSize="100px"
+                                    objectFit="cover"
+                                    src="https://bit.ly/sage-adebayo"
+                                    alt="Segun Adebayo"
+                                />
+                            </Td>
+                            <Td>30x50</Td>
+                        </Tr>
+                    </Tbody>
+                </Table>
+                <Flex justifyContent="space-between">
+                    <Box>
+                        <Button mb="5" colorScheme="green">
+                            Save
+                        </Button>{" "}
+                    </Box>
+                    <Box>
+                        <Link to="/editgame/changesounds">
+                            <Button mb="5" colorScheme="green">
+                                Change Sounds
+                            </Button>{" "}
+                        </Link>
+                        <Link to="/export">
+                            <Button mb="5" colorScheme="green">
+                                Export Now
+                            </Button>{" "}
+                        </Link>
+                    </Box>
+                </Flex>
+            </Box>
+        </>
+    );
 };
 
 ChangeAssets.propTypes = {};

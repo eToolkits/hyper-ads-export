@@ -10,7 +10,6 @@ import {
 import { SaveToContainer } from "./styles";
 import { connect } from "react-redux";
 import { SaveDirectoryAction } from "../../action";
-import { ExportAds } from "../../function/export";
 import { CombineAndExport } from "../../function/combineSingle";
 
 //use import syntax wil error

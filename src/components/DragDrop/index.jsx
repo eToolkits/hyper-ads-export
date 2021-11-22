@@ -1,45 +1,43 @@
+import { Box } from "@chakra-ui/layout";
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { connect } from "react-redux";
-import { SaveFileAction } from "../../action";
-import { DragContainer } from "./styles";
 
 const DragDrop = (props) => {
-    const { sendFileDispatch } = props;
+    let {text} = props
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-        accept: '.js,.html'
-      });
-    React.useEffect(() => {
-        console.log(acceptedFiles)
-        if (acceptedFiles[0]) {
-            sendFileDispatch(acceptedFiles);
-        }
-    }, [acceptedFiles]);
-
+        accept: ".js",
+        maxFiles: 1,
+    });
     const files = acceptedFiles.map((file) => (
         <li key={file.path}>
             {file.path} - {file.size} bytes
         </li>
     ));
     return (
-        <DragContainer>
-            <div {...getRootProps({ className: "dropzone" })}>
-                <input {...getInputProps()} />
-                <p>
-                    Drag 'n' drop folder here, or click to select folder<br />{" "}
-                    <i></i>
-                </p>
-            </div>
-            <aside>
-                <h4 className="path-select">File Selected path /: </h4>
-                <ul>{files}</ul>
-            </aside>
-        </DragContainer>
+        <Box
+            w="100%"
+            border="2px dashed"
+            p="10px"
+            {...getRootProps({
+                className: "dropzone",
+            })}
+        >
+            <input {...getInputProps()} />
+            <p>
+                {files.length ? (
+                    <aside>
+                        <h4 className="path-select">
+                            New {text} file selected path /:{" "}
+                            <span>{files}</span>
+                        </h4>
+                    </aside>
+                ) : (
+                    <p>
+                        Drag 'n' drop new file {text} here <br />
+                    </p>
+                )}
+            </p>
+        </Box>
     );
 };
-const mapDispatchToProps = (dispatch) => {
-    return {
-        sendFileDispatch: (file) => dispatch(SaveFileAction(file)),
-    };
-};
-export default connect(null, mapDispatchToProps)(DragDrop);
+export default DragDrop;
