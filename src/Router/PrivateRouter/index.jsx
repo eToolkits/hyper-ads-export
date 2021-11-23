@@ -9,6 +9,7 @@ import EditGame from "../../pages/EditGame";
 import ChangeSoundsPage from "../../pages/EditGame/ChangeSounds";
 import ChangeAssetsPage from "../../pages/EditGame/ChangeAssets";
 import ExportPage from "../../pages/Export";
+import SelectIdeaPage from "../../pages/EditGame/SelectIdea";
 const PrivateRouter = (props) => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -24,10 +25,11 @@ const PrivateRouter = (props) => {
             )}
             <Routes>
                 <Route exact path="/" element={<HomePage />} />
-                <Route exact path="/editgame" element={<EditGame />} />
-                <Route exact path="/editgame/changeassets" element={<ChangeAssetsPage />} />
-                <Route exact path="/editgame/changesounds" element={<ChangeSoundsPage />} />
-                <Route exact path="/export" element={<ExportPage />} />
+                <Route exact path="/editgame/:idgame" element={<SelectIdeaPage />} />
+                <Route exact path="/editgame/:idgame/:ididea" element={<EditGame />} />
+                <Route exact path="/editgame/:idgame/:ididea/changeassets" element={<ChangeAssetsPage />} />
+                <Route exact path="/editgame/:idgame/:ididea/changesounds" element={<ChangeSoundsPage />} />
+                <Route exact path="/export/:idgame/:ididea" element={<ExportPage />} />
             </Routes>
         </Box>
     );

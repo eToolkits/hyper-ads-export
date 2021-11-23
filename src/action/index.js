@@ -1,14 +1,47 @@
 import * as Types from "./../constant";
 
-export const SaveDirectoryAction = (data) => {
+export const AddGameAction = (payload) => {
     return {
-        type: Types.SEND_PATH,
-        data
+        type: Types.ADD_GAME,
+        payload,
+    };
+}
+
+export const UpdateGameAction = (payload) => {
+    return {
+        type: Types.UPDATE_GAME,
+        payload
     }
 }
-export const SaveFileAction = (data) => {
+export const DeleteGameAction = (payload) => {
     return {
-        type: Types.SEND_FILE,
-        data
+        type: Types.DELETE_GAME,
+        payload
+    }
+}
+
+export const AddIdeaAction = (payload) => {
+    return {
+        type: Types.ADD_IDEA,
+        payload
+    }
+}
+export const UpdateIdeaAction = (payload) => {
+    return {
+        type: Types.UPDATE_IDEA,
+        payload
+    }
+}
+export const DeleteIdeaAction = (payload) => {
+    return {
+        type: Types.DELETE_IDEA,
+        payload
+    }
+}
+
+export const SaveCurrentGameAction = (payload) => {
+    return {
+        type: Types.CURRENT_GAME,
+        payload
     }
 }

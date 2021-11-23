@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
     InputLeftElement,
@@ -24,29 +25,34 @@ import { v4 as uuid } from "uuid";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { SearchNormal1, AddSquare } from "iconsax-react";
-import GameItem from "../../components/GameItem";
-import { connect } from "react-redux";
-import { AddGameAction } from "../../action";
-const HomePage = (props) => {
-    const { listGame, addGameDispatch } = props;
+import IdeaItem from "../../../components/IdeaItem";
+import { AddIdeaAction } from "../../../action";
+import { useParams } from "react-router";
+const SelectIdeaPage = (props) => {
+    const { listGame, addIdeaDispatch } = props;
+    const params = useParams();
+    const idgame = params.idgame;
+    const currentGame = listGame.find((item) => item.id === idgame);
+
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [listGameState, setListGameState] = React.useState(listGame);
+    const [currentGameRedux, setCurrentGameRedux] = React.useState(
+        currentGame.idea
+    );
     const nameRef = React.useRef();
     const finalRef = React.useRef();
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-        const { name, linkIOS, linkAndroid } = values;
+        const { name, linkBaseCode } = values;
         const payload = {
             id: uuid(),
             name: name,
-            linkStoreIOS: linkIOS,
-            linkStoreAndroid: linkAndroid,
-            idea: [],
+            linkBaseCode: linkBaseCode,
+            currentGameId: idgame
         };
-        let a = addGameDispatch(payload);
-        console.log(a);
-        
+
+        addIdeaDispatch(payload);
+        setSubmitting(false);
         toast({
             position: "top",
             title: "Add game successfully!",
@@ -55,7 +61,6 @@ const HomePage = (props) => {
             isClosable: true,
         });
         let timeOut = setTimeout(() => {
-            setSubmitting(false);
             resetForm();
             onClose();
             clearTimeout(timeOut);
@@ -63,14 +68,15 @@ const HomePage = (props) => {
     };
     const handleSearch = (event) => {
         const { value } = event.target;
-        let searchResult = listGame.filter((item) =>
+        let searchResult = currentGame.idea.filter((item) =>
             item.name.toLowerCase().includes(value.toLowerCase())
         );
-        setListGameState(searchResult);
+        setCurrentGameRedux(searchResult);
     };
     useEffect(() => {
-        setListGameState(listGame);
-    }, [listGame]);
+        let currentGame = listGame.find((item) => item.id === idgame);
+        setCurrentGameRedux(currentGame.idea);
+    }, [listGame, idgame]);
     return (
         <>
             <Box my="5">
@@ -95,18 +101,16 @@ const HomePage = (props) => {
                     leftIcon={<AddSquare color="currentColor" />}
                     colorScheme="blue"
                 >
-                    <Text mr="0">Add Game</Text>
+                    <Text mr="0">Add Idea</Text>
                 </Button>
                 <Formik
                     initialValues={{
                         name: "",
-                        linkIOS: "",
-                        linkAndroid: "",
+                        linkBaseCode: "",
                     }}
                     validationSchema={Yup.object({
                         name: Yup.string().required("Required"),
-                        linkIOS: Yup.string(),
-                        linkAndroid: Yup.string(),
+                        linkBaseCode: Yup.string().required("Required"),
                     })}
                     onSubmit={handleSubmit}
                 >
@@ -120,9 +124,7 @@ const HomePage = (props) => {
                             <ModalOverlay />
                             <ModalContent>
                                 <form onSubmit={formik.handleSubmit}>
-                                    <ModalHeader>
-                                        Add detail for your game
-                                    </ModalHeader>
+                                    <ModalHeader>Add Idea</ModalHeader>
                                     <ModalCloseButton />
                                     <ModalBody pb={6}>
                                         {" "}
@@ -134,7 +136,7 @@ const HomePage = (props) => {
                                             }
                                         >
                                             <FormLabel mt={4}>
-                                                Name game
+                                                Title idea
                                             </FormLabel>
                                             <Input
                                                 ref={nameRef}
@@ -149,43 +151,24 @@ const HomePage = (props) => {
                                             </FormErrorMessage>
                                         </FormControl>
                                         <FormControl
+                                            isRequired
                                             isInvalid={
-                                                formik.touched.linkIOS &&
-                                                formik.errors.linkIOS
+                                                formik.touched.linkBaseCode &&
+                                                formik.errors.linkBaseCode
                                             }
                                         >
                                             <FormLabel mt={4}>
-                                                Link store IOS
+                                                Link base code
                                             </FormLabel>
                                             <Input
                                                 type="text"
-                                                placeholder="Ex: https://apps.apple.com/us/app/sky-raptor/id1518974662"
+                                                placeholder="Ex: D:/order"
                                                 {...formik.getFieldProps(
-                                                    "linkIOS"
+                                                    "linkBaseCode"
                                                 )}
                                             />
                                             <FormErrorMessage>
-                                                {formik.errors.linkIOS}
-                                            </FormErrorMessage>
-                                        </FormControl>
-                                        <FormControl
-                                            isInvalid={
-                                                formik.touched.linkAndroid &&
-                                                formik.errors.linkAndroid
-                                            }
-                                        >
-                                            <FormLabel mt={4}>
-                                                Link store Android
-                                            </FormLabel>
-                                            <Input
-                                                type="text"
-                                                placeholder="Ex: https://play.google.com/store/apps/details?id=com.skyraptor.spaceshooter"
-                                                {...formik.getFieldProps(
-                                                    "linkAndroid"
-                                                )}
-                                            />
-                                            <FormErrorMessage>
-                                                {formik.errors.linkAndroid}
+                                                {formik.errors.linkBaseCode}
                                             </FormErrorMessage>
                                         </FormControl>
                                     </ModalBody>
@@ -206,15 +189,20 @@ const HomePage = (props) => {
                         </Modal>
                     )}
                 </Formik>
-                {listGameState.map((game, index) => (
-                    <GameItem key={game.id} gameDetail={game} />
+                {currentGameRedux?.map((idea, index) => (
+                    <IdeaItem
+                        key={idea.id}
+                        idGame={currentGame.id}
+                        ideaDetail={idea}
+                    />
                 ))}
             </Box>
         </>
     );
 };
 
-HomePage.propTypes = {};
+SelectIdeaPage.propTypes = {};
+
 const mapStateToProps = (state) => {
     return {
         listGame: state.listGameStore,
@@ -222,8 +210,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        addGameDispatch: (payload) => dispatch(AddGameAction(payload)),
+        addIdeaDispatch: (payload) => dispatch(AddIdeaAction(payload)),
     };
 };
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectIdeaPage);

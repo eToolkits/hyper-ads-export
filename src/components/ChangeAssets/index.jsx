@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
     Image,
@@ -14,10 +14,14 @@ import {
     Box,
     Flex,
 } from "@chakra-ui/react";
+import { ExportSquare, AudioSquare } from "iconsax-react";
 import DragDrop from "../DragDrop";
 
 const ChangeAssets = (props) => {
-    
+    const params = useParams();
+    const idgame = params.idgame;
+    const ididea = params.ididea;
+
     return (
         <>
             <Box mb="5">
@@ -64,13 +68,25 @@ const ChangeAssets = (props) => {
                         </Button>{" "}
                     </Box>
                     <Box>
-                        <Link to="/editgame/changesounds">
-                            <Button mb="5" colorScheme="green">
+                    <Link to={`/editgame/`+idgame+"/"+ididea+`/changesounds`}>
+                            <Button
+                                mb="5"
+                                colorScheme="green"
+                                rightIcon={
+                                    <AudioSquare colorScheme="currentColor" />
+                                }
+                            >
                                 Change Sounds
                             </Button>{" "}
                         </Link>
-                        <Link to="/export">
-                            <Button mb="5" colorScheme="green">
+                        <Link to={"/export/"+idgame+`/`+ididea}>
+                            <Button
+                                mb="5"
+                                colorScheme="green"
+                                rightIcon={
+                                    <ExportSquare colorScheme="currenColor" />
+                                }
+                            >
                                 Export Now
                             </Button>{" "}
                         </Link>

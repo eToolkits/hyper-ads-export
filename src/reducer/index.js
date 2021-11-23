@@ -1,9 +1,7 @@
 import { combineReducers } from "redux";
-import path from './path';
-import file from './file';
+import listGameStore from './listGameStore';
 const myReducer = combineReducers({
-    path,
-    file
+    listGameStore
 })
 
 export default myReducer

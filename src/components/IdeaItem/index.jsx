@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -29,21 +29,13 @@ import {
 import { ArrowDown3 } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-    DeleteGameAction,
-    SaveCurrentGameAction,
-    UpdateGameAction,
-} from "../../action";
-const GameItem = (props) => {
-    const {
-        gameDetail,
-        UpdateGameDispatch,
-        DeleteGameDispatch,
-        SaveCurrentGameDispatch,
-    } = props;
-    const { id } = gameDetail;
-    const [gameDetailState, setGameDetailState] = React.useState(gameDetail);
+import { DeleteIdeaAction, UpdateIdeaAction } from "../../action";
+const IdeaItem = (props) => {
+    const { idGame, ideaDetail, deleteIdeaDispatch, updateIdeaDispatch } =
+        props;
+    const { id } = ideaDetail;
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [ideaGameState, setIdeaGameState] = React.useState(ideaDetail);
     const [isOpenAlert, setIsOpenAlert] = React.useState(false);
     const onCloseAlert = () => setIsOpenAlert(false);
     const cancelAlertRef = React.useRef();
@@ -52,16 +44,20 @@ const GameItem = (props) => {
     const nameRef = React.useRef();
     const finalRef = React.useRef();
 
-    const handleUpdate = async (values, { setSubmitting, resetForm }) => {
-        const { name, linkStoreIOS, linkStoreAndroid } = values;
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        const { name, linkBaseCode } = values;
         const payload = {
             id,
             name,
-            linkStoreIOS,
-            linkStoreAndroid,
+            linkBaseCode,
+            currentGame: idGame,
         };
-        UpdateGameDispatch(payload);
-        setGameDetailState(payload);
+        setIdeaGameState({
+            id,
+            name,
+            linkBaseCode,
+        });
+        updateIdeaDispatch(payload);
         setSubmitting(false);
         toast({
             position: "top",
@@ -78,8 +74,9 @@ const GameItem = (props) => {
     const handleDelete = async () => {
         const payload = {
             id,
+            currentGame: idGame,
         };
-        DeleteGameDispatch(payload);
+        deleteIdeaDispatch(payload);
         toast({
             position: "top",
             title: "Delete game successfully!",
@@ -88,27 +85,23 @@ const GameItem = (props) => {
             isClosable: true,
         });
         let timeOut = setTimeout(() => {
+            onCloseAlert();
             onClose();
             clearTimeout(timeOut);
         }, 2000);
-    };
-    const handleSelectGame = () => {
-        SaveCurrentGameDispatch(gameDetail);
     };
     return (
         <Box my="3" ml="3">
             <Formik
                 initialValues={{
-                    name: gameDetailState.name,
-                    linkStoreIOS: gameDetailState.linkStoreIOS,
-                    linkStoreAndroid: gameDetailState.linkStoreAndroid,
+                    name: ideaGameState.name,
+                    linkBaseCode: ideaGameState.linkBaseCode,
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string().required("Required"),
-                    linkIOS: Yup.string(),
-                    linkAndroid: Yup.string(),
+                    linkBaseCode: Yup.string().required("Required"),
                 })}
-                onSubmit={handleUpdate}
+                onSubmit={handleSubmit}
             >
                 {(formik) => (
                     <Modal
@@ -146,42 +139,22 @@ const GameItem = (props) => {
                                     </FormControl>
                                     <FormControl
                                         isInvalid={
-                                            formik.touched.linkStoreIOS &&
-                                            formik.errors.linkStoreIOS
+                                            formik.touched.linkBaseCode &&
+                                            formik.errors.linkBaseCode
                                         }
                                     >
                                         <FormLabel mt={4}>
-                                            Link store IOS
+                                            Link base code
                                         </FormLabel>
                                         <Input
                                             type="text"
                                             placeholder="Ex: https://apps.apple.com/us/app/sky-raptor/id1518974662"
                                             {...formik.getFieldProps(
-                                                "linkStoreIOS"
+                                                "linkBaseCode"
                                             )}
                                         />
                                         <FormErrorMessage>
-                                            {formik.errors.linkStoreIOS}
-                                        </FormErrorMessage>
-                                    </FormControl>
-                                    <FormControl
-                                        isInvalid={
-                                            formik.touched.linkStoreAndroid &&
-                                            formik.errors.linkStoreAndroid
-                                        }
-                                    >
-                                        <FormLabel mt={4}>
-                                            Link store Android
-                                        </FormLabel>
-                                        <Input
-                                            type="text"
-                                            placeholder="Ex: https://play.google.com/store/apps/details?id=com.skyraptor.spaceshooter"
-                                            {...formik.getFieldProps(
-                                                "linkStoreAndroid"
-                                            )}
-                                        />
-                                        <FormErrorMessage>
-                                            {formik.errors.linkStoreAndroid}
+                                            {formik.errors.linkBaseCode}
                                         </FormErrorMessage>
                                     </FormControl>
                                 </ModalBody>
@@ -197,7 +170,7 @@ const GameItem = (props) => {
                                         colorScheme="red"
                                         onClick={() => setIsOpenAlert(true)}
                                     >
-                                        Delete Game
+                                        Delete Idea
                                     </Button>
                                 </ModalFooter>
                             </form>
@@ -205,10 +178,10 @@ const GameItem = (props) => {
                     </Modal>
                 )}
             </Formik>
-            <Box display="flex" flexWrap="nowrap" onClick={handleSelectGame}>
-                <Link to={`/editgame/` + id}>
+            <Box display="flex" flexWrap="nowrap">
+                <Link to={ideaGameState.id}>
                     <Button borderRightRadius="0" colorScheme="teal">
-                        <Text>{gameDetailState.name}</Text>
+                        <Text>{ideaGameState.name}</Text>
                     </Button>
                 </Link>
                 <Button
@@ -229,7 +202,7 @@ const GameItem = (props) => {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Delete this game
+                            Delete this idea?
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
@@ -255,18 +228,11 @@ const GameItem = (props) => {
     );
 };
 
-GameItem.propTypes = {};
+IdeaItem.propTypes = {};
 const mapDispatchToProps = (dispatch) => {
     return {
-        UpdateGameDispatch: (payload) => {
-            dispatch(UpdateGameAction(payload));
-        },
-        DeleteGameDispatch: (payload) => {
-            dispatch(DeleteGameAction(payload));
-        },
-        SaveCurrentGameDispatch: (payload) => {
-            dispatch(SaveCurrentGameAction(payload));
-        },
+        updateIdeaDispatch: (payload) => dispatch(UpdateIdeaAction(payload)),
+        deleteIdeaDispatch: (payload) => dispatch(DeleteIdeaAction(payload)),
     };
 };
-export default connect(null, mapDispatchToProps)(GameItem);
+export default connect(null, mapDispatchToProps)(IdeaItem);

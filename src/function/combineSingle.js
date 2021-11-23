@@ -3,7 +3,8 @@
 const fs = window.require('fs');
 const network = ['AppLovin', "Google", "Unity", "Mintegral", "Iron", "Tiktok"];
 
-export async function CombineAndExport(files, nameGame, ideaGame, dirSave) {
+export async function CombineAndExport(linkBaseCode, nameGame, ideaGame, dirSave) {
+    const files = fs.readdirSync(linkBaseCode);
     const indexFileMain = files.findIndex((elem) => elem.name === "index.html");
     let mainFile = fs.readFileSync(files[indexFileMain].path, 'utf8', (err, data) => { });
     let arrJs = files.filter(file => file.name.includes(".js"));
