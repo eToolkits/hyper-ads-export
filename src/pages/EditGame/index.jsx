@@ -11,9 +11,6 @@ const EditGame = (props) => {
     useEffect(() => {
         const getAllFromDir = (source) =>
             fs.readdirSync(source).map((name) => path.join(source, name));
-		// let dir = String.raw`D:\Monster\z_order\Fake EC Template`;
-		// let encodeDir = encodeURIComponent(dir);
-		// console.log(encodeDir);
 	}, []);
 	return (
 		<Flex align="center" direction="column" w="100%" my="30px">

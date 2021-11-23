@@ -96,48 +96,29 @@ const NavigationBar = (props) => {
                         {navSize === "large" ? <p>Home</p> : ""}
                     </div>
                 </Link>
-                <Link to="/addgame">
-                    <div
-                        className={
-                            location === "/addgame" ? "item active" : "item"
-                        }
-                    >
-                        <Box mx="5">
-                            <Game
-                                size="20"
-                                color="currentColor"
-                                variant={
-                                    location === "/addgame" ? "Bold" : "Outline"
-                                }
-                            />
-                        </Box>
-                        {navSize === "large" ? <p>Add Game</p> : ""}
-                    </div>
-                </Link>
-                <div className="item">
+                <div className={location.includes("changeassets") ? "item active" : "item"}>
                     <Box mx="5">
                         <GalleryEdit
                             size="20"
                             color="currentColor"
-                            variant="Outline"
+                            variant={location.includes("changeassets") ? "Bold" : "Outline"}
                         />
                     </Box>
                     {navSize === "large" ? <p>Change Assets</p> : ""}
                 </div>
-                <div className="item">
+                <div className={location.includes("changesounds") ? "item active" : "item"}>
                     <Box mx="5">
                         <AudioSquare
                             size="20"
                             color="currentColor"
-                            variant="Outline"
+                            variant={location.includes("changesounds") ? "Bold" : "Outline"}
                         />
                     </Box>
                     {navSize === "large" ? <p>Change Sounds</p> : ""}
                 </div>
-                <Link to="/export">
                     <div
                         className={
-                            location === "/export" ? "item active" : "item"
+                            location.includes("export") ? "item active" : "item"
                         }
                     >
                         <Box mx="5">
@@ -151,7 +132,6 @@ const NavigationBar = (props) => {
                         </Box>
                         {navSize === "large" ? <p>Export</p> : ""}
                     </div>
-                </Link>
             </div>
             <div className="user-wrapper">
                 <div className="user">

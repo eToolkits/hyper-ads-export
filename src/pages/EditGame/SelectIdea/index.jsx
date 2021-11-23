@@ -48,7 +48,7 @@ const SelectIdeaPage = (props) => {
             id: uuid(),
             name: name,
             linkBaseCode: linkBaseCode,
-            currentGameId: idgame
+            currentGameId: idgame,
         };
 
         addIdeaDispatch(payload);
@@ -79,6 +79,9 @@ const SelectIdeaPage = (props) => {
     }, [listGame, idgame]);
     return (
         <>
+            <Text align="center" fontSize="30" fontWeight="bold" >
+                CHOOSE IDEA
+            </Text>
             <Box my="5">
                 <InputGroup mx="3">
                     <InputLeftElement

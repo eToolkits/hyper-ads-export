@@ -46,7 +46,7 @@ const HomePage = (props) => {
         };
         let a = addGameDispatch(payload);
         console.log(a);
-        
+
         toast({
             position: "top",
             title: "Add game successfully!",
@@ -73,6 +73,9 @@ const HomePage = (props) => {
     }, [listGame]);
     return (
         <>
+            <Text align="center" fontSize="30" fontWeight="bold">
+                CHOOSE GAME
+            </Text>
             <Box my="5">
                 <InputGroup mx="3">
                     <InputLeftElement

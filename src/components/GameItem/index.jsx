@@ -26,7 +26,7 @@ import {
     AlertDialogBody,
     AlertDialogFooter,
 } from "@chakra-ui/react";
-import { ArrowDown3 } from "iconsax-react";
+import { ArrowDown3, Trash } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -196,6 +196,12 @@ const GameItem = (props) => {
                                     <Button
                                         colorScheme="red"
                                         onClick={() => setIsOpenAlert(true)}
+                                        rightIcon={
+                                            <Trash
+                                                schemeColor="currentColor"
+                                                size="20"
+                                            />
+                                        }
                                     >
                                         Delete Game
                                     </Button>
@@ -244,6 +250,12 @@ const GameItem = (props) => {
                                 colorScheme="red"
                                 onClick={handleDelete}
                                 ml={3}
+                                rightIcon={
+                                    <Trash
+                                        schemeColor="currentColor"
+                                        size="20"
+                                    />
+                                }
                             >
                                 Delete
                             </Button>

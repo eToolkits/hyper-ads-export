@@ -27,7 +27,6 @@ const ChangeAssets = (props) => {
             <Box mb="5">
                 <DragDrop text="assets" />
                 <Table w="100%" my="5" variant="striped" colorScheme="gray">
-                    <TableCaption>* Click to EDIT the link</TableCaption>
                     <Thead>
                         <Tr>
                             <Th>Name Asset</Th>
@@ -73,7 +72,7 @@ const ChangeAssets = (props) => {
                                 mb="5"
                                 colorScheme="green"
                                 rightIcon={
-                                    <AudioSquare colorScheme="currentColor" />
+                                    <AudioSquare size="20" color="currentColor" />
                                 }
                             >
                                 Change Sounds
@@ -82,9 +81,10 @@ const ChangeAssets = (props) => {
                         <Link to={"/export/"+idgame+`/`+ididea}>
                             <Button
                                 mb="5"
+                                ml="5"
                                 colorScheme="green"
                                 rightIcon={
-                                    <ExportSquare colorScheme="currenColor" />
+                                    <ExportSquare size="20" color="currentColor" />
                                 }
                             >
                                 Export Now

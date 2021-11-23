@@ -25,7 +25,6 @@ const ChangeSounds = (props) => {
             <Box mb="5">
                 <DragDrop text="sounds" />
                 <Table my="5" variant="striped" colorScheme="gray" w="100%">
-                    <TableCaption>* Click to EDIT the link</TableCaption>
                     <Thead>
                         <Tr>
                             <Th>Name Sound</Th>
@@ -58,12 +57,12 @@ const ChangeSounds = (props) => {
                     </Box>
                     <Box>
                     <Link to={`/editgame/`+idgame+"/"+ididea+`/changeassets`}>
-                            <Button mb="5" colorScheme="green" rightIcon={<GalleryEdit colorScheme="currentColor"/>}>
+                            <Button mb="5" colorScheme="green" rightIcon={<GalleryEdit color="currentColor"/>}>
                                 Change Assets
                             </Button>{" "}
                         </Link>
                         <Link to={"/export/"+idgame+`/`+ididea}>
-                            <Button mb="5" colorScheme="green" rightIcon={<ExportSquare colorScheme="currentColor"/>}>
+                            <Button ml="5" mb="5" colorScheme="green" rightIcon={<ExportSquare color="currentColor"/>}>
                                 Export Now
                             </Button>{" "}
                         </Link>

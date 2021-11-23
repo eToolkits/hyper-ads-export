@@ -26,7 +26,7 @@ import {
     AlertDialogBody,
     AlertDialogFooter,
 } from "@chakra-ui/react";
-import { ArrowDown3 } from "iconsax-react";
+import { ArrowDown3, Trash } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { DeleteIdeaAction, UpdateIdeaAction } from "../../action";
@@ -113,9 +113,7 @@ const IdeaItem = (props) => {
                         <ModalOverlay />
                         <ModalContent>
                             <form onSubmit={formik.handleSubmit}>
-                                <ModalHeader>
-                                    Edit info for your game
-                                </ModalHeader>
+                                <ModalHeader>Edit Idea</ModalHeader>
                                 <ModalCloseButton />
                                 <ModalBody pb={6}>
                                     {" "}
@@ -138,6 +136,7 @@ const IdeaItem = (props) => {
                                         </FormErrorMessage>
                                     </FormControl>
                                     <FormControl
+                                        isRequired
                                         isInvalid={
                                             formik.touched.linkBaseCode &&
                                             formik.errors.linkBaseCode
@@ -169,6 +168,12 @@ const IdeaItem = (props) => {
                                     <Button
                                         colorScheme="red"
                                         onClick={() => setIsOpenAlert(true)}
+                                        rightIcon={
+                                            <Trash
+                                                size="20"
+                                                schemeColor="currentColor"
+                                            />
+                                        }
                                     >
                                         Delete Idea
                                     </Button>
@@ -217,6 +222,12 @@ const IdeaItem = (props) => {
                                 colorScheme="red"
                                 onClick={handleDelete}
                                 ml={3}
+                                rightIcon={
+                                    <Trash
+                                        size="20"
+                                        schemeColor="currentColor"
+                                    />
+                                }
                             >
                                 Delete
                             </Button>
