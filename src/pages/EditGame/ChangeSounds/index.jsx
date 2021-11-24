@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ChangeSounds from "../../../components/ChangeSounds";
+import ChangeSoundsContainer from "../../../container/ChangeSounds";
 
 const ChangeSoundsPage = (props) => {
     return (
         <>
-            <ChangeSounds />
+            <ChangeSoundsContainer />
         </>
     );
 };
