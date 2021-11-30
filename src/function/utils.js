@@ -16,6 +16,9 @@ export default class ListGameService {
         });
     }
     addGame(payload) {
+        set(ref(db, "data/" + payload.id), {
+			...payload,
+		});
         listGame.unshift(payload)
         return this.writeFile(listGame);
     }
