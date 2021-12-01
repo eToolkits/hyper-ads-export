@@ -1,7 +1,7 @@
 import * as Types from "../constant";
 import listGame from "./../database/ListGame.json";
-import ListGameService from "./../function/utils";
-const ListGameSv = new ListGameService();
+import GameService from "./../services/Game.service";
+const ListGameSv = new GameService();
 
 const deepCloneState = (state) => {
 	const newState = JSON.stringify(state);

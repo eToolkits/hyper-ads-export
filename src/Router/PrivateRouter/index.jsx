@@ -10,48 +10,9 @@ import ChangeSoundsPage from "../../pages/EditGame/ChangeSounds";
 import ChangeAssetsPage from "../../pages/EditGame/ChangeAssets";
 import ExportPage from "../../pages/Export";
 import SelectIdeaPage from "../../pages/EditGame/SelectIdea";
-import { db } from "./../../services/firebaseConfig";
-import { ref, set, onValue } from "firebase/database";
 const PrivateRouter = (props) => {
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(db);
-    const payload = {
-        id: "7e223eb3-5020-49cd-8a62-3d0f0eaeb013",
-        name: "Bino1",
-        linkStoreIOS: "",
-        linkStoreAndroid:
-            "https://play.google.com/store/apps/details?id=com.superbinogo.jungleboyadventure",
-        idea: [
-            {
-                id: "92189f9c-b637-45fc-b2e4-30c912d8eb68",
-                name: "ẻyeyey",
-                linkBaseCode: "ẻyryrty",
-            },
-        ],
-    };
-    const test = () => {
-		const dataRef = ref(db, 'data');
-        onValue(dataRef, (snapshot) => {
-            const data = snapshot.val();
-            console.log(data);
-        });
-
-        set(ref(db, "data/adsdasdasdads"), {
-            name: "Bino1",
-            linkStoreIOS: "",
-            linkStoreAndroid:
-                "https://play.google.com/store/apps/details?id=com.superbinogo.jungleboyadventure",
-            idea: [
-                {
-                    id: "92189f9c-b637-45fc-b2e4-30c912d8eb68",
-                    name: "ẻyeyey",
-                    linkBaseCode: "ẻyryrty",
-                },
-            ],
-        });
-    };
-    test();
     return (
         <Box m="30px" w="100%">
             {location.pathname === "/" ? (
