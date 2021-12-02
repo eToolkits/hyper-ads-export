@@ -20,7 +20,9 @@ const ChangeAssetsContainer = (props) => {
     console.log("appear");
 	const params = useParams();
 	const idgame = params.idgame;
+    console.log("🚀 ~ file: index.jsx ~ line 23 ~ ChangeAssetsContainer ~ idgame", idgame)
 	const ididea = params.ididea;
+    console.log("🚀 ~ file: index.jsx ~ line 25 ~ ChangeAssetsContainer ~ ididea", ididea)
 
 	const handleFile = (file) => {
 		console.log(file.path);

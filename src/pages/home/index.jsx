@@ -27,17 +27,16 @@ import { SearchNormal1, AddSquare } from "iconsax-react";
 import GameItem from "../../components/GameItem";
 import { connect } from "react-redux";
 import { AddGameAction } from "../../action";
-import { db } from "./../../services/firebaseConfig";
-import { ref, set, onValue } from "firebase/database";
 
 const HomePage = (props) => {
+	const { listGame, addGameDispatch } = props;
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [listGameState, setListGameState] = React.useState();
+	const [listGameState, setListGameState] = React.useState(() => {});
 	const [searchGameState, setSearchGameState] = React.useState();
 	const nameRef = React.useRef();
 	const finalRef = React.useRef();
-	const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+	const handleAddGame = async (values, { setSubmitting, resetForm }) => {
 		const { name, linkIOS, linkAndroid } = values;
 		const payload = {
 			id: uuid(),
@@ -46,29 +45,20 @@ const HomePage = (props) => {
 			linkStoreAndroid: linkAndroid,
 			idea: [],
 		};
-		set(ref(db, `data/${payload.id}`), {
-			...payload,
-		})
-			.then(() => {
-				toast({
-					position: "top",
-					title: "Add game successfully!",
-					status: "success",
-					duration: 2000,
-					isClosable: true,
-				});
-				let timeOut = setTimeout(() => {
-					setSubmitting(false);
-					resetForm();
-					onClose();
-					clearTimeout(timeOut);
-				}, 2000);
-			})
-			.catch((error) => {
-				return "error";
-			});
-		// let a = addGameDispatch(payload);
-		// console.log(a);
+		addGameDispatch(payload);
+		toast({
+			position: "top",
+			title: "Add game successfully!",
+			status: "success",
+			duration: 2000,
+			isClosable: true,
+		});
+		let timeOut = setTimeout(() => {
+			setSubmitting(false);
+			resetForm();
+			onClose();
+			clearTimeout(timeOut);
+		}, 2000);
 	};
 	const handleSearch = (event) => {
 		const { value } = event.target;
@@ -77,22 +67,10 @@ const HomePage = (props) => {
 		);
 		setListGameState(searchResult);
 	};
-
 	useEffect(() => {
-		const dataRef = ref(db, "data/");
-		onValue(dataRef, (snapshot) => {
-			let convertToArr = [];
-			let data = snapshot.val();
-			for (const key in data) {
-				if (Object.hasOwnProperty.call(data, key)) {
-					const element = data[key];
-					convertToArr.push({ ...element });
-				}
-			}
-			setListGameState(convertToArr);
-			setSearchGameState(convertToArr);
-		});
-	}, []);
+		setListGameState(listGame);
+		setSearchGameState(listGame);
+	}, [listGame]);
 	return (
 		<>
 			<Text align="center" fontSize="30" fontWeight="bold">
@@ -133,7 +111,7 @@ const HomePage = (props) => {
 						linkIOS: Yup.string(),
 						linkAndroid: Yup.string(),
 					})}
-					onSubmit={handleSubmit}
+					onSubmit={handleAddGame}
 				>
 					{(formik) => (
 						<Modal
@@ -240,15 +218,16 @@ const HomePage = (props) => {
 };
 
 HomePage.propTypes = {};
-// const mapStateToProps = (state) => {
-// 	return {
-// 		listGame: state.listGameStore,
-// 	};
-// };
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		addGameDispatch: (payload) => dispatch(AddGameAction(payload)),
-// 	};
-// };
+const mapStateToProps = (state) => {
+	return {
+		listGame: state.listGameStore,
+	};
+};
 
-export default connect(null, null)(HomePage);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		addGameDispatch: (payload) => dispatch(AddGameAction(payload)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

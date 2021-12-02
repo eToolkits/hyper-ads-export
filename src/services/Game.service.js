@@ -3,12 +3,6 @@ import { db } from "./firebaseConfig";
 import { ref, set, onValue, update } from "firebase/database";
 // const fs = window.require("fs");
 export default class GameService {
-    getGame() {
-        const dataRef = ref(db, 'data/');
-        onValue(dataRef, (snapshot) => {
-            let data = snapshot.val();
-        });
-    }
     addGame(payload) {
         set(ref(db, `data/${payload.id}`), {
             ...payload,
@@ -33,8 +27,9 @@ export default class GameService {
                 return "error"
             });
     }
-    deleteGame(id) {
-        set(ref(db, `data/${id}`), null)
+    deleteGame(payload) {
+        console.log(payload.id)
+        set(ref(db, `data/${payload.id}`), null)
             .then(() => {
                 console.log("success");
                 return "success"

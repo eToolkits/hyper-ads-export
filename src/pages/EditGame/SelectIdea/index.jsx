@@ -28,15 +28,14 @@ import { SearchNormal1, AddSquare } from "iconsax-react";
 import IdeaItem from "../../../components/IdeaItem";
 import { AddIdeaAction } from "../../../action";
 import { useParams } from "react-router";
-import { db } from "./../../../services/firebaseConfig";
-import { ref, set, onValue } from "firebase/database";
 const SelectIdeaPage = (props) => {
+	const { gameSelected, addIdeaDispatch } = props;
 	const params = useParams();
 	const idgame = params.idgame;
 
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [listIdeaState, setListIdeaState] = React.useState();
+	const [listIdeaState, setListIdeaState] = React.useState([]);
 	const [searchIdeaState, setSearchIdeaState] = React.useState();
 
 	const nameRef = React.useRef();
@@ -50,27 +49,20 @@ const SelectIdeaPage = (props) => {
 			linkBaseCode: linkBaseCode,
 			parentGameId: idgame,
 		};
-		set(ref(db, `data/${idgame}/idea/${payload.id}`), {
-			...payload,
-		})
-			.then(() => {
-				setSubmitting(false);
-				toast({
-					position: "top",
-					title: "Add game successfully!",
-					status: "success",
-					duration: 2000,
-					isClosable: true,
-				});
-				let timeOut = setTimeout(() => {
-					resetForm();
-					onClose();
-					clearTimeout(timeOut);
-				}, 2000);
-			})
-			.catch((error) => {
-				return "error";
-			});
+		addIdeaDispatch(payload);
+		setSubmitting(false);
+		toast({
+			position: "top",
+			title: "Add game successfully!",
+			status: "success",
+			duration: 2000,
+			isClosable: true,
+		});
+		let timeOut = setTimeout(() => {
+			resetForm();
+			onClose();
+			clearTimeout(timeOut);
+		}, 2000);
 	};
 	const handleSearch = (event) => {
 		const { value } = event.target;
@@ -79,22 +71,12 @@ const SelectIdeaPage = (props) => {
 		);
 		setListIdeaState(searchResult);
 	};
+
 	useEffect(() => {
-		const dataRef = ref(db, `data/${idgame}/idea/`);
-		onValue(dataRef, (snapshot) => {
-			let convertToArr = [];
-			let data = snapshot.val();
-			for (const key in data) {
-				if (Object.hasOwnProperty.call(data, key)) {
-					const element = data[key];
-					convertToArr.push({ ...element });
-				}
-			}
-            console.log(convertToArr);
-			setListIdeaState(convertToArr);
-			setSearchIdeaState(convertToArr);
-		});
-	}, [idgame]);
+		setListIdeaState(gameSelected.idea || []);
+		setSearchIdeaState(gameSelected.idea || []);
+	}, [gameSelected]);
+
 	return (
 		<>
 			<Text align="center" fontSize="30" fontWeight="bold">
@@ -211,11 +193,7 @@ const SelectIdeaPage = (props) => {
 					)}
 				</Formik>
 				{listIdeaState?.map((idea, index) => (
-					<IdeaItem
-						key={idea.id}
-						idGame={idgame}
-						ideaDetail={idea}
-					/>
+					<IdeaItem key={idea.id} idGame={idgame} ideaDetail={idea} />
 				))}
 			</Box>
 		</>
@@ -224,14 +202,14 @@ const SelectIdeaPage = (props) => {
 
 SelectIdeaPage.propTypes = {};
 
-// const mapStateToProps = (state) => {
-// 	return {
-// 		listGame: state.listGameStore,
-// 	};
-// };
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		addIdeaDispatch: (payload) => dispatch(AddIdeaAction(payload)),
-// 	};
-// };
-export default connect(null, null)(SelectIdeaPage);
+const mapStateToProps = (state) => {
+	return {
+		gameSelected: state.gameSelect,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		addIdeaDispatch: (payload) => dispatch(AddIdeaAction(payload)),
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SelectIdeaPage);

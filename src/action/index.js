@@ -39,9 +39,9 @@ export const DeleteIdeaAction = (payload) => {
     }
 }
 
-export const SaveCurrentGameAction = (payload) => {
+export const SelectGameAction = (payload) => {
     return {
-        type: Types.CURRENT_GAME,
+        type: Types.SELECT_GAME,
         payload
     }
 }

@@ -29,15 +29,10 @@ import {
 import { ArrowDown3, Trash } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
-import { db } from "./../../services/firebaseConfig";
-import { ref, set, update } from "firebase/database";
+import { DeleteGameAction, SelectGameAction, UpdateGameAction } from "../../action";
 
 const GameItem = (props) => {
-	const {
-		gameDetail,
-		// SaveCurrentGameDispatch,
-	} = props;
+	const { gameDetail, UpdateGameDispatch, DeleteGameDispatch, SelectGameDispatch } = props;
 	const { id } = gameDetail;
 	const [gameDetailState, setGameDetailState] = React.useState(gameDetail);
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,49 +52,40 @@ const GameItem = (props) => {
 			linkStoreIOS,
 			linkStoreAndroid,
 		};
-		const updates = {};
-		updates["data/" + payload.id] = payload;
-		update(ref(db), updates)
-			.then(() => {
-				setSubmitting(false);
-				toast({
-					position: "top",
-					title: "Edit game successfully!",
-					status: "success",
-					duration: 2000,
-					isClosable: true,
-				});
-				let timeOut = setTimeout(() => {
-					onClose();
-					clearTimeout(timeOut);
-				}, 2000);
-			})
-			.catch((error) => {
-				return "error";
-			});
+		UpdateGameDispatch(payload);
+
+		setSubmitting(false);
+		toast({
+			position: "top",
+			title: "Edit game successfully!",
+			status: "success",
+			duration: 2000,
+			isClosable: true,
+		});
+		let timeOut = setTimeout(() => {
+			onClose();
+			clearTimeout(timeOut);
+		}, 2000);
 		setGameDetailState(payload);
 	};
 	const handleDelete = async () => {
-		set(ref(db, `data/${id}`), null)
-			.then(() => {
-				toast({
-					position: "top",
-					title: "Delete game successfully!",
-					status: "success",
-					duration: 2000,
-					isClosable: true,
-				});
-				let timeOut = setTimeout(() => {
-					onClose();
-					clearTimeout(timeOut);
-				}, 2000);
-			})
-			.catch((error) => {
-				return "error";
-			});
+
+		DeleteGameDispatch({id});
+		toast({
+			position: "top",
+			title: "Delete game successfully!",
+			status: "success",
+			duration: 2000,
+			isClosable: true,
+		});
+		onCloseAlert()
+		let timeOut = setTimeout(() => {
+			onClose();
+			clearTimeout(timeOut);
+		}, 1000);
 	};
 	const handleSelectGame = () => {
-		// SaveCurrentGameDispatch(gameDetail);
+		SelectGameDispatch(gameDetail)
 	};
 	return (
 		<Box my="3" ml="3">
@@ -271,17 +257,17 @@ const GameItem = (props) => {
 };
 
 GameItem.propTypes = {};
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		UpdateGameDispatch: (payload) => {
-// 			dispatch(UpdateGameAction(payload));
-// 		},
-// 		DeleteGameDispatch: (payload) => {
-// 			dispatch(DeleteGameAction(payload));
-// 		},
-// 		SaveCurrentGameDispatch: (payload) => {
-// 			dispatch(SaveCurrentGameAction(payload));
-// 		},
-// 	};
-// };
-export default connect(null, null)(GameItem);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		UpdateGameDispatch: (payload) => {
+			dispatch(UpdateGameAction(payload));
+		},
+		DeleteGameDispatch: (payload) => {
+			dispatch(DeleteGameAction(payload));
+		},
+		SelectGameDispatch: (payload) => {
+			dispatch(SelectGameAction(payload))
+		}
+	};
+};
+export default connect(null, mapDispatchToProps)(GameItem);

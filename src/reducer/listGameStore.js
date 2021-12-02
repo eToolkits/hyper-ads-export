@@ -1,7 +1,8 @@
 import * as Types from "../constant";
-import listGame from "./../database/ListGame.json";
+import { db } from './../services/firebaseConfig';
+import { ref, onValue } from "firebase/database";
 import GameService from "./../services/Game.service";
-const ListGameSv = new GameService();
+const GameSV = new GameService();
 
 const deepCloneState = (state) => {
 	const newState = JSON.stringify(state);
@@ -11,14 +12,28 @@ const findIndex = (arr, id) => {
 	const index = arr.findIndex((elem) => elem.id === id);
 	return index;
 }
-var initialState = listGame;
+var initialState = () => {
+	const dataRef = ref(db, "data/");
+	onValue(dataRef, (snapshot) => {
+		let convertToArr = [];
+		let data = snapshot.val();
+		for (const key in data) {
+			if (Object.hasOwnProperty.call(data, key)) {
+				const element = data[key];
+				convertToArr.push({ ...element });
+			}
+		}
+		localStorage.setItem("InitState", JSON.stringify(convertToArr));
+	});
+	return JSON.parse(localStorage.getItem("InitState"));
+};
 
-const myReducer = (state = initialState, action) => {
+const myReducer = (state = initialState(), action) => {
 	switch (action.type) {
 		case Types.ADD_GAME: {
 			const newState = deepCloneState(state);
 			newState.unshift(action.payload);
-			ListGameSv.writeFile(newState);
+			GameSV.addGame(action.payload);
 			state = newState;
 			return state;
 		}
@@ -27,45 +42,17 @@ const myReducer = (state = initialState, action) => {
 			const { id } = action.payload;
 			const index = findIndex(newState, id);
 			newState[index] = action.payload;
-			ListGameSv.writeFile(newState);
+			GameSV.updateGame(action.payload)
 			state = newState;
 			return state;
 		}
 		case Types.DELETE_GAME: {
 			const newState = deepCloneState(state);
 			const { id } = action.payload;
+			console.log(id);
 			const index = findIndex(newState, id);
 			newState.splice(index, 1);
-			ListGameSv.writeFile(newState);
-			state = newState;
-			return state;
-		}
-		case Types.ADD_IDEA: {
-			const newState = deepCloneState(state);
-			const { currentGameId, id, name, linkBaseCode } = action.payload;
-			const index = findIndex(newState, currentGameId);
-			newState[index].idea.unshift({ id, name, linkBaseCode });
-			ListGameSv.writeFile(newState);
-			state = newState;
-			return state;
-		}
-		case Types.UPDATE_IDEA: {
-			const newState = deepCloneState(state);
-			const { id, name, linkBaseCode, currentGame } = action.payload;
-			const index = findIndex(newState, currentGame);
-			const indexIdea = findIndex(newState[index].idea, id);
-			newState[index].idea[indexIdea] = { id, name, linkBaseCode };
-			ListGameSv.writeFile(newState);
-			state = newState;
-			return state;
-		}
-		case Types.DELETE_IDEA: {
-			const newState = deepCloneState(state);
-			const { id, currentGame } = action.payload;
-			const index = findIndex(newState, currentGame);
-			const indexIdea = findIndex(newState[index].idea, id);
-			newState[index].idea.splice(indexIdea, 1);
-			ListGameSv.writeFile(newState);
+			GameSV.deleteGame(action.payload)
 			state = newState;
 			return state;
 		}

@@ -31,6 +31,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { db } from "./../../services/firebaseConfig";
 import { ref, set, update } from "firebase/database";
+import { DeleteIdeaAction, UpdateIdeaAction } from "../../action";
 
 const IdeaItem = (props) => {
 	const { idGame, ideaDetail } = props;
@@ -247,10 +248,10 @@ const IdeaItem = (props) => {
 };
 
 IdeaItem.propTypes = {};
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		updateIdeaDispatch: (payload) => dispatch(UpdateIdeaAction(payload)),
-// 		deleteIdeaDispatch: (payload) => dispatch(DeleteIdeaAction(payload)),
-// 	};
-// };
-export default connect(null, null)(IdeaItem);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateIdeaDispatch: (payload) => dispatch(UpdateIdeaAction(payload)),
+		deleteIdeaDispatch: (payload) => dispatch(DeleteIdeaAction(payload)),
+	};
+};
+export default connect(null, mapDispatchToProps)(IdeaItem);
