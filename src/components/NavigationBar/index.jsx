@@ -11,7 +11,6 @@ import { Link, useLocation } from "react-router-dom";
 import {
     ExportSquare,
     Home2,
-    Game,
     Category2,
     Sun1,
     Moon,
@@ -28,10 +27,6 @@ const NavigationBar = (props) => {
     const [location, setLocation] = useState("/home");
 
     useEffect(() => {
-        console.log(
-            "🚀 ~ file: index.jsx ~ line 26 ~ NavigationBar ~ params",
-            getlocation
-        );
         setLocation(getlocation.pathname);
     }, [getlocation]);
 

@@ -1,6 +1,4 @@
 import * as Types from "../constant";
-import { db } from '../services/firebaseConfig';
-import { ref, set, onValue, update } from "firebase/database";
 import GameService from "../services/Game.service";
 const GameSV = new GameService();
 
@@ -33,28 +31,30 @@ const myReducer = (state = initialState, action) => {
         }
         case Types.ADD_IDEA: {
             const newState = deepCloneState(state);
-            newState.unshift(action.payload);
-            GameSV.addIdea(state.id, action.payload)
+            if (!newState.idea) {
+                newState['idea'] = [action.payload];
+            } else {
+                newState.idea.unshift(action.payload);
+            }
+            GameSV.addIdea(state.id, action.payload);
             state = newState;
             return state;
         }
         case Types.UPDATE_IDEA: {
             const newState = deepCloneState(state);
-            const { id, name, linkBaseCode, currentGame } = action.payload;
-            const index = findIndex(newState, currentGame);
-            const indexIdea = findIndex(newState[index].idea, id);
-            newState[index].idea[indexIdea] = { id, name, linkBaseCode };
-            // ListGameSv.writeFile(newState);
+            const { id } = action.payload;
+            const index = findIndex(newState.idea, id);
+            newState.idea[index] = { ...action.payload };
+            GameSV.updateIdea(state.id, action.payload);
             state = newState;
             return state;
         }
         case Types.DELETE_IDEA: {
             const newState = deepCloneState(state);
-            const { id, currentGame } = action.payload;
-            const index = findIndex(newState, currentGame);
-            const indexIdea = findIndex(newState[index].idea, id);
-            newState[index].idea.splice(indexIdea, 1);
-            // ListGameSv.writeFile(newState);
+            const { id } = action.payload;
+            const index = findIndex(newState.idea, id);
+            newState.idea.splice(index, 1);
+            GameSV.deleteIdea(state.id, id);
             state = newState;
             return state;
         }
