@@ -26,10 +26,11 @@ import * as Yup from "yup";
 import { SearchNormal1, AddSquare } from "iconsax-react";
 import GameItem from "../../components/GameItem";
 import { connect } from "react-redux";
-import { AddGameAction } from "../../action";
-
+import { AddGameAction, InitGameAction } from "../../action";
+import { db } from "./../../services/firebaseConfig";
+import { ref, get } from "firebase/database";
 const HomePage = (props) => {
-	const { listGame, addGameDispatch } = props;
+	const { listGame, initGameDispatch, addGameDispatch } = props;
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [listGameState, setListGameState] = React.useState(() => {});
@@ -70,7 +71,32 @@ const HomePage = (props) => {
 	useEffect(() => {
 		setListGameState(listGame);
 		setSearchGameState(listGame);
+		console.log("change state");
 	}, [listGame]);
+
+	useEffect(() => {
+		const dataRef = ref(db, "data/");
+		get(dataRef)
+			.then((snapshot) => {
+				if (snapshot.exists()) {
+					let convertToArr = [];
+					let data = snapshot.val();
+					for (const key in data) {
+						if (Object.hasOwnProperty.call(data, key)) {
+							const element = data[key];
+							convertToArr.push({ ...element });
+						}
+					}
+					console.log("send");
+					initGameDispatch(convertToArr);
+				} else {
+					console.log("No data available");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}, []);
 	return (
 		<>
 			<Text align="center" fontSize="30" fontWeight="bold">
@@ -226,6 +252,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		initGameDispatch: (payload) => dispatch(InitGameAction(payload)),
 		addGameDispatch: (payload) => dispatch(AddGameAction(payload)),
 	};
 };

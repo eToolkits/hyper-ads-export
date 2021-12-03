@@ -1,5 +1,11 @@
 import * as Types from "./../constant";
 
+export const InitGameAction = (payload) => {
+    return {
+        type: Types.INIT_GAME,
+        payload,
+    };
+}
 export const AddGameAction = (payload) => {
     return {
         type: Types.ADD_GAME,

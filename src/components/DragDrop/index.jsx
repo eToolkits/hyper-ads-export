@@ -4,21 +4,21 @@ import { useDropzone } from "react-dropzone";
 
 const DragDrop = (props) => {
 	const { text, handleFile, type } = props;
-    console.log(props);
+    // console.log(props);
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
 		accept: type,
 		maxFiles: 1,
 	});
 	const files = acceptedFiles.map((file) => {
 		handleFile(file);
-        console.log(file);
+        // console.log(file);
 		return (
 			<li key={file.path}>
 				{file.path} - {file.size} bytes
 			</li>
 		);
 	});
-    console.log(files);
+    // console.log(files);
 	return (
 		<Box
 			w="100%"

@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import listGameStore from './listGameStore';
-import gameSelect from './gameSelect';
+import gameSelected from './gameSelect';
 const myReducer = combineReducers({
     listGameStore,
-    gameSelect
+    gameSelected
 })
 
 export default myReducer

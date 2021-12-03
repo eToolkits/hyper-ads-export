@@ -12,24 +12,14 @@ const findIndex = (arr, id) => {
 	const index = arr.findIndex((elem) => elem.id === id);
 	return index;
 }
-var initialState = () => {
-	const dataRef = ref(db, "data/");
-	onValue(dataRef, (snapshot) => {
-		let convertToArr = [];
-		let data = snapshot.val();
-		for (const key in data) {
-			if (Object.hasOwnProperty.call(data, key)) {
-				const element = data[key];
-				convertToArr.push({ ...element });
-			}
-		}
-		localStorage.setItem("InitState", JSON.stringify(convertToArr));
-	});
-	return JSON.parse(localStorage.getItem("InitState"));
-};
+var initialState = [];
 
-const myReducer = (state = initialState(), action) => {
+const myReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case Types.INIT_GAME: {
+			state = action.payload;
+			return state
+		}
 		case Types.ADD_GAME: {
 			const newState = deepCloneState(state);
 			newState.unshift(action.payload);

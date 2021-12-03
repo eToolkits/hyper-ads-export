@@ -204,7 +204,7 @@ SelectIdeaPage.propTypes = {};
 
 const mapStateToProps = (state) => {
     return {
-        gameSelected: state.gameSelect,
+        gameSelected: state.gameSelected,
     };
 };
 const mapDispatchToProps = (dispatch) => {
