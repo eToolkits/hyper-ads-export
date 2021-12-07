@@ -3,14 +3,14 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 
 const DragDrop = (props) => {
-	const { text, handleFile, type } = props;
+	const { text, handleFile, type, indexFile } = props;
     // console.log(props);
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
 		accept: type,
 		maxFiles: 1,
 	});
 	const files = acceptedFiles.map((file) => {
-		handleFile(file);
+		handleFile({file: file, index: indexFile});
         // console.log(file);
 		return (
 			<li key={file.path}>
@@ -29,7 +29,7 @@ const DragDrop = (props) => {
 			})}
 		>
 			<input {...getInputProps()} />
-			<p>
+			<>
 				{files.length ? (
 					<aside>
 						<h4 className="path-select">
@@ -47,7 +47,7 @@ const DragDrop = (props) => {
 						Drag 'n' drop new file {text} here <br />
 					</p>
 				)}
-			</p>
+			</>
 		</Box>
 	);
 };

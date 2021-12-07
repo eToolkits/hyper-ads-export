@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 import {
     Image,
     Button,
@@ -15,9 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { ExportSquare, AudioSquare } from "iconsax-react";
 import DragDrop from "../../components/DragDrop";
-import { connect } from "react-redux";
+import { DataProcses } from "./../../Utils";
 const fs = window.require("fs");
 const TempFolder = "./src/TempCombine";
+
 const ChangeAssetsContainer = (props) => {
     const { selectedGame } = props;
     const params = useParams();
@@ -25,13 +26,11 @@ const ChangeAssetsContainer = (props) => {
     const ididea = params.ididea;
     console.log("ChangeAssetsContainer");
 
-    const [dataImg, setDataImg] = useState([]);
     const [variableList, setVariableList] = useState([]);
-
-    const handleFile = (file) => {
-        console.log(file.path);
-        console.dir(file);
-        var imageAsBase64 = fs.readFileSync(file.path, "base64");
+    const handleFile = (data) => {
+        console.log(data.file.path);
+        console.dir(data.file);
+        var imageAsBase64 = fs.readFileSync(data.file.path, "base64");
         console.log(
             "🚀 ~ file: index.jsx ~ line 27 ~ handleFile ~ resultB64",
             imageAsBase64
@@ -40,16 +39,17 @@ const ChangeAssetsContainer = (props) => {
             .readdirSync(TempFolder)
             .filter((item) => item.toLowerCase().includes("image"));
         console.log(ImageFile);
-
-        if (ImageFile.length > 0) {
-            let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
-        } else {
-            let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
+        console.log(data.index);
+        // if (ImageFile.length > 0) {
+        //     let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
+        // } else {
+            // let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
             // fs.writeFile(`${TempFolder}/Image.js`, `${content}`, function (err) {
             //     if (err) return console.log(err);
             // });
-        }
+        // }
     };
+
     // clear old file temp when load component
     useEffect(() => {
         fs.readdirSync(TempFolder)
@@ -65,6 +65,7 @@ const ChangeAssetsContainer = (props) => {
             });
     }, []);
 
+    //transform data to render
     useEffect(() => {
         const ideaSelect =
             selectedGame.idea[
@@ -79,56 +80,37 @@ const ChangeAssetsContainer = (props) => {
             `${ideaSelect.linkBaseCode}/${ImageFile[0]}`,
             "utf8"
         );
-        const doubleQuote = [];
-        const defineVariables = [];
-        const map1 = new Map();
-        const arrayss = contentImageFile.split("var ");
-        // console.log(arrayss);
 
-        for (let i = 1; i < arrayss.length; i++) {
-            var arraty2 = arrayss[i].split("= ");
-            // var key = arraty2[0].replace(" ", "");
-            // var value = arraty2[1].replace(" ", "");
-            console.log(arraty2[0]);
-            // map1.set(arraty2[0], arraty2[1]);
-        }
-        console.log(map1);
+        const varriableList = contentImageFile
+            .split("var ")
+            .map((item) => {
+                return item
+                    .split(" = ")
+                    .map((item, index) =>
+                        index == 1
+                            ? item.trim().replace(/["]/g, "").slice(0, -1)
+                            : item.trim().replace(/["]/g, "")
+                    );
+            })
+            .slice(1);
 
-        for (let i = 0; i < contentImageFile.length; i++) {
-            if (contentImageFile[i] === `"`) {
-                doubleQuote.push(i);
-            }
-            // console.log(contentImageFile.substring(i, i+3));
-            // if (contentImageFile.substring(i, i + 4) === `var `) {
-            //     console.log("true");
-            // }
-            // let a = contentImageFile.substring(contentImageFile[i], contentImageFile[i]+3);
-            // console.log(a);
-            // if (a === `var`) defineVariables.push(i);
-        }
-        console.log(doubleQuote);
-        // console.log(defineVariables);
-
-        // const variableFileList = [];
-        // for (let i = 0; i < doubleQuote.length; i += 2) {
-        //     for (let j = 0; j < defineVariables.length; j++) {
-        //     let variable = contentImageFile.substring(defineVariables[j]+4, doubleQuote[i]-3);
-        //     variableFileList.push(variable);
-        //     }
-        // }
-        // console.log(variableFileList);
-        // setVariableList(variableFileList);
-
-        const arrImg = [];
-        for (let i = 0; i < doubleQuote.length; i += 2) {
-            let img = contentImageFile.substring(
-                doubleQuote[i] + 1,
-                doubleQuote[i + 1] - 1
-            );
-            arrImg.push(img);
-        }
-        setDataImg(arrImg);
+        varriableList.map((item) => {
+            const img = document.createElement("img");
+            img.setAttribute("src", item[1]);
+            img.onload = function () {
+                var w = img.width;
+                var h = img.height;
+                let dataTranform = {
+                    name: item[0],
+                    url: item[1],
+                    width: w,
+                    height: h,
+                };
+                setVariableList((pre) => [...pre, dataTranform]);
+            };
+        });
     }, []);
+
     return (
         <>
             <Box mb="5">
@@ -143,25 +125,26 @@ const ChangeAssetsContainer = (props) => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {dataImg.map((item) => {
-                            let img = document.createElement("img");
-                            img.setAttribute("src", item);
+                        {variableList.map((item, index) => {
                             return (
-                                <Tr>
-                                    <Td>inches</Td>
+                                <Tr key={index}>
+                                    <Td>{item.name}</Td>
                                     <Td>
                                         <Image
                                             boxSize="150px"
                                             objectFit="contain"
-                                            src={item}
+                                            src={item.url}
                                             alt="Error Image"
                                         />
                                     </Td>
-                                    <Td>{`${img.naturalHeight}x${img.naturalWidth}`}</Td>
                                     <Td>
+                                        {item.height}x{item.width}
+                                    </Td>
+                                    <Td >
                                         <DragDrop
                                             text="asset"
                                             handleFile={handleFile}
+                                            indexFile={index}
                                             type="image/jpeg, image/png"
                                         />
                                     </Td>
