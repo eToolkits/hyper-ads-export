@@ -17,6 +17,7 @@
     "firebase": "^9.5.0",
     "formik": "^2.2.9",
     "framer-motion": "^4",
+    "husky": "^7.0.4",
     "iconsax-react": "^0.0.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -39,7 +40,9 @@
     "eject": "react-scripts eject",
     "dev": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
     "package": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
-    "electron:start": "wait-on tcp:3000 && electron ."
+    "electron:start": "wait-on tcp:3000 && electron .",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
   },
   "build": {
     "extends": null,
@@ -77,6 +80,14 @@
     "cross-env": "^7.0.3",
     "electron": "^11.2.1",
     "electron-builder": "^22.9.1",
+    "prettier": "^2.5.1",
     "wait-on": "^5.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "applypatch-msg": "echo \"[Husky] applypatch-msg\"",
+      "pre-applypatch": "echo \"[Husky] pre-applypatch\"",
+      "post-applypatch": "echo \"[Husky] post-applypatch\"",
+      "pre-commit": "prettier --write . && git add -A ."    }
   }
 }
