@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import {
     Image,
@@ -16,9 +17,15 @@ import {
 import { ExportSquare, AudioSquare } from "iconsax-react";
 import DragDrop from "../../components/DragDrop";
 import { DataProcses } from "./../../Utils";
+import Loading from "../../components/Loading";
+
 const fs = window.require("fs");
 const TempFolder = "./src/TempCombine";
-
+const ChangeAssetsStyle = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 const ChangeAssetsContainer = (props) => {
     const { selectedGame } = props;
     const params = useParams();
@@ -26,7 +33,8 @@ const ChangeAssetsContainer = (props) => {
     const ididea = params.ididea;
     console.log("ChangeAssetsContainer");
 
-    const [variableList, setVariableList] = useState([]);
+    const [variableListState, setVariableListState] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const handleFile = (data) => {
         console.log(data.file.path);
         console.dir(data.file);
@@ -43,15 +51,15 @@ const ChangeAssetsContainer = (props) => {
         // if (ImageFile.length > 0) {
         //     let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
         // } else {
-            // let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
-            // fs.writeFile(`${TempFolder}/Image.js`, `${content}`, function (err) {
-            //     if (err) return console.log(err);
-            // });
+        // let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
+        // fs.writeFile(`${TempFolder}/Image.js`, `${content}`, function (err) {
+        //     if (err) return console.log(err);
+        // });
         // }
     };
 
     // clear old file temp when load component
-    useEffect(() => {
+    useLayoutEffect(() => {
         fs.readdirSync(TempFolder)
             .filter((item) => item.toLowerCase().includes("image"))
             .forEach((file) => {
@@ -66,7 +74,7 @@ const ChangeAssetsContainer = (props) => {
     }, []);
 
     //transform data to render
-    useEffect(() => {
+    useLayoutEffect(() => {
         const ideaSelect =
             selectedGame.idea[
                 selectedGame?.idea?.findIndex((idea) => idea.id === ididea)
@@ -81,7 +89,7 @@ const ChangeAssetsContainer = (props) => {
             "utf8"
         );
 
-        const varriableList = contentImageFile
+        const variableList = contentImageFile
             .split("var ")
             .map((item) => {
                 return item
@@ -94,113 +102,127 @@ const ChangeAssetsContainer = (props) => {
             })
             .slice(1);
 
-        varriableList.map((item) => {
+        //optimize performance
+        let dataTranformStateTemp = [];
+        variableList.map((item, index) => {
             const img = document.createElement("img");
             img.setAttribute("src", item[1]);
             img.onload = function () {
                 var w = img.width;
                 var h = img.height;
-                let dataTranform = {
+                dataTranformStateTemp.push({
                     name: item[0],
                     url: item[1],
                     width: w,
                     height: h,
-                };
-                setVariableList((pre) => [...pre, dataTranform]);
+                });
+                console.log("render");
+                if (index == variableList.length - 1) {
+                    setVariableListState((pre) => [...dataTranformStateTemp]);
+                    const time = setTimeout(() => {
+                        setIsLoading(false);
+                        clearTimeout(time);
+                    }, 2000);
+                    dataTranformStateTemp = [];
+                }
             };
         });
     }, []);
 
     return (
         <>
-            <Box mb="5">
-                <Table w="100%" my="5" variant="striped" colorScheme="gray">
-                    <Thead>
-                        <Tr>
-                            <Th>Name Asset</Th>
-                            <Th>Current Asset</Th>
-                            <Th>Current Size</Th>
-                            <Th>New Asset</Th>
-                            <Th>New Size</Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {variableList.map((item, index) => {
-                            return (
-                                <Tr key={index}>
-                                    <Td>{item.name}</Td>
-                                    <Td>
-                                        <Image
-                                            boxSize="150px"
-                                            objectFit="contain"
-                                            src={item.url}
-                                            alt="Error Image"
-                                        />
-                                    </Td>
-                                    <Td>
-                                        {item.height}x{item.width}
-                                    </Td>
-                                    <Td >
-                                        <DragDrop
-                                            text="asset"
-                                            handleFile={handleFile}
-                                            indexFile={index}
-                                            type="image/jpeg, image/png"
-                                        />
-                                    </Td>
-                                    <Td>null</Td>
-                                </Tr>
-                            );
-                        })}
-                    </Tbody>
-                </Table>
-                <Flex justifyContent="space-between">
-                    <Box>
-                        <Button mb="5" colorScheme="green">
-                            Save
-                        </Button>{" "}
-                    </Box>
-                    <Box>
-                        <Link
-                            to={
-                                `/editgame/` +
-                                idgame +
-                                "/" +
-                                ididea +
-                                `/changesounds`
-                            }
-                        >
-                            <Button
-                                mb="5"
-                                colorScheme="green"
-                                rightIcon={
-                                    <AudioSquare
-                                        size="20"
-                                        color="currentColor"
-                                    />
+            {isLoading ? (
+                <Loading />
+                ) : (
+                    <Box mb="5">
+                    <Table w="100%" my="5" variant="striped" colorScheme="gray">
+                        <Thead>
+                            <Tr>
+                                <Th>Name Asset</Th>
+                                <Th>Current Asset</Th>
+                                <Th>Current Size</Th>
+                                <Th>New Asset</Th>
+                                <Th>New Size</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            {variableListState.map((item, index) => {
+                                return (
+                                    <Tr key={index}>
+                                        <Td>{item.name}</Td>
+                                        <Td>
+                                            <Image
+                                                boxSize="150px"
+                                                objectFit="contain"
+                                                src={item.url}
+                                                alt="Error Image"
+                                            />
+                                        </Td>
+                                        <Td>
+                                            {item.height}x{item.width}
+                                        </Td>
+                                        <Td>
+                                            <DragDrop
+                                                text="asset"
+                                                handleFile={handleFile}
+                                                indexFile={index}
+                                                type="image/jpeg, image/png"
+                                            />
+                                        </Td>
+                                        <Td>null</Td>
+                                    </Tr>
+                                );
+                            })}
+                        </Tbody>
+                    </Table>
+                    <Flex justifyContent="space-between">
+                        <Box>
+                            <Button mb="5" colorScheme="green">
+                                Save
+                            </Button>{" "}
+                        </Box>
+                        <Box>
+                            <Link
+                                to={
+                                    `/editgame/` +
+                                    idgame +
+                                    "/" +
+                                    ididea +
+                                    `/changesounds`
                                 }
                             >
-                                Change Sounds
-                            </Button>{" "}
-                        </Link>
-                        <Link to={"/export/" + idgame + `/` + ididea}>
-                            <Button
-                                mb="5"
-                                ml="5"
-                                colorScheme="green"
-                                rightIcon={
-                                    <ExportSquare
-                                        size="20"
-                                        color="currentColor"
-                                    />
-                                }
-                            >
-                                Export Now
-                            </Button>{" "}
-                        </Link>
-                    </Box>
-                </Flex>
-            </Box>
+                                <Button
+                                    mb="5"
+                                    colorScheme="green"
+                                    rightIcon={
+                                        <AudioSquare
+                                            size="20"
+                                            color="currentColor"
+                                        />
+                                    }
+                                >
+                                    Change Sounds
+                                </Button>{" "}
+                            </Link>
+                            <Link to={"/export/" + idgame + `/` + ididea}>
+                                <Button
+                                    mb="5"
+                                    ml="5"
+                                    colorScheme="green"
+                                    rightIcon={
+                                        <ExportSquare
+                                            size="20"
+                                            color="currentColor"
+                                        />
+                                    }
+                                >
+                                    Export Now
+                                </Button>{" "}
+                            </Link>
+                        </Box>
+                    </Flex>
+                </Box>
+            )}
         </>
     );
 };
