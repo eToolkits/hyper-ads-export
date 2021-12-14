@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
@@ -25,7 +25,7 @@ const ChangeAssetsStyle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
 const ChangeAssetsContainer = (props) => {
     const { selectedGame } = props;
     const params = useParams();
@@ -59,7 +59,7 @@ const ChangeAssetsContainer = (props) => {
     };
 
     // clear old file temp when load component
-    useLayoutEffect(() => {
+    useEffect(() => {
         fs.readdirSync(TempFolder)
             .filter((item) => item.toLowerCase().includes("image"))
             .forEach((file) => {
@@ -74,7 +74,7 @@ const ChangeAssetsContainer = (props) => {
     }, []);
 
     //transform data to render
-    useLayoutEffect(() => {
+    useEffect(() => {
         const ideaSelect =
             selectedGame.idea[
                 selectedGame?.idea?.findIndex((idea) => idea.id === ididea)
@@ -133,8 +133,8 @@ const ChangeAssetsContainer = (props) => {
         <>
             {isLoading ? (
                 <Loading />
-                ) : (
-                    <Box mb="5">
+            ) : (
+                <Box mb="5">
                     <Table w="100%" my="5" variant="striped" colorScheme="gray">
                         <Thead>
                             <Tr>

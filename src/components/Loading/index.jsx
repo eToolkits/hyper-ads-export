@@ -12,18 +12,18 @@ const LoadingStyle = styled.div`
     align-items: center;
 `;
 const Loading = () => {
-    return (
-        <LoadingStyle>
-            <Player
-                src="https://assets1.lottiefiles.com/packages/lf20_dflmxtnu.json"
-                background="transparent"
-                speed="1"
-                style={{ width: "300px", height: "300px" }}
-                loop
-                autoplay
-            ></Player>
-        </LoadingStyle>
-    );
+  return (
+    <LoadingStyle>
+      <Player
+        src="https://assets3.lottiefiles.com/packages/lf20_wdqlqkhq.json"
+        background="transparent"
+        speed="1"
+        style={{ width: "150px", height: "150px" }}
+        loop
+        autoplay
+      ></Player>
+    </LoadingStyle>
+  );
 };
 
 export default Loading;
