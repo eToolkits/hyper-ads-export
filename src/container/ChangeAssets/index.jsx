@@ -32,18 +32,21 @@ const ChangeAssetsContainer = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleFile = (data) => {
-    console.log(data.file.path);
-    console.dir(data.file);
+    console.dir(data);
     var imageAsBase64 = fs.readFileSync(data.file.path, "base64");
     console.log(
       "🚀 ~ file: index.jsx ~ line 27 ~ handleFile ~ resultB64",
       imageAsBase64
     );
+    setVariableListState((pre) => {
+      pre[data.index].url = `data:image/png;base64,${imageAsBase64}`;
+      return pre;
+    });
+    console.log(variableListState);
     let ImageFile = fs
       .readdirSync(TempFolder)
       .filter((item) => item.toLowerCase().includes("image"));
     console.log(ImageFile);
-    console.log(data.index);
     // if (ImageFile.length > 0) {
     //     let content = fs.readFileSync(`${TempFolder}/${ImageFile[0]}`);
     // } else {
@@ -53,7 +56,17 @@ const ChangeAssetsContainer = (props) => {
     // });
     // }
   };
-
+  const handleSaveFile = () => {
+    fs.writeFileSync(
+      `${TempFolder}/Image.js`,
+      variableListState
+        .map((item) => `var ${item.name} = "${item.url}";`)
+        .join("\n"),
+      function (err) {
+        throw err;
+      }
+    );
+  };
   // clear old file temp when load component
   useEffect(() => {
     fs.readdirSync(TempFolder)
@@ -161,7 +174,7 @@ const ChangeAssetsContainer = (props) => {
                         }}
                       />
                     </Td>
-                    <Td >
+                    <Td>
                       {item.height}x{item.width}
                     </Td>
                     <Td>
@@ -180,7 +193,7 @@ const ChangeAssetsContainer = (props) => {
           </Table>
           <Flex justifyContent="space-between">
             <Box>
-              <Button mb="5" colorScheme="green">
+              <Button mb="5" colorScheme="green" onClick={handleSaveFile}>
                 Save
               </Button>{" "}
             </Box>
