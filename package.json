@@ -43,6 +43,16 @@
     "lint": "prettier --check .",
     "format": "prettier --write ."
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
   "build": {
     "extends": null,
     "appId": "com.example.electron-cra",
@@ -79,13 +89,9 @@
     "cross-env": "^7.0.3",
     "electron": "^11.2.1",
     "electron-builder": "^22.9.1",
-    "husky": "^7.0.4",
+    "husky": "4.3.8",
+    "lint-staged": "^12.1.2",
     "prettier": "^2.5.1",
     "wait-on": "^5.2.1"
-  },
-  "husky": {
-    "hook": {
-      "pre-commit": "yarn lint"
-    }
   }
 }

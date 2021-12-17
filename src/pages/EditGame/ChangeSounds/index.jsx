@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import ChangeSoundsContainer from "../../../container/ChangeSounds";
 
 const ChangeSoundsPage = (props) => {
-    return (
-        <>
-            <ChangeSoundsContainer />
-        </>
-    );
+  return (
+    <>
+      <ChangeSoundsContainer />
+    </>
+  );
 };
 
 ChangeSoundsPage.propTypes = {};

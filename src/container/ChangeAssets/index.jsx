@@ -162,7 +162,7 @@ const ChangeAssetsContainer = (props) => {
                   <Tr key={index}>
                     <Td textAlign="center">{index + 1}</Td>
                     <Td>{item.name.slice(3, -3)}</Td>
-                    <Td>
+                    <Td>g
                       <Image
                         boxSize="150px"
                         objectFit="contain"

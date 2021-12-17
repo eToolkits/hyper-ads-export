@@ -1,22 +1,22 @@
 :root {
-    --teal-50: #e6fffa;
-    --teal-100: #b2f5ea;
-    --teal-200: #81e6d9;
-    --teal-300: #4fd1c5;
-    --teal-400: #38b2ac;
-    --teal-500: #319795;
-    --teal-600: #2c7a7b;
-    --teal-700: #285e61;
-    --teal-800: #234e52;
-    --teal-900: #1d4044;
+  --teal-50: #e6fffa;
+  --teal-100: #b2f5ea;
+  --teal-200: #81e6d9;
+  --teal-300: #4fd1c5;
+  --teal-400: #38b2ac;
+  --teal-500: #319795;
+  --teal-600: #2c7a7b;
+  --teal-700: #285e61;
+  --teal-800: #234e52;
+  --teal-900: #1d4044;
 }
 .icon {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
-.app{
-    display: flex;
+.app {
+  display: flex;
 }
-a{
-    width: inherit
+a {
+  width: inherit;
 }

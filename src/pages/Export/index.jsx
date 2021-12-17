@@ -1,17 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import SaveTo from '../../components/SaveTo'
+import React from "react";
+import PropTypes from "prop-types";
+import SaveTo from "../../components/SaveTo";
 
-const ExportPage = props => {
-    return (
-        <>
-            <SaveTo />
-        </>
-    )
-}
+const ExportPage = (props) => {
+  return (
+    <>
+      <SaveTo />
+    </>
+  );
+};
 
-ExportPage.propTypes = {
+ExportPage.propTypes = {};
 
-}
-
-export default ExportPage
+export default ExportPage;

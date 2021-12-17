@@ -4,12 +4,20 @@ import { ArrowLeft } from "iconsax-react";
 import { Box } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import HomePage from "../../pages/Home";
-import EditGame from "../../pages/EditGame";
-import ChangeSoundsPage from "../../pages/EditGame/ChangeSounds";
-import ChangeAssetsPage from "../../pages/EditGame/ChangeAssets";
-import ExportPage from "../../pages/Export";
-import SelectIdeaPage from "../../pages/EditGame/SelectIdea";
+import Loading from "../../components/Loading";
+
+const HomePage = React.lazy(() => import("../../pages/Home"));
+const EditGame = React.lazy(() => import("../../pages/EditGame"));
+const ChangeSoundsPage = React.lazy(() =>
+  import("../../pages/EditGame/ChangeSounds")
+);
+const ChangeAssetsPage = React.lazy(() =>
+  import("../../pages/EditGame/ChangeAssets")
+);
+const ExportPage = React.lazy(() => import("../../pages/Export"));
+const SelectIdeaPage = React.lazy(() =>
+  import("../../pages/EditGame/SelectIdea")
+);
 const PrivateRouter = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,22 +34,32 @@ const PrivateRouter = (props) => {
           Back
         </Button>
       )}
-      <Routes>
-        <Route exact path="/" element={<HomePage />} />
-        <Route exact path="/editgame/:idgame" element={<SelectIdeaPage />} />
-        <Route exact path="/editgame/:idgame/:ididea" element={<EditGame />} />
-        <Route
-          exact
-          path="/editgame/:idgame/:ididea/changeassets"
-          element={<ChangeAssetsPage />}
-        />
-        <Route
-          exact
-          path="/editgame/:idgame/:ididea/changesounds"
-          element={<ChangeSoundsPage />}
-        />
-        <Route exact path="/export/:idgame/:ididea" element={<ExportPage />} />
-      </Routes>
+      <React.Suspense fallback={<Loading />}>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/editgame/:idgame" element={<SelectIdeaPage />} />
+          <Route
+            exact
+            path="/editgame/:idgame/:ididea"
+            element={<EditGame />}
+          />
+          <Route
+            exact
+            path="/editgame/:idgame/:ididea/changeassets"
+            element={<ChangeAssetsPage />}
+          />
+          <Route
+            exact
+            path="/editgame/:idgame/:ididea/changesounds"
+            element={<ChangeSoundsPage />}
+          />
+          <Route
+            exact
+            path="/export/:idgame/:ididea"
+            element={<ExportPage />}
+          />
+        </Routes>
+      </React.Suspense>
     </Box>
   );
 };

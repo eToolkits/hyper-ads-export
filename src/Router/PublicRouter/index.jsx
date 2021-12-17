@@ -1,17 +1,15 @@
-import React from 'react'
+import React from "react";
 import { Route, Routes } from "react-router-dom";
-import AuthenicationScreen from '../../screen/Authentication';
+import AuthenicationScreen from "../../screen/Authentication";
 
-const PublicRouter = props => {
-    return (
-        <Routes>
-            <Route path="/login" element={<AuthenicationScreen />} />
-        </Routes>
-    )
-}
+const PublicRouter = (props) => {
+  return (
+    <Routes>
+      <Route path="/login" element={<AuthenicationScreen />} />
+    </Routes>
+  );
+};
 
-PublicRouter.propTypes = {
+PublicRouter.propTypes = {};
 
-}
-
-export default PublicRouter
+export default PublicRouter;
