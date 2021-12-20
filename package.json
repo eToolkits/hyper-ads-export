@@ -39,19 +39,7 @@
     "eject": "react-scripts eject",
     "dev": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
     "package": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
-    "electron:start": "wait-on tcp:3000 && electron .",
-    "lint": "prettier --check .",
-    "format": "prettier --write ."
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
-    ]
+    "electron:start": "wait-on tcp:3000 && electron ."
   },
   "build": {
     "extends": null,
@@ -89,9 +77,6 @@
     "cross-env": "^7.0.3",
     "electron": "^11.2.1",
     "electron-builder": "^22.9.1",
-    "husky": "4.3.8",
-    "lint-staged": "^12.1.2",
-    "prettier": "^2.5.1",
     "wait-on": "^5.2.1"
   }
 }
