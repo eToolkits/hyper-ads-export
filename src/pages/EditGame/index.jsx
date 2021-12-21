@@ -1,17 +1,10 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import { Button, Text, Flex, Box } from "@chakra-ui/react";
 import { GalleryEdit, AudioSquare, ArrowRight } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-const fs = window.require("fs");
-const path = window.require("path");
 const EditGame = (props) => {
   const useparams = useParams();
-  useEffect(() => {
-    const getAllFromDir = (source) =>
-      fs.readdirSync(source).map((name) => path.join(source, name));
-  }, []);
   console.log("load edit game");
   return (
     <Flex align="center" direction="column" w="100%" my="30px">
@@ -42,7 +35,5 @@ const EditGame = (props) => {
     </Flex>
   );
 };
-
-EditGame.propTypes = {};
 
 export default EditGame;

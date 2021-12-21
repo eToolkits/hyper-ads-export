@@ -13,11 +13,11 @@ export async function CombineAndExport(
   let mainFile = fs.readFileSync(
     files[indexFileMain].path,
     "utf8",
-    (err, data) => {}
+    (err, data) => { }
   );
   let arrJs = files.filter((file) => file.name.includes(".js"));
   arrJs.map(async (file, index) => {
-    let codeInFile = fs.readFileSync(file.path, "utf8", (err, data) => {});
+    let codeInFile = fs.readFileSync(file.path, "utf8", (err, data) => { });
     mainFile = mainFile.replace(
       `<script src="${file.name}"></script>`,
       `<script>${codeInFile}</script>`

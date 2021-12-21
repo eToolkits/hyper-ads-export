@@ -6,11 +6,10 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import { SaveToContainer } from "./styles";
-import { connect } from "react-redux";
+import { SaveToStyle } from "./styles";
 import { CombineAndExport } from "../../function/combineSingle";
 import { useParams } from "react-router-dom";
-//use import syntax wil error
+//use import syntax will error
 const electron = window.require("electron");
 let dialog = electron.remote.dialog;
 
@@ -18,7 +17,7 @@ const SaveTo = (props) => {
   const useparams = useParams();
   const params = useparams.id;
   const toast = useToast();
-  const { listGame } = props;
+  const { allGame } = props;
   const [directoryState, setDirectoryState] = useState("Not selected yet");
   const [ideaGameState, setIdeaGameState] = useState("");
 
@@ -40,15 +39,7 @@ const SaveTo = (props) => {
     setDirectoryState("Not selected yet");
   };
   const handleExportAds = () => {
-    if (!listGame) {
-      toast({
-        title: "Please Choose File!",
-        status: "warning",
-        position: "top",
-        duration: 4000,
-        isClosable: true,
-      });
-    } else if (!ideaGameState || directoryState === "Not selected yet") {
+    if (!ideaGameState || directoryState === "Not selected yet") {
       toast({
         title: "Please complete all fields!",
         status: "warning",
@@ -74,11 +65,11 @@ const SaveTo = (props) => {
     }
   };
   return (
-    <SaveToContainer>
+    <SaveToStyle>
       <div className="setup">
         <div className="name-idea">
           <FormControl id="ideaGame" isRequired>
-            <FormLabel>Idea for game</FormLabel>
+            <FormLabel>Name for Idea</FormLabel>
             <Input
               w="70%"
               placeholder="Ex: Sky solo squad..."
@@ -109,12 +100,7 @@ const SaveTo = (props) => {
       <Button colorScheme="teal" size="lg" onClick={handleExportAds}>
         Export Ads
       </Button>
-    </SaveToContainer>
+    </SaveToStyle>
   );
 };
-// const mapStateToProps = (state) => {
-//     return {
-//         listGame: state.listGameStore,
-//     };
-// };
-export default connect(null, null)(SaveTo);
+export default SaveTo;

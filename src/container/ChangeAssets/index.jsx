@@ -16,7 +16,13 @@ import {
 } from '@chakra-ui/react';
 import { ExportSquare, AudioSquare } from 'iconsax-react';
 import DragDrop from '../../components/DragDrop';
-import { DataProcses } from './../../Utils';
+import {
+  readInFile,
+  writeInFile,
+  convertFileToArray,
+  convertAssetToBase64,
+  convertArrayToFile,
+} from './../../Utils';
 import Loading from '../../components/Loading';
 
 const fs = window.require('fs');
@@ -29,73 +35,102 @@ const ChangeAssetsContainer = (props) => {
   const params = useParams();
   const idgame = params.idgame;
   const ididea = params.ididea;
+  const locationSaveFile = `${TempFolder}/Image-${ididea}.js`;
   console.log('ChangeAssetsContainer loaded');
 
   const [variableListState, setVariableListState] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [clearFile, setClearFile] = useState(true);
 
   const handleFile = (data) => {
-    var imageAsBase64 = fs.readFileSync(data.file.path, 'base64');
+    //convert image drag to base64
+    var imageAsBase64 = convertAssetToBase64(data.file.path);
     setVariableListState((pre) => {
       pre[data.index].url = `data:image/png;base64,${imageAsBase64}`;
       return pre;
     });
-    handleSaveFile();
-  };
-  const handleSaveFile = () => {
-    try {
-      fs.writeFileSync(
-        `${TempFolder}/Image.js`,
-        variableListState
-          .map((item) => `var ${item.name} = "${item.url}";`)
-          .join('\n')
-      );
-      toast({
-        title: `Save Asset succeslully!`,
-        position: 'top',
-        isClosable: true,
-        status: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    const result = writeInFile(
+      locationSaveFile,
+      convertArrayToFile(variableListState)
+    );
+
+    result
+      ? toast({
+          title: `Save Asset succeslully!`,
+          position: 'top',
+          isClosable: true,
+          status: 'success',
+        })
+      : toast({
+          title: `Fail to seve Asset!`,
+          position: 'top',
+          isClosable: true,
+          status: 'error',
+        });
   };
 
   //save file  before change route
   const handleChangePage = (route) => {
-    handleSaveFile();
+    const result = writeInFile(
+      locationSaveFile,
+      convertArrayToFile(variableListState)
+    );
+    result
+      ? toast({
+          title: `Save Asset succeslully!`,
+          position: 'top',
+          isClosable: true,
+          status: 'success',
+        })
+      : toast({
+          title: `Fail to seve Asset!`,
+          position: 'top',
+          isClosable: true,
+          status: 'error',
+        });
     navigate(`${route}`);
   };
 
   //transform data to render
   useEffect(() => {
-    const ideaSelect =
-      selectedGame.idea[
-        selectedGame?.idea?.findIndex((idea) => idea.id === ididea)
-      ];
-
-    const ImageFile = fs
-      .readdirSync(`${ideaSelect.linkBaseCode}`)
-      .filter((item) => item.toLowerCase().includes('image'));
-
-    const contentImageFile = fs.readFileSync(
-      `${ideaSelect.linkBaseCode}/${ImageFile[0]}`,
-      'utf8'
+    //check recent file edit
+    const recentFileEdit = fs
+      .readdirSync(TempFolder)
+      .filter((item) => item.toLowerCase().includes(`${ididea}`) && item.toLowerCase().includes(`image`));
+    console.log(
+      '🚀 ~ file: index.jsx ~ line 99 ~ useEffect ~ recentFileEdit',
+      recentFileEdit
     );
+    let variableList;
+    if (recentFileEdit.length > 0) {
+      const content = readInFile(`${TempFolder}/${recentFileEdit[0]}`);
+      variableList = convertFileToArray(content);
+    } else {
+      fs.readdirSync(TempFolder)
+        .filter((item) => !item.toLowerCase().includes(`${ididea}`))
+        .forEach((file) => {
+          console.log(file);
+          fs.unlink(`./src/TempCombine/${file}`, (err) => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+          });
+        });
+      const ideaSelect =
+        selectedGame.idea[
+          selectedGame?.idea?.findIndex((idea) => idea.id === ididea)
+        ];
 
-    const variableList = contentImageFile
-      .split('var ')
-      .map((item) => {
-        return item
-          .split(' = ')
-          .map((item, index) =>
-            index == 1
-              ? item.trim().replace(/["]/g, '').slice(0, -1)
-              : item.trim().replace(/["]/g, '')
-          );
-      })
-      .slice(1);
+      const ImageFile = fs
+        .readdirSync(`${ideaSelect.linkBaseCode}`)
+        .filter((item) => item.toLowerCase().includes('image'));
+
+      const contentImageFile = fs.readFileSync(
+        `${ideaSelect.linkBaseCode}/${ImageFile[0]}`,
+        'utf8'
+      );
+      variableList = convertFileToArray(contentImageFile);
+    }
 
     //optimize performance
     let dataTranformStateTemp = [];
@@ -121,25 +156,6 @@ const ChangeAssetsContainer = (props) => {
         }
       };
     });
-  }, []);
-
-  // clear old file temp when load component
-  useEffect(() => {
-    if (clearFile) {
-      fs.readdirSync(TempFolder)
-        .filter((item) => item.toLowerCase().includes('image'))
-        .forEach((file) => {
-          console.log(file);
-          fs.unlink(`./src/TempCombine/${file}`, (err) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-          });
-        });
-      setClearFile(false);
-    }
-    handleSaveFile()
   }, []);
 
   return (
@@ -197,7 +213,7 @@ const ChangeAssetsContainer = (props) => {
               </Tbody>
             </Table>
           </Box>
-          <Flex justifyContent="flex-end" mt="5">
+          <Flex justifyContent="flex-end" mt="40px">
             <Box>
               <Button
                 colorScheme="green"

@@ -1,15 +1,25 @@
-import React from "react";
-import PropTypes from "prop-types";
-import SaveTo from "../../components/SaveTo";
+import React from 'react';
+import { connect } from 'react-redux';
+import SaveTo from '../../components/SaveTo';
 
 const ExportPage = (props) => {
+  const { listGameStore, gameSelectedStore } = props;
+  const [listGameState, setListGameState] = React.useState([]);
+  const [gameSelectedState, setgameSelectedState] = React.useState([]);
+  React.useEffect(() => {
+    setListGameState((pre) => [...listGameStore]);
+    setgameSelectedState((pre) => [...setListGameState]);
+  }, [listGameStore, gameSelectedStore]);
   return (
     <>
-      <SaveTo />
+      <SaveTo allGame={listGameState} />
     </>
   );
 };
-
-ExportPage.propTypes = {};
-
-export default ExportPage;
+const mapStateToProps = (state) => {
+  return {
+    listGameStore: state.listGameStore,
+    gameSelectedStore: state.gameSelected,
+  };
+};
+export default connect(mapStateToProps, null)(ExportPage);
