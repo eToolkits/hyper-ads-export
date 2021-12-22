@@ -3,9 +3,8 @@ import { Button, Text, Flex, Box } from "@chakra-ui/react";
 import { GalleryEdit, AudioSquare, ArrowRight } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-const EditGame = (props) => {
+const EditGame = () => {
   const useparams = useParams();
-  console.log("load edit game");
   return (
     <Flex align="center" direction="column" w="100%" my="30px">
       <Box w="300px">
@@ -25,7 +24,7 @@ const EditGame = (props) => {
         </Link>
       </Box>
       <Box w="300px">
-        <Link to={"/export/" + useparams.idgame + `/` + useparams.ididea}>
+        <Link to={"/export/" + useparams.idgame + `/` + useparams.ididea + `/true`}>
           <Button w="300px" p="50px" mb="5" colorScheme="green" mt="50px">
             <Text mr="3">No, Just export</Text>
             <ArrowRight size="20" color="currentColor" />

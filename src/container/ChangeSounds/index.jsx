@@ -200,7 +200,7 @@ const ChangeSoundsContainer = (props) => {
                 ml="5"
                 colorScheme="green"
                 rightIcon={<ExportSquare size="20" color="currentColor" />}
-                onClick={() => handleChangePage(`/export/${idgame}/${ididea}`)}
+                onClick={() => handleChangePage(`/export/${idgame}/${ididea}/false`)}
               >
                 Export Now
               </Button>{' '}

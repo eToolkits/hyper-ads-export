@@ -1,98 +1,73 @@
 //requiring path and fs modules
 const fs = window.require("fs");
+const TempFolder = './src/TempCombine';
 const network = ["AppLovin", "Google", "Unity", "Mintegral", "Iron", "Tiktok"];
+const date = new Date().toISOString().slice(0, 10).replace("-", "_").replace("-", "_");
 
-export async function CombineAndExport(
-  linkBaseCode,
-  nameGame,
-  ideaGame,
-  dirSave
-) {
-  const files = fs.readdirSync(linkBaseCode);
-  const indexFileMain = files.findIndex((elem) => elem.name === "index.html");
-  let mainFile = fs.readFileSync(
-    files[indexFileMain].path,
-    "utf8",
-    (err, data) => { }
-  );
-  let arrJs = files.filter((file) => file.name.includes(".js"));
-  arrJs.map(async (file, index) => {
-    let codeInFile = fs.readFileSync(file.path, "utf8", (err, data) => { });
-    mainFile = mainFile.replace(
-      `<script src="${file.name}"></script>`,
-      `<script>${codeInFile}</script>`
-    );
-    if (index == arrJs.length - 1) {
-      const upFolder = `${dirSave}/Build`;
-      fs.mkdirSync(upFolder);
-
-      let linkGameIos, linkGameAndroid;
-      linkGame();
-      function linkGame() {
-        if (nameGame.toLowerCase() === "sky") {
-          linkGameIos = "https://apps.apple.com/us/app/sky-raptor/id1518974662";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=com.skyraptor.spaceshooter";
-        } else if (nameGame.toLowerCase() === "bino1") {
-          linkGameIos = "";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=com.superbinogo.jungleboyadventure";
-        } else if (nameGame.toLowerCase() === "bino2") {
-          linkGameIos =
-            "https://apps.apple.com/us/app/super-bino-go-2-jump-n-run/id1482598122";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=com.superbinogo.jungleboyadventure2";
-        } else if (nameGame.toLowerCase() === "mano") {
-          linkGameIos = "";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=com.manojungle.superpixel.classicgame";
-        } else if (nameGame.toLowerCase() === "paint") {
-          linkGameIos = "";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=monster.paintpicker.paintyourworld";
-        } else if (nameGame.toLowerCase() === "juice") {
-          linkGameIos = "";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=monster.juiceblending.relaxingpingame";
-        } else if (nameGame.toLowerCase() === "bl") {
-          linkGameIos = "";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=com.monster.beautyandlove.trickypuzzle";
-        } else if (nameGame.toLowerCase() === "match3d") {
-          linkGameIos = "";
-          linkGameAndroid =
-            "https://play.google.com/store/apps/details?id=com.monster.match3d.puzzlegame";
-        } else if (nameGame.toLowerCase() === "fino") {
-          linkGameIos =
-            "https://apps.apple.com/us/app/finnos-adventures/id1590956216";
-          linkGameAndroid = "";
-        } else {
-          console.log("Lỗi tên game");
+export async function CombineAndExport({ nameGame, linkGameAndroid, linkGameIOS, linkBaseCode, listFileCombine, listFileNew, ideaName, directorySave }) {
+  let mainFile
+  const upFolder = `${directorySave}/Build`;
+  if (listFileNew.length >= 2) {
+    mainFile = fs.readFileSync(`${linkBaseCode}/index.html`, "utf8",);
+    listFileCombine.map(file => {
+      let codeInFile = fs.readFileSync(`${linkBaseCode}/${file}`, "utf8");
+      mainFile = mainFile.replace(
+        `<script src="${file}"></script>`,
+        `<script>${codeInFile}</script>`
+      )
+    });
+    listFileNew.map(file => {
+      let codeInFile = fs.readFileSync(`${TempFolder}/${file}`, "utf8");
+      mainFile = mainFile.replace(
+        `<script src="Image.js"></script>`,
+        `<script>${codeInFile}</script>`
+      ).replace(
+        `<script src="Sound.js"></script>`,
+        `<script>${codeInFile}</script>`
+      )
+    })
+  } else {
+    let listFileCombineBase = fs.readdirSync(`${linkBaseCode}`).filter((fileName) => !fileName.toLowerCase().includes('git'));
+    mainFile = fs.readFileSync(`${linkBaseCode}/index.html`, "utf8");
+    listFileCombineBase.map(file => {
+      let codeInFile = fs.readFileSync(`${linkBaseCode}/${file}`, "utf8");
+      mainFile = mainFile.replace(
+        `<script src="${file}"></script>`,
+        `<script>${codeInFile}</script>`
+      )
+    });
+  }
+  try {
+    fs.mkdirSync(upFolder);
+  } catch (error) {
+    let oldFiles = fs.readdirSync(upFolder);
+    oldFiles.forEach(function (file) {
+      fs.unlink(`${upFolder}/${file}`, (err) => {
+        if (err) {
+          console.error(err)
+          return
         }
-      }
+      })
+    });
+  }
 
-      let date = new Date()
-        .toISOString()
-        .slice(0, 10)
-        .replace("-", "_")
-        .replace("-", "_");
 
-      for (let i = 0; i < network.length; i++) {
-        switch (network[i]) {
-          case "AppLovin":
-            try {
-              const dir = `${upFolder}/${network[i]}`;
-              if (!fs.existsSync(dir)) {
-                await fs.mkdirSync(dir);
-              }
-              var result = mainFile
-                .replace(
-                  `background: #171717 url(./splash.png) no-repeat center`,
-                  `background: #171717`
-                )
-                .split(`console.log("GOTOSTORE")`).join(`
+  for (let i = 0; i < network.length; i++) {
+    switch (network[i]) {
+      case "AppLovin":
+        try {
+          const dir = `${upFolder}/${network[i]}`;
+          if (!fs.existsSync(dir)) {
+            await fs.mkdirSync(dir);
+          }
+          var result = mainFile
+            .replace(
+              `background: #171717 url(./splash.png) no-repeat center`,
+              `background: #171717`
+            )
+            .split(`console.log("GOTOSTORE")`).join(`
                         let device = "Android";
-                        const linkGameIos = "${linkGameIos}";
+                        const linkGameIos = "${linkGameIOS}";
                         const linkGameAndroid = "${linkGameAndroid}";
                         function getMobileOperatingSystem() {
                             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -113,44 +88,44 @@ export async function CombineAndExport(
                                     mraid.open("${linkGameAndroid}")
                                     break;
                                 case "iOS":
-                                    mraid.open("${linkGameIos}")
+                                    mraid.open("${linkGameIOS}")
                                     break;
                                 default: 
                                     mraid.open("${linkGameAndroid}")
         
                             }
                        ;`);
-              fs.writeFile(
-                `${dir}/${date}_PA_${nameGame}_${ideaGame}.html`,
-                result,
-                "utf8",
-                function (err) {
-                  if (err) return console.log(err);
-                }
-              );
-            } catch {
-              console.log(`error in network: ${network[i]}`);
+          fs.writeFile(
+            `${dir}/${date}_PA_${nameGame}_${ideaName}.html`,
+            result,
+            "utf8",
+            function (err) {
+              if (err) return console.log(err);
             }
-            break;
-          case "Google":
-            try {
-              const dir = `${upFolder}/${network[i]}`;
-              if (!fs.existsSync(dir)) {
-                await fs.mkdirSync(dir);
-              }
-              var result = mainFile
-                .replace(
-                  `background: #171717 url(./splash.png) no-repeat center`,
-                  `background: #171717`
-                )
-                .replace(
-                  "<!-- GOOGLE -->",
-                  `<meta name="ad.size" content="width=320,height=480">`
-                )
-                .replace(`<link rel="icon" href="favicon.ico" />`, "")
-                .split(`console.log("GOTOSTORE")`).join(`
+          );
+        } catch {
+          throw 'Unexpect error'
+        }
+        break;
+      case "Google":
+        try {
+          const dir = `${upFolder}/${network[i]}`;
+          if (!fs.existsSync(dir)) {
+            await fs.mkdirSync(dir);
+          }
+          var result = mainFile
+            .replace(
+              `background: #171717 url(./splash.png) no-repeat center`,
+              `background: #171717`
+            )
+            .replace(
+              "<!-- GOOGLE -->",
+              `<meta name="ad.size" content="width=320,height=480">`
+            )
+            .replace(`<link rel="icon" href="favicon.ico" />`, "")
+            .split(`console.log("GOTOSTORE")`).join(`
                         let device = "Android";
-                        const linkGameIos = "${linkGameIos}";
+                        const linkGameIos = "${linkGameIOS}";
                         const linkGameAndroid = "${linkGameAndroid}";
                         function getMobileOperatingSystem() {
                             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -169,33 +144,33 @@ export async function CombineAndExport(
                             window.open(device == "Android" ? linkGameAndroid : linkGameIos)
                        ;`);
 
-              fs.writeFile(
-                `${dir}/${date}_PA_${nameGame}_${ideaGame}.html`,
-                result,
-                "utf8",
-                function (err) {
-                  if (err) return console.log(err);
-                }
-              );
-            } catch {
-              console.log(`error in network: ${network[i]}`);
+          fs.writeFile(
+            `${dir}/${date}_PA_${nameGame}_${ideaName}.html`,
+            result,
+            "utf8",
+            function (err) {
+              if (err) return console.log(err);
             }
-            break;
+          );
+        } catch {
+          throw 'Unexpect error'
+        }
+        break;
 
-          case "Unity":
-            try {
-              const dir = `${upFolder}/${network[i]}`;
-              if (!fs.existsSync(dir)) {
-                await fs.mkdirSync(dir);
-              }
-              var result = mainFile
-                .replace(
-                  `background: #171717 url(./splash.png) no-repeat center`,
-                  `background: #171717`
-                )
-                .split(`console.log("GOTOSTORE")`).join(`
+      case "Unity":
+        try {
+          const dir = `${upFolder}/${network[i]}`;
+          if (!fs.existsSync(dir)) {
+            await fs.mkdirSync(dir);
+          }
+          var result = mainFile
+            .replace(
+              `background: #171717 url(./splash.png) no-repeat center`,
+              `background: #171717`
+            )
+            .split(`console.log("GOTOSTORE")`).join(`
                                 let device = "Android";
-                        const linkGameIos = "${linkGameIos}";
+                        const linkGameIos = "${linkGameIOS}";
                         const linkGameAndroid = "${linkGameAndroid}";
                         function getMobileOperatingSystem() {
                             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -216,7 +191,7 @@ export async function CombineAndExport(
                                     mraid.open("${linkGameAndroid}")
                                     break;
                                 case "iOS":
-                                    mraid.open("${linkGameIos}")
+                                    mraid.open("${linkGameIOS}")
                                     break;
                                 default: 
                                     mraid.open("${linkGameAndroid}")
@@ -224,84 +199,84 @@ export async function CombineAndExport(
                             }
                         `);
 
-              fs.writeFile(
-                `${dir}/${date}_PA_${nameGame}_${ideaGame}.html`,
-                result,
-                "utf8",
-                function (err) {
-                  if (err) return console.log(err);
-                }
-              );
-            } catch {
-              console.log(`error in network: ${network[i]}`);
+          fs.writeFile(
+            `${dir}/${date}_PA_${nameGame}_${ideaName}.html`,
+            result,
+            "utf8",
+            function (err) {
+              if (err) return console.log(err);
             }
-            break;
+          );
+        } catch {
+          throw 'Unexpect error'
+        }
+        break;
 
-          case "Mintegral":
-            try {
-              const dir = `${upFolder}/${network[i]}`;
-              if (!fs.existsSync(dir)) {
-                await fs.mkdirSync(dir);
-              }
-              var result = mainFile
-                .replace(
-                  `background: #171717 url(./splash.png) no-repeat center`,
-                  `background: #171717`
-                )
-                .split(`console.log("GOTOSTORE")`)
-                .join(
-                  `
+      case "Mintegral":
+        try {
+          const dir = `${upFolder}/${network[i]}`;
+          if (!fs.existsSync(dir)) {
+            await fs.mkdirSync(dir);
+          }
+          var result = mainFile
+            .replace(
+              `background: #171717 url(./splash.png) no-repeat center`,
+              `background: #171717`
+            )
+            .split(`console.log("GOTOSTORE")`)
+            .join(
+              `
                                             window.install && window.install();
                                             window.gameEnd && window.gameEnd();
         
                                             `
-                )
-                .replace(
-                  "// MINTE",
-                  `
+            )
+            .replace(
+              "// MINTE",
+              `
                                 function gameStart() { };
                                 window.gameReady && window.gameReady();
                                 function gameClose() { };
                                 `
-                );
+            );
 
-              fs.writeFile(
-                `${dir}/${date}_PA_${nameGame}_${ideaGame}.html`,
-                result,
-                "utf8",
-                function (err) {
-                  if (err) return console.log(err);
-                }
-              );
-            } catch {
-              console.log(`error in network: ${network[i]}`);
+          fs.writeFile(
+            `${dir}/${date}_PA_${nameGame}_${ideaName}.html`,
+            result,
+            "utf8",
+            function (err) {
+              if (err) return console.log(err);
             }
-            break;
+          );
+        } catch {
+          throw 'Unexpect error'
+        }
+        break;
 
-          case "Iron":
-            try {
-              const dir = `${upFolder}/${network[i]}`;
-              if (!fs.existsSync(dir)) {
-                await fs.mkdirSync(dir);
-              }
-              var result = mainFile
-                .replace(
-                  `background: #171717 url(./splash.png) no-repeat center`,
-                  `background: #171717`
-                )
-                .replace(
-                  `<!-- IRON1 -->`,
-                  `
+      case "Iron":
+        try {
+          const dir = `${upFolder}/${network[i]}`;
+          if (!fs.existsSync(dir)) {
+            await fs.mkdirSync(dir);
+          }
+          var result = mainFile
+            .replace(
+              `background: #171717 url(./splash.png) no-repeat center`,
+              `background: #171717`
+            )
+            .replace(
+              `<!-- IRON1 -->`,
+              `
                                 
                             <script>
                             function getScript(e,i){var n=document.createElement("script");n.type="text/javascript",n.async=!0,i&&(n.onload=i),n.src=e,document.head.appendChild(n)}function parseMessage(e){var i=e.data,n=i.indexOf(DOLLAR_PREFIX+RECEIVE_MSG_PREFIX);if(-1!==n){var t=i.slice(n+2);return getMessageParams(t)}return{}}function getMessageParams(e){var i,n=[],t=e.split("/"),a=t.length;if(-1===e.indexOf(RECEIVE_MSG_PREFIX)){if(a>=2&&a%2===0)for(i=0;a>i;i+=2)n[t[i]]=t.length<i+1?null:decodeURIComponent(t[i+1])}else{var o=e.split(RECEIVE_MSG_PREFIX);void 0!==o[1]&&(n=JSON&&JSON.parse(o[1]))}return n}function getDapi(e){var i=parseMessage(e);if(!i||i.name===GET_DAPI_URL_MSG_NAME){var n=i.data;getScript(n,onDapiReceived)}}function invokeDapiListeners(){for(var e in dapiEventsPool)dapiEventsPool.hasOwnProperty(e)&&dapi.addEventListener(e,dapiEventsPool[e])}function onDapiReceived(){dapi=window.dapi,window.removeEventListener("message",getDapi),invokeDapiListeners()}function init(){window.dapi.isDemoDapi&&(window.parent.postMessage(DOLLAR_PREFIX+SEND_MSG_PREFIX+JSON.stringify({state:"getDapiUrl"}),"*"),window.addEventListener("message",getDapi,!1))}var DOLLAR_PREFIX="$$$",RECEIVE_MSG_PREFIX="DAPI_SERVICE:",SEND_MSG_PREFIX="DAPI_AD:",GET_DAPI_URL_MSG_NAME="connection.getDapiUrl",dapiEventsPool={},dapi=window.dapi||{isReady:function(){return!1},addEventListener:function(e,i){dapiEventsPool[e]=i},removeEventListener:function(e){delete dapiEventsPool[e]},isDemoDapi:!0};init();
                             </script>`
-                )
-                .split(`console.log("GOTOSTORE")`)
-                .join(
-                  `
+            )
+            .split(`console.log("GOTOSTORE")`)
+            .join(
+              `
                                 let device = "Android";
-                                const linkGameIos = "${linkGameIos}";
+                                const linkGameIos = "${linkGameIOS}";
                                 const linkGameAndroid = "${linkGameAndroid}";
                                 function getMobileOperatingSystem() {
                                     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -319,10 +294,10 @@ export async function CombineAndExport(
         
                     dapi.openStoreUrl(device == "Android" ? linkGameAndroid : linkGameIos);
                 `
-                )
-                .replace(
-                  "// IRON2",
-                  `
+            )
+            .replace(
+              "// IRON2",
+              `
                                 
                     window.onload = function(){
                         (dapi.isReady()) ? onReadyCallback() : dapi.addEventListener("ready", onReadyCallback);	
@@ -366,58 +341,58 @@ export async function CombineAndExport(
                         }
                     }
                     `
-                );
+            );
 
-              fs.writeFile(
-                `${dir}/${date}_PA_${nameGame}_${ideaGame}.html`,
-                result,
-                "utf8",
-                function (err) {
-                  if (err) return console.log(err);
-                }
-              );
-            } catch {
-              console.log(`error in network: ${network[i]}`);
+          fs.writeFile(
+            `${dir}/${date}_PA_${nameGame}_${ideaName}.html`,
+            result,
+            "utf8",
+            function (err) {
+              if (err) return console.log(err);
             }
-            break;
-          case "Tiktok":
-            try {
-              const dir = `${upFolder}/${network[i]}`;
-              if (!fs.existsSync(dir)) {
-                await fs.mkdirSync(dir);
-              }
-              var result = mainFile
-                .replace(
-                  `background: #171717 url(./splash.png) no-repeat center`,
-                  `background: #171717`
-                )
-                .replace(
-                  `<!-- TIKTOK -->`,
-                  `<script src="https://sf16-muse-va.ibytedtos.com/obj/union-fe-nc-i18n/playable/sdk/playable-sdk.js"></script>`
-                )
-                .split(`console.log("GOTOSTORE")`)
-                .join(`window.playableSDK.openAppStore();`);
-
-              fs.writeFile(
-                `${dir}/${date}_PA_${nameGame}_${ideaGame}.html`,
-                result,
-                "utf8",
-                function (err) {
-                  if (err) return console.log(err);
-                }
-              );
-            } catch {
-              console.log(`error in network: ${network[i]}`);
-            }
-            break;
-          default:
-            break;
+          );
+        } catch {
+          throw 'Unexpect error'
         }
-      }
+        break;
+      case "Tiktok":
+        try {
+          const dir = `${upFolder}/${network[i]}`;
+          if (!fs.existsSync(dir)) {
+            await fs.mkdirSync(dir);
+          }
+          var result = mainFile
+            .replace(
+              `background: #171717 url(./splash.png) no-repeat center`,
+              `background: #171717`
+            )
+            .replace(
+              `<!-- TIKTOK -->`,
+              `<script src="https://sf16-muse-va.ibytedtos.com/obj/union-fe-nc-i18n/playable/sdk/playable-sdk.js"></script>`
+            )
+            .split(`console.log("GOTOSTORE")`)
+            .join(`window.playableSDK.openAppStore();`);
+
+          fs.writeFile(
+            `${dir}/${date}_PA_${nameGame}_${ideaName}.html`,
+            result,
+            "utf8",
+            function (err) {
+              if (err) return console.log(err);
+            }
+          );
+        } catch {
+          throw 'Unexpect error'
+        }
+        break;
+      default:
+        break;
     }
-  });
+    return true;
+  }
 }
 
+//old func
 export async function ExportAds(file, nameGame, ideaGame, dirSave) {
   const gameName = nameGame;
   const idea = ideaGame;
@@ -528,7 +503,7 @@ export async function ExportAds(file, nameGame, ideaGame, dirSave) {
               }
             );
           } catch {
-            console.log(`error in network: ${network[i]}`);
+            throw 'Unexpect error'
           }
           break;
         case "Google":
@@ -572,7 +547,7 @@ export async function ExportAds(file, nameGame, ideaGame, dirSave) {
               }
             );
           } catch {
-            console.log(`error in network: ${network[i]}`);
+            throw 'Unexpect error'
           }
           break;
 
@@ -627,7 +602,7 @@ export async function ExportAds(file, nameGame, ideaGame, dirSave) {
               }
             );
           } catch {
-            console.log(`error in network: ${network[i]}`);
+            throw 'Unexpect error'
           }
           break;
 
@@ -668,7 +643,7 @@ export async function ExportAds(file, nameGame, ideaGame, dirSave) {
               }
             );
           } catch {
-            console.log(`error in network: ${network[i]}`);
+            throw 'Unexpect error'
           }
           break;
 
@@ -771,7 +746,7 @@ export async function ExportAds(file, nameGame, ideaGame, dirSave) {
               }
             );
           } catch {
-            console.log(`error in network: ${network[i]}`);
+            throw 'Unexpect error'
           }
           break;
         case "Tiktok":
@@ -801,7 +776,7 @@ export async function ExportAds(file, nameGame, ideaGame, dirSave) {
               }
             );
           } catch {
-            console.log(`error in network: ${network[i]}`);
+            throw 'Unexpect error'
           }
           break;
         default:

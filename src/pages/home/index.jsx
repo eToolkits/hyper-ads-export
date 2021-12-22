@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   InputLeftElement,
   InputGroup,
@@ -19,16 +19,16 @@ import {
   ModalFooter,
   FormErrorMessage,
   useToast,
-} from "@chakra-ui/react";
-import { v4 as uuid } from "uuid";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { SearchNormal1, AddSquare } from "iconsax-react";
-import GameItem from "../../components/GameItem";
-import { connect } from "react-redux";
-import { AddGameAction, InitGameAction } from "../../action";
-import { db } from "./../../services/firebaseConfig";
-import { ref, get } from "firebase/database";
+} from '@chakra-ui/react';
+import { v4 as uuid } from 'uuid';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { SearchNormal1, AddSquare } from 'iconsax-react';
+import GameItem from '../../components/GameItem';
+import { connect } from 'react-redux';
+import { AddGameAction, InitGameAction } from '../../action';
+import { db } from './../../services/firebaseConfig';
+import { ref, get } from 'firebase/database';
 const HomePage = (props) => {
   const { listGame, initGameDispatch, addGameDispatch } = props;
   const toast = useToast();
@@ -37,7 +37,8 @@ const HomePage = (props) => {
   const [searchGameState, setSearchGameState] = React.useState();
   const nameRef = React.useRef();
   const finalRef = React.useRef();
-  const handleAddGame = async (values, { setSubmitting, resetForm }) => {
+
+  const handleAddGame = (values, { setSubmitting, resetForm }) => {
     const { name, linkIOS, linkAndroid } = values;
     const payload = {
       id: uuid(),
@@ -48,9 +49,9 @@ const HomePage = (props) => {
     };
     addGameDispatch(payload);
     toast({
-      position: "top",
-      title: "Add game successfully!",
-      status: "success",
+      position: 'top',
+      title: 'Add game successfully!',
+      status: 'success',
       duration: 2000,
       isClosable: true,
     });
@@ -71,11 +72,10 @@ const HomePage = (props) => {
   useEffect(() => {
     setListGameState(listGame);
     setSearchGameState(listGame);
-    console.log("change state");
   }, [listGame]);
 
   useEffect(() => {
-    const dataRef = ref(db, "data/");
+    const dataRef = ref(db, 'data/');
     get(dataRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -87,10 +87,10 @@ const HomePage = (props) => {
               convertToArr.push({ ...element });
             }
           }
-          console.log("send");
+          console.log('send');
           initGameDispatch(convertToArr);
         } else {
-          console.log("No data available");
+          console.log('No data available');
         }
       })
       .catch((error) => {
@@ -128,12 +128,12 @@ const HomePage = (props) => {
         </Button>
         <Formik
           initialValues={{
-            name: "",
-            linkIOS: "",
-            linkAndroid: "",
+            name: '',
+            linkIOS: '',
+            linkAndroid: '',
           }}
           validationSchema={Yup.object({
-            name: Yup.string().required("Required"),
+            name: Yup.string().required('Required'),
             linkIOS: Yup.string(),
             linkAndroid: Yup.string(),
           })}
@@ -152,7 +152,7 @@ const HomePage = (props) => {
                   <ModalHeader>Add detail for your game</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody pb={6}>
-                    {" "}
+                    {' '}
                     <FormControl
                       isRequired
                       isInvalid={formik.touched.name && formik.errors.name}
@@ -162,7 +162,7 @@ const HomePage = (props) => {
                         ref={nameRef}
                         type="text"
                         placeholder="Ex: Sky Raptor"
-                        {...formik.getFieldProps("name")}
+                        {...formik.getFieldProps('name')}
                       />
                       <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                     </FormControl>
@@ -175,7 +175,7 @@ const HomePage = (props) => {
                       <Input
                         type="text"
                         placeholder="Ex: https://apps.apple.com/us/app/sky-raptor/id1518974662"
-                        {...formik.getFieldProps("linkIOS")}
+                        {...formik.getFieldProps('linkIOS')}
                       />
                       <FormErrorMessage>
                         {formik.errors.linkIOS}
@@ -190,7 +190,7 @@ const HomePage = (props) => {
                       <Input
                         type="text"
                         placeholder="Ex: https://play.google.com/store/apps/details?id=com.skyraptor.spaceshooter"
-                        {...formik.getFieldProps("linkAndroid")}
+                        {...formik.getFieldProps('linkAndroid')}
                       />
                       <FormErrorMessage>
                         {formik.errors.linkAndroid}
@@ -208,7 +208,7 @@ const HomePage = (props) => {
             </Modal>
           )}
         </Formik>
-        {listGameState?.map((game, index) => (
+        {listGameState?.map((game) => (
           <GameItem key={game.id} gameDetail={game} />
         ))}
       </Box>

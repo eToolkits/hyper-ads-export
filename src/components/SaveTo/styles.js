@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SaveToContainer = styled.div`
+export const SaveToStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;

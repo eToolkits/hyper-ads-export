@@ -1,5 +1,5 @@
 import React from "react";
-import { Player, background } from "@lottiefiles/react-lottie-player";
+import { Player } from "@lottiefiles/react-lottie-player";
 import styled from "styled-components";
 
 const LoadingStyle = styled.div`

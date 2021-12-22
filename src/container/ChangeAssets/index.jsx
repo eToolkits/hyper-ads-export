@@ -22,6 +22,7 @@ import {
   convertFileToArray,
   convertAssetToBase64,
   convertArrayToFile,
+  removeAllFile,
 } from './../../Utils';
 import Loading from '../../components/Loading';
 
@@ -36,18 +37,21 @@ const ChangeAssetsContainer = (props) => {
   const idgame = params.idgame;
   const ididea = params.ididea;
   const locationSaveFile = `${TempFolder}/Image-${ididea}.js`;
+
   console.log('ChangeAssetsContainer loaded');
 
   const [variableListState, setVariableListState] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleFile = (data) => {
+    console.log('🚀 ~ file: index.jsx ~ line 47 ~ handleFile ~ data', data);
     //convert image drag to base64
     var imageAsBase64 = convertAssetToBase64(data.file.path);
     setVariableListState((pre) => {
       pre[data.index].url = `data:image/png;base64,${imageAsBase64}`;
       return pre;
     });
+    // console.log(variableListState);
     const result = writeInFile(
       locationSaveFile,
       convertArrayToFile(variableListState)
@@ -95,27 +99,25 @@ const ChangeAssetsContainer = (props) => {
     //check recent file edit
     const recentFileEdit = fs
       .readdirSync(TempFolder)
-      .filter((item) => item.toLowerCase().includes(`${ididea}`) && item.toLowerCase().includes(`image`));
-    console.log(
-      '🚀 ~ file: index.jsx ~ line 99 ~ useEffect ~ recentFileEdit',
-      recentFileEdit
-    );
+      .filter(
+        (item) =>
+          item.toLowerCase().includes(`${ididea}`) &&
+          item.toLowerCase().includes(`image`)
+      );
+    // console.log(
+    //   '🚀 ~ file: index.jsx ~ line 105 ~ useEffect ~ recentFileEdit',
+    //   recentFileEdit
+    // );
+
     let variableList;
+    // nếu có file cũ thì load file cũ
     if (recentFileEdit.length > 0) {
       const content = readInFile(`${TempFolder}/${recentFileEdit[0]}`);
       variableList = convertFileToArray(content);
     } else {
-      fs.readdirSync(TempFolder)
-        .filter((item) => !item.toLowerCase().includes(`${ididea}`))
-        .forEach((file) => {
-          console.log(file);
-          fs.unlink(`./src/TempCombine/${file}`, (err) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-          });
-        });
+      // không thì xóa hết
+      removeAllFile(TempFolder);
+      //load từ base
       const ideaSelect =
         selectedGame.idea[
           selectedGame?.idea?.findIndex((idea) => idea.id === ididea)
@@ -228,7 +230,7 @@ const ChangeAssetsContainer = (props) => {
                 ml="5"
                 colorScheme="green"
                 rightIcon={<ExportSquare size="20" color="currentColor" />}
-                onClick={() => handleChangePage(`/export/${idgame}/${ididea}`)}
+                onClick={() => handleChangePage(`/export/${idgame}/${ididea}/false`)}
               >
                 Export Now
               </Button>{' '}

@@ -54,8 +54,7 @@ const PrivateRouter = (props) => {
             element={<ChangeSoundsPage />}
           />
           <Route
-            exact
-            path="/export/:idgame/:ididea"
+            path="/export/:idgame/:ididea/:exportbase"
             element={<ExportPage />}
           />
         </Routes>

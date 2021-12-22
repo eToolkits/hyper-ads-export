@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/layout";
-import React from "react";
-import { useDropzone } from "react-dropzone";
+import { Box } from '@chakra-ui/layout';
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
 
 const DragDrop = (props) => {
   const { text, handleFile, type, indexFile } = props;
@@ -25,7 +25,7 @@ const DragDrop = (props) => {
       border="2px dashed"
       p="10px"
       {...getRootProps({
-        className: "dropzone",
+        className: 'dropzone',
       })}
     >
       <input {...getInputProps()} />
@@ -33,9 +33,9 @@ const DragDrop = (props) => {
         {files.length ? (
           <aside>
             <h4 className="path-select">
-              {type == "image/jpeg, image/png" ? (
+              {type == 'image/jpeg, image/png' ? (
                 <img
-                  style={{ maxHeight: "100px" }}
+                  style={{ maxHeight: '100px' }}
                   src={files[0].key}
                   alt="new assets"
                 />

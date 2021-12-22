@@ -1,7 +1,7 @@
 const fs = window.require('fs');
-export const writeInFile = (linkfile, content) => {
+export const writeInFile = async (linkfile, content) => {
   try {
-    fs.writeFileSync(
+    await fs.writeFileSync(
       `${linkfile}`, content
     );
     return true
@@ -16,6 +16,24 @@ export const readInFile = (linkfile) => {
     return error
   }
 }
+export const readFileDetail = (linkfile) => {
+  try {
+    return fs.readFileSync(`${linkfile}/index.html`, "utf8");
+  } catch (error) {
+    console.error(error)
+  }
+}
+export const removeAllFile = (location) => {
+  fs.readdirSync(location)
+        .forEach((file) => {
+          fs.unlink(`${location}/${file}`, (err) => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+          });
+        });
+}
 export const convertFileToArray = (content) => {
   return content.split('var ')
     .map((item) => {
@@ -28,6 +46,10 @@ export const convertFileToArray = (content) => {
         );
     })
     .slice(1);
+}
+export const deepClone = (data) => {
+  const newData = JSON.stringify(data);
+  return JSON.parse(newData);
 }
 export const convertArrayToFile = (array) => {
   return array.map((item) => `var ${item.name} = "${item.url}";`).join('\n');
