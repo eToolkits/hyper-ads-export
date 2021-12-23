@@ -25,7 +25,7 @@ import {
 } from './../../Utils';
 const fs = window.require('fs');
 
-const TempFolder = './src/TempCombine';
+const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
 
 const ChangeSoundsContainer = (props) => {
   const { selectedGame } = props;

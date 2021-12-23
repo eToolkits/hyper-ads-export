@@ -29,6 +29,7 @@ import { connect } from 'react-redux';
 import { AddGameAction, InitGameAction } from '../../action';
 import { db } from './../../services/firebaseConfig';
 import { ref, get } from 'firebase/database';
+
 const HomePage = (props) => {
   const { listGame, initGameDispatch, addGameDispatch } = props;
   const toast = useToast();

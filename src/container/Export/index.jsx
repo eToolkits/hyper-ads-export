@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { CombineAndExport } from './../../function/combineSingle';
-const TempFolder = './src/TempCombine';
+const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
 const fs = window.require('fs');
 
 const ExportContaier = (props) => {
@@ -15,6 +15,7 @@ const ExportContaier = (props) => {
   //   '🚀 ~ file: index.jsx ~ line 12 ~ ExportContaier ~ base',
   //   exportbase
   // );
+
   const [listGameState, setListGameState] = React.useState();
 
   React.useEffect(() => {

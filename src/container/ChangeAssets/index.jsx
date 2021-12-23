@@ -27,7 +27,7 @@ import {
 import Loading from '../../components/Loading';
 
 const fs = window.require('fs');
-const TempFolder = './src/TempCombine';
+const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
 
 const ChangeAssetsContainer = (props) => {
   const { selectedGame } = props;

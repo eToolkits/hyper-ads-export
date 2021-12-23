@@ -1,6 +1,6 @@
 //requiring path and fs modules
 const fs = window.require("fs");
-const TempFolder = './src/TempCombine';
+const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
 const network = ["AppLovin", "Google", "Unity", "Mintegral", "Iron", "Tiktok"];
 const date = new Date().toISOString().slice(0, 10).replace("-", "_").replace("-", "_");
 
@@ -38,7 +38,9 @@ export async function CombineAndExport({ nameGame, linkGameAndroid, linkGameIOS,
     });
   }
   try {
-    fs.mkdirSync(upFolder);
+    if (!fs.existsSync(upFolder)) {
+      fs.mkdirSync(`${upFolder}`);
+    }
   } catch (error) {
     let oldFiles = fs.readdirSync(upFolder);
     oldFiles.forEach(function (file) {
