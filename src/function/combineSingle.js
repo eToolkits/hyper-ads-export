@@ -24,7 +24,13 @@ export async function CombineAndExport({ nameGame, linkGameAndroid, linkGameIOS,
       ).replace(
         `<script src="Sound.js"></script>`,
         `<script>${codeInFile}</script>`
-      )
+      ).replace(
+        `<script src="map.json"></script>`,
+        `<script>var map = ${codeInFile}</script>`
+      ).replace(
+        `this.load.tilemapTiledJSON('map', 'map.json');`,
+        `this.load.tilemapTiledJSON('map', map);\n`
+        )
     })
   } else {
     let listFileCombineBase = fs.readdirSync(`${linkBaseCode}`).filter((fileName) => !fileName.toLowerCase().includes('git'));

@@ -13,9 +13,9 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
-import { ExportSquare, AudioSquare } from 'iconsax-react';
+import { ExportSquare, Map1, GalleryEdit } from 'iconsax-react';
 import DragDrop from '../../components/DragDrop';
-import Loading from '../../components/Loading';
+// import Loading from '../../components/Loading';
 import {
   readInFile,
   writeInFile,
@@ -23,6 +23,7 @@ import {
   convertAssetToBase64,
   convertArrayToFile,
 } from './../../Utils';
+import { TYPE_AUDIO } from '../../constant';
 const fs = window.require('fs');
 
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
@@ -38,7 +39,6 @@ const ChangeSoundsContainer = (props) => {
   console.log('ChangeSoundsContainer loaded');
 
   const [variableListState, setVariableListState] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleFile = (data) => {
     //convert sound drag to base64
@@ -136,78 +136,81 @@ const ChangeSoundsContainer = (props) => {
       });
       if (index == variableList.length - 1) {
         setVariableListState((pre) => [...dataTranformStateTemp]);
-        const time = setTimeout(() => {
-          setIsLoading(false);
-          clearTimeout(time);
-        }, 2000);
         dataTranformStateTemp = [];
       }
     });
   }, []);
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Box mb="5">
-          <Box height="75vh" overflowY="scroll">
-            <Table w="100%" my="5" variant="striped" colorScheme="gray">
-              <Thead>
-                <Tr>
-                  <Th textAlign="center">Index</Th>
-                  <Th>Name Sound</Th>
-                  <Th>Current Sound</Th>
-                  <Th>New Sound</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {variableListState.map((item, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td textAlign="center">{index + 1}</Td>
-                      <Td>{item.name.slice(0, -3)}</Td>
-                      <Td>
-                        <audio controls>
-                          <source src={item.url} />
-                        </audio>
-                      </Td>
-                      <Td>
-                        <DragDrop
-                          text="asset"
-                          handleFile={handleFile}
-                          indexFile={index}
-                          type="audio/mp3, audio/mpeg"
-                        />
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </Box>
-          <Flex justifyContent="flex-end" mt="40px">
-            <Box>
-              <Button
-                colorScheme="green"
-                rightIcon={<AudioSquare size="20" color="currentColor" />}
-                onClick={() =>
-                  handleChangePage(`/editgame/${idgame}/${ididea}/changeassets`)
-                }
-              >
-                Change Assets
-              </Button>{' '}
-              <Button
-                ml="5"
-                colorScheme="green"
-                rightIcon={<ExportSquare size="20" color="currentColor" />}
-                onClick={() => handleChangePage(`/export/${idgame}/${ididea}/false`)}
-              >
-                Export Now
-              </Button>{' '}
-            </Box>
-          </Flex>
+      <Box mb="5">
+        <Box height="75vh" overflowY="scroll">
+          <Table w="100%" my="5" variant="striped" colorScheme="gray">
+            <Thead>
+              <Tr>
+                <Th textAlign="center">Index</Th>
+                <Th>Name Sound</Th>
+                <Th>Current Sound</Th>
+                <Th>New Sound</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {variableListState.map((item, index) => {
+                return (
+                  <Tr key={index}>
+                    <Td textAlign="center">{index + 1}</Td>
+                    <Td>{item.name.slice(0, -3)}</Td>
+                    <Td>
+                      <audio controls>
+                        <source src={item.url} />
+                      </audio>
+                    </Td>
+                    <Td>
+                      <DragDrop
+                        text="asset"
+                        handleFile={handleFile}
+                        indexFile={index}
+                        type={TYPE_AUDIO}
+                      />
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
         </Box>
-      )}
+        <Flex justifyContent="flex-end" mt="40px">
+          <Box>
+            <Button
+              colorScheme="green"
+              rightIcon={<GalleryEdit size="20" color="currentColor" />}
+              onClick={() =>
+                handleChangePage(`/editgame/${idgame}/${ididea}/changeassets`)
+              }
+            >
+              Change Assets
+            </Button>{' '}
+            <Button
+              colorScheme="green"
+              rightIcon={<Map1 size="20" color="currentColor" />}
+              onClick={() =>
+                handleChangePage(`/editgame/${idgame}/${ididea}/changemap`)
+              }
+            >
+              Change Map
+            </Button>{' '}
+            <Button
+              ml="5"
+              colorScheme="green"
+              rightIcon={<ExportSquare size="20" color="currentColor" />}
+              onClick={() =>
+                handleChangePage(`/export/${idgame}/${ididea}/false`)
+              }
+            >
+              Export Now
+            </Button>{' '}
+          </Box>
+        </Flex>
+      </Box>
     </>
   );
 };

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { CombineAndExport } from './../../function/combineSingle';
+
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
 const fs = window.require('fs');
 
@@ -51,7 +52,8 @@ const ExportContaier = (props) => {
         (fileName) =>
           !fileName.toLowerCase().includes('git') &&
           !fileName.toLowerCase().includes('image') &&
-          !fileName.toLowerCase().includes('sound')
+          !fileName.toLowerCase().includes('sound') &&
+          !fileName.toLowerCase().includes('map')
       );
       const listFileCombine = [...listFileFilter];
       const listFileNew = [...listFileTemp];

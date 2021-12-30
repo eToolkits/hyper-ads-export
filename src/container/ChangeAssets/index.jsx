@@ -14,7 +14,7 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
-import { ExportSquare, AudioSquare } from 'iconsax-react';
+import { ExportSquare, AudioSquare, Map1 } from 'iconsax-react';
 import DragDrop from '../../components/DragDrop';
 import {
   readInFile,
@@ -24,7 +24,7 @@ import {
   convertArrayToFile,
   removeAllFile,
 } from './../../Utils';
-import Loading from '../../components/Loading';
+import { TYPE_IMG } from '../../constant';
 
 const fs = window.require('fs');
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
@@ -41,7 +41,6 @@ const ChangeAssetsContainer = (props) => {
   console.log('ChangeAssetsContainer loaded');
 
   const [variableListState, setVariableListState] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleFile = (data) => {
     console.log('🚀 ~ file: index.jsx ~ line 47 ~ handleFile ~ data', data);
@@ -104,10 +103,6 @@ const ChangeAssetsContainer = (props) => {
           item.toLowerCase().includes(`${ididea}`) &&
           item.toLowerCase().includes(`image`)
       );
-    // console.log(
-    //   '🚀 ~ file: index.jsx ~ line 105 ~ useEffect ~ recentFileEdit',
-    //   recentFileEdit
-    // );
 
     let variableList;
     // nếu có file cũ thì load file cũ
@@ -133,7 +128,6 @@ const ChangeAssetsContainer = (props) => {
       );
       variableList = convertFileToArray(contentImageFile);
     }
-
     //optimize performance
     let dataTranformStateTemp = [];
     variableList.map((item, index) => {
@@ -150,10 +144,6 @@ const ChangeAssetsContainer = (props) => {
         });
         if (index == variableList.length - 1) {
           setVariableListState((pre) => [...dataTranformStateTemp]);
-          const time = setTimeout(() => {
-            setIsLoading(false);
-            clearTimeout(time);
-          }, 2000);
           dataTranformStateTemp = [];
         }
       };
@@ -162,82 +152,89 @@ const ChangeAssetsContainer = (props) => {
 
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Box mb="5">
-          <Box height="75vh" overflowY="scroll">
-            <Table w="100%" my="5" variant="striped" colorScheme="gray">
-              <Thead>
-                <Tr>
-                  <Th textAlign="center">Index</Th>
-                  <Th>Name Asset</Th>
-                  <Th>Current Asset</Th>
-                  <Th>Current Size</Th>
-                  <Th>New Asset</Th>
-                  <Th>New Size</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {variableListState.map((item, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td textAlign="center">{index + 1}</Td>
-                      <Td>{item.name.slice(3, -3)}</Td>
-                      <Td>
-                        <Image
-                          loading="lazy"
-                          boxSize="150px"
-                          objectFit="contain"
-                          src={item.url}
-                          alt="Error Image"
-                          _hover={{
-                            transform: 'scale(1.5)',
-                            transition: 'all 0.3s',
-                          }}
-                        />
-                      </Td>
-                      <Td>
-                        {item.height}x{item.width}
-                      </Td>
-                      <Td>
-                        <DragDrop
-                          text="asset"
-                          handleFile={handleFile}
-                          indexFile={index}
-                          type="image/jpeg, image/png"
-                        />
-                      </Td>
-                      <Td>null</Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </Box>
-          <Flex justifyContent="flex-end" mt="40px">
-            <Box>
-              <Button
-                colorScheme="green"
-                rightIcon={<AudioSquare size="20" color="currentColor" />}
-                onClick={() =>
-                  handleChangePage(`/editgame/${idgame}/${ididea}/changesounds`)
-                }
-              >
-                Change Sounds
-              </Button>{' '}
-              <Button
-                ml="5"
-                colorScheme="green"
-                rightIcon={<ExportSquare size="20" color="currentColor" />}
-                onClick={() => handleChangePage(`/export/${idgame}/${ididea}/false`)}
-              >
-                Export Now
-              </Button>{' '}
-            </Box>
-          </Flex>
+      <Box mb="5">
+        <Box height="75vh" overflowY="scroll">
+          <Table w="100%" my="5" variant="striped" colorScheme="gray">
+            <Thead>
+              <Tr>
+                <Th textAlign="center">Index</Th>
+                <Th>Name Asset</Th>
+                <Th>Current Asset</Th>
+                <Th>Current Size</Th>
+                <Th>New Asset</Th>
+                <Th>New Size</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {variableListState.map((item, index) => {
+                return (
+                  <Tr key={index}>
+                    <Td textAlign="center">{index + 1}</Td>
+                    <Td>{item.name.slice(3, -3)}</Td>
+                    <Td>
+                      <Image
+                        loading="lazy"
+                        boxSize="150px"
+                        objectFit="contain"
+                        src={item.url}
+                        alt="Error Image"
+                        _hover={{
+                          transform: 'scale(1.5)',
+                          transition: 'all 0.3s',
+                        }}
+                      />
+                    </Td>
+                    <Td>
+                      {item.height}x{item.width}
+                    </Td>
+                    <Td>
+                      <DragDrop
+                        text="asset"
+                        handleFile={handleFile}
+                        indexFile={index}
+                        type={TYPE_IMG}
+                      />
+                    </Td>
+                    <Td>null</Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
         </Box>
-      )}
+        <Flex justifyContent="flex-end" mt="40px">
+          <Box>
+            <Button
+              colorScheme="green"
+              rightIcon={<AudioSquare size="20" color="currentColor" />}
+              onClick={() =>
+                handleChangePage(`/editgame/${idgame}/${ididea}/changesounds`)
+              }
+            >
+              Change Sounds
+            </Button>{' '}
+            <Button
+              colorScheme="green"
+              rightIcon={<Map1 size="20" color="currentColor" />}
+              onClick={() =>
+                handleChangePage(`/editgame/${idgame}/${ididea}/changemap`)
+              }
+            >
+              Change Map
+            </Button>{' '}
+            <Button
+              ml="5"
+              colorScheme="green"
+              rightIcon={<ExportSquare size="20" color="currentColor" />}
+              onClick={() =>
+                handleChangePage(`/export/${idgame}/${ididea}/false`)
+              }
+            >
+              Export Now
+            </Button>{' '}
+          </Box>
+        </Flex>
+      </Box>
     </>
   );
 };

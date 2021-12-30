@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text, Flex, Box } from '@chakra-ui/react';
-import { GalleryEdit, AudioSquare, ArrowRight } from 'iconsax-react';
+import { GalleryEdit, AudioSquare, ArrowRight, Map1 } from 'iconsax-react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
@@ -21,6 +21,14 @@ const EditGame = () => {
           <Button w="300px" p="50px" mb="5" colorScheme="green">
             <Text mr="3">Change Sounds</Text>
             <AudioSquare size="20" color="currentColor" />
+          </Button>
+        </Link>
+      </Box>
+      <Box w="300px">
+        <Link to="changemap">
+          <Button w="300px" p="50px" mb="5" colorScheme="green">
+            <Text mr="3">Change Map</Text>
+            <Map1 size="20" color="currentColor" />
           </Button>
         </Link>
       </Box>
