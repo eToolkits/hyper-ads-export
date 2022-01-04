@@ -12,10 +12,6 @@ const ExportContaier = (props) => {
   const { listGame } = props;
   const { idgame, ididea, exportbase } = useParams();
   const toast = useToast();
-  // console.log(
-  //   '🚀 ~ file: index.jsx ~ line 12 ~ ExportContaier ~ base',
-  //   exportbase
-  // );
 
   const [listGameState, setListGameState] = React.useState();
 
@@ -31,10 +27,14 @@ const ExportContaier = (props) => {
     const fileNames = fs.readdirSync(linkBaseCode);
     const listFileTemp = fs.readdirSync(TempFolder);
 
-    if (exportbase) {
+    if (exportbase == 'true') {
+      console.log('exportbase', exportbase);
       const listFileFilter = fileNames.filter(
-        (fileName) => !fileName.toLowerCase().includes('git')
+        (fileName) =>
+          !fileName.toLowerCase().includes('git') &&
+          !fileName.toLowerCase().includes('index.html')
       );
+      const listFileCombine = [...listFileFilter];
       payload = {
         nameGame: listGameState.filter((game) => game.id === idgame)[0].name,
         linkStoreAndroid: listGameState.filter((game) => game.id === idgame)[0]
@@ -42,7 +42,7 @@ const ExportContaier = (props) => {
         linkStoreIOS: listGameState.filter((game) => game.id === idgame)[0]
           .linkStoreIOS,
         linkBaseCode,
-        listFileFilter,
+        listFileCombine,
         listFileNew: [],
         ideaName,
         directorySave,
@@ -51,9 +51,7 @@ const ExportContaier = (props) => {
       const listFileFilter = fileNames.filter(
         (fileName) =>
           !fileName.toLowerCase().includes('git') &&
-          !fileName.toLowerCase().includes('image') &&
-          !fileName.toLowerCase().includes('sound') &&
-          !fileName.toLowerCase().includes('map')
+          !fileName.toLowerCase().includes('index.html')
       );
       const listFileCombine = [...listFileFilter];
       const listFileNew = [...listFileTemp];
