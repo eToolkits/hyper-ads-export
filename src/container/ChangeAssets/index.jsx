@@ -14,6 +14,7 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
+import reactImageSize from 'react-image-size';
 import { ExportSquare, AudioSquare, Map1 } from 'iconsax-react';
 import DragDrop from '../../components/DragDrop';
 import {
@@ -25,6 +26,7 @@ import {
   removeAllFile,
 } from './../../Utils';
 import { TYPE_IMG } from '../../constant';
+import useChangeMap from '../../hook/useChangeMap';
 
 const fs = window.require('fs');
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
@@ -36,21 +38,25 @@ const ChangeAssetsContainer = (props) => {
   const params = useParams();
   const idgame = params.idgame;
   const ididea = params.ididea;
+  const isChangeMap = useChangeMap();
   const locationSaveFile = `${TempFolder}/Image-${ididea}.js`;
 
   console.log('ChangeAssetsContainer loaded');
 
   const [variableListState, setVariableListState] = useState([]);
+  const [triggerRerender, setTriggerRerender] = useState(false);
 
-  const handleFile = (data) => {
-    console.log('🚀 ~ file: index.jsx ~ line 47 ~ handleFile ~ data', data);
+  const handleFile = async (data) => {
     //convert image drag to base64
     var imageAsBase64 = convertAssetToBase64(data.file.path);
+    const { width, height } = await reactImageSize(data.file.path);
     setVariableListState((pre) => {
       pre[data.index].url = `data:image/png;base64,${imageAsBase64}`;
+      pre[data.index]['newWidth'] = width;
+      pre[data.index]['newHeight'] = height;
       return pre;
     });
-    // console.log(variableListState);
+    setTriggerRerender(!triggerRerender);
     const result = writeInFile(
       locationSaveFile,
       convertArrayToFile(variableListState)
@@ -130,23 +136,18 @@ const ChangeAssetsContainer = (props) => {
     }
     //optimize performance
     let dataTranformStateTemp = [];
-    variableList.map((item, index) => {
-      const img = document.createElement('img');
-      img.setAttribute('src', item[1]);
-      img.onload = function () {
-        var w = img.width;
-        var h = img.height;
-        dataTranformStateTemp.push({
-          name: item[0],
-          url: item[1],
-          width: w,
-          height: h,
-        });
-        if (index == variableList.length - 1) {
-          setVariableListState((pre) => [...dataTranformStateTemp]);
-          dataTranformStateTemp = [];
-        }
-      };
+    variableList.map(async (item, index) => {
+      const { width, height } = await reactImageSize(item[1]);
+      dataTranformStateTemp.push({
+        name: item[0],
+        url: item[1],
+        width,
+        height,
+      });
+      if (index == variableList.length - 1) {
+        setVariableListState((pre) => [...dataTranformStateTemp]);
+        dataTranformStateTemp = [];
+      }
     });
   }, []);
 
@@ -189,13 +190,18 @@ const ChangeAssetsContainer = (props) => {
                     </Td>
                     <Td>
                       <DragDrop
+                        key={index}
                         text="asset"
                         handleFile={handleFile}
                         indexFile={index}
                         type={TYPE_IMG}
                       />
                     </Td>
-                    <Td>null</Td>
+                    <Td>
+                      {item.newHeight
+                        ? item.newHeight + 'x' + item.newWidth
+                        : 'Null'}
+                    </Td>
                   </Tr>
                 );
               })}
@@ -219,6 +225,7 @@ const ChangeAssetsContainer = (props) => {
               onClick={() =>
                 handleChangePage(`/editgame/${idgame}/${ididea}/changemap`)
               }
+              isDisabled={isChangeMap}
             >
               Change Map
             </Button>{' '}

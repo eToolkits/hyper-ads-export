@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
   Input,
   Box,
@@ -25,15 +25,16 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-} from "@chakra-ui/react";
-import { ArrowDown3, Trash } from "iconsax-react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+  Select,
+} from '@chakra-ui/react';
+import { ArrowDown3, Trash } from 'iconsax-react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   DeleteGameAction,
   SelectGameAction,
   UpdateGameAction,
-} from "../../action";
+} from '../../action';
 
 const GameItem = (props) => {
   const {
@@ -54,20 +55,21 @@ const GameItem = (props) => {
   const finalRef = React.useRef();
 
   const handleUpdate = async (values, { setSubmitting, resetForm }) => {
-    const { name, linkStoreIOS, linkStoreAndroid } = values;
+    const { name, linkStoreIOS, linkStoreAndroid, engine } = values;
     const payload = {
       id,
       name,
       linkStoreIOS,
       linkStoreAndroid,
+      engine,
     };
     UpdateGameDispatch(payload);
 
     setSubmitting(false);
     toast({
-      position: "top",
-      title: "Edit game successfully!",
-      status: "success",
+      position: 'top',
+      title: 'Edit game successfully!',
+      status: 'success',
       duration: 2000,
       isClosable: true,
     });
@@ -80,9 +82,9 @@ const GameItem = (props) => {
   const handleDelete = async () => {
     DeleteGameDispatch({ id });
     toast({
-      position: "top",
-      title: "Delete game successfully!",
-      status: "success",
+      position: 'top',
+      title: 'Delete game successfully!',
+      status: 'success',
       duration: 2000,
       isClosable: true,
     });
@@ -102,9 +104,10 @@ const GameItem = (props) => {
           name: gameDetailState.name,
           linkStoreIOS: gameDetailState.linkStoreIOS,
           linkStoreAndroid: gameDetailState.linkStoreAndroid,
+          engine: gameDetailState.engine,
         }}
         validationSchema={Yup.object({
-          name: Yup.string().required("Required"),
+          name: Yup.string().required('Required'),
           linkIOS: Yup.string(),
           linkAndroid: Yup.string(),
         })}
@@ -123,7 +126,7 @@ const GameItem = (props) => {
                 <ModalHeader>Edit info for your game</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
-                  {" "}
+                  {' '}
                   <FormControl
                     isRequired
                     isInvalid={formik.touched.name && formik.errors.name}
@@ -133,7 +136,7 @@ const GameItem = (props) => {
                       ref={nameRef}
                       type="text"
                       placeholder={`Ex: ${gameDetailState.name}`}
-                      {...formik.getFieldProps("name")}
+                      {...formik.getFieldProps('name')}
                     />
                     <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                   </FormControl>
@@ -146,7 +149,7 @@ const GameItem = (props) => {
                     <Input
                       type="text"
                       placeholder="Ex: https://apps.apple.com/us/app/sky-raptor/id1518974662"
-                      {...formik.getFieldProps("linkStoreIOS")}
+                      {...formik.getFieldProps('linkStoreIOS')}
                     />
                     <FormErrorMessage>
                       {formik.errors.linkStoreIOS}
@@ -162,8 +165,21 @@ const GameItem = (props) => {
                     <Input
                       type="text"
                       placeholder="Ex: https://play.google.com/store/apps/details?id=com.skyraptor.spaceshooter"
-                      {...formik.getFieldProps("linkStoreAndroid")}
+                      {...formik.getFieldProps('linkStoreAndroid')}
                     />
+                    <FormErrorMessage>
+                      {formik.errors.linkStoreAndroid}
+                    </FormErrorMessage>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel mt={4}>Engine</FormLabel>
+                    <Select
+                      defaultValue="phaser"
+                      {...formik.getFieldProps('engine')}
+                    >
+                      <option value="phaser">Phaser</option>
+                      <option value="cocos">Cocos</option>
+                    </Select>
                     <FormErrorMessage>
                       {formik.errors.linkStoreAndroid}
                     </FormErrorMessage>

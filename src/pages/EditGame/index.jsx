@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, Text, Flex, Box } from '@chakra-ui/react';
 import { GalleryEdit, AudioSquare, ArrowRight, Map1 } from 'iconsax-react';
-import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-
+import { Link, useParams } from 'react-router-dom';
+import useChangeMap from '../../hook/useChangeMap';
 const EditGame = () => {
   const useparams = useParams();
+  const { ididea, idgame } = useparams;
+  const isChangeMap = useChangeMap();
   return (
     <Flex align="center" direction="column" w="100%" my="30px">
       <Box w="300px">
@@ -26,16 +27,20 @@ const EditGame = () => {
       </Box>
       <Box w="300px">
         <Link to="changemap">
-          <Button w="300px" p="50px" mb="5" colorScheme="green">
+          <Button
+            w="300px"
+            p="50px"
+            mb="5"
+            colorScheme="green"
+            isDisabled={isChangeMap}
+          >
             <Text mr="3">Change Map</Text>
             <Map1 size="20" color="currentColor" />
           </Button>
         </Link>
       </Box>
       <Box w="300px">
-        <Link
-          to={'/export/' + useparams.idgame + `/` + useparams.ididea + `/true`}
-        >
+        <Link to={'/export/' + idgame + `/` + ididea + `/true`}>
           <Button w="300px" p="50px" mb="5" colorScheme="green" mt="50px">
             <Text mr="3">No, Just export</Text>
             <ArrowRight size="20" color="currentColor" />

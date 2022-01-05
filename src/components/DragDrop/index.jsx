@@ -1,5 +1,5 @@
-import { Box } from '@chakra-ui/layout';
 import React from 'react';
+import { Box } from '@chakra-ui/layout';
 import { useDropzone } from 'react-dropzone';
 import { Textarea } from '@chakra-ui/react';
 import { readInFile } from '../../Utils';
@@ -23,26 +23,34 @@ const TypeAccept = [
     type: Type.TYPE_JSON,
     component: (data) => {
       const result = readInFile(data);
-      return <Textarea type="text" value={result} alt="new map" rows="18"/>;
+      return <Textarea type="text" value={result} alt="new map" rows="18" />;
     },
   },
 ];
 
 const DragDrop = (props) => {
   const { text, handleFile, type, indexFile } = props;
-  // console.log(props);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: type,
     maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      acceptedFiles.map((file) =>
+        handleFile({
+          file: file,
+          index: indexFile,
+        })
+      );
+    },
   });
+
   const files = acceptedFiles.map((file) => {
-    handleFile({ file: file, index: indexFile });
     return (
       <li key={file.path}>
         {file.path} - {file.size} bytes
       </li>
     );
   });
+
   return (
     <Box
       w="100%"

@@ -24,6 +24,7 @@ import {
   convertArrayToFile,
 } from './../../Utils';
 import { TYPE_AUDIO } from '../../constant';
+import useChangeMap from '../../hook/useChangeMap';
 const fs = window.require('fs');
 
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
@@ -33,6 +34,7 @@ const ChangeSoundsContainer = (props) => {
   const navigate = useNavigate();
   const toast = useToast();
   const params = useParams();
+  const isChangeMap = useChangeMap();
   const idgame = params.idgame;
   const ididea = params.ididea;
   const locationSaveFile = `${TempFolder}/Sound-${ididea}.js`;
@@ -195,6 +197,7 @@ const ChangeSoundsContainer = (props) => {
               onClick={() =>
                 handleChangePage(`/editgame/${idgame}/${ididea}/changemap`)
               }
+              isDisabled={isChangeMap}
             >
               Change Map
             </Button>{' '}

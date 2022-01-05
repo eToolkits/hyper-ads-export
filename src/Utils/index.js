@@ -1,7 +1,15 @@
 const fs = window.require('fs');
-export const writeInFile = async (linkfile, content) => {
+export const readInFolder = (linkFoler) => {
   try {
-    await fs.writeFileSync(
+    return fs.readdirSync(linkFoler);
+  } catch (error) {
+    console.error(error)
+  }
+
+}
+export const writeInFile = (linkfile, content) => {
+  try {
+    fs.writeFileSync(
       `${linkfile}`, content
     );
     return true
@@ -25,14 +33,14 @@ export const readFileDetail = (linkfile) => {
 }
 export const removeAllFile = (location) => {
   fs.readdirSync(location)
-        .forEach((file) => {
-          fs.unlink(`${location}/${file}`, (err) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-          });
-        });
+    .forEach((file) => {
+      fs.unlink(`${location}/${file}`, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+    });
 }
 export const convertFileToArray = (content) => {
   return content.split('var ')

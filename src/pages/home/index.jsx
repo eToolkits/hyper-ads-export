@@ -23,6 +23,7 @@ import {
 import { v4 as uuid } from 'uuid';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { Select } from '@chakra-ui/react';
 import { SearchNormal1, AddSquare } from 'iconsax-react';
 import GameItem from '../../components/GameItem';
 import { connect } from 'react-redux';
@@ -40,13 +41,14 @@ const HomePage = (props) => {
   const finalRef = React.useRef();
 
   const handleAddGame = (values, { setSubmitting, resetForm }) => {
-    const { name, linkIOS, linkAndroid } = values;
+    const { name, linkIOS, linkAndroid, engine } = values;
     const payload = {
       id: uuid(),
       name: name,
       linkStoreIOS: linkIOS,
       linkStoreAndroid: linkAndroid,
       idea: [],
+      engine,
     };
     addGameDispatch(payload);
     toast({
@@ -132,6 +134,7 @@ const HomePage = (props) => {
             name: '',
             linkIOS: '',
             linkAndroid: '',
+            engine: 'phaser',
           }}
           validationSchema={Yup.object({
             name: Yup.string().required('Required'),
@@ -196,6 +199,16 @@ const HomePage = (props) => {
                       <FormErrorMessage>
                         {formik.errors.linkAndroid}
                       </FormErrorMessage>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel mt={4}>Engine</FormLabel>
+                      <Select
+                        defaultValue="phaser"
+                        {...formik.getFieldProps('engine')}
+                      >
+                        <option value="phaser">Phaser</option>
+                        <option value="cocos">Cocos</option>
+                      </Select>
                     </FormControl>
                   </ModalBody>
                   <ModalFooter>
