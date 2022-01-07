@@ -51,3 +51,10 @@ export const SelectGameAction = (payload) => {
     payload,
   };
 };
+
+export const getUserData = (payload) => {
+  return {
+    type: Types.GET_USER_DATA,
+    payload,
+  }
+}

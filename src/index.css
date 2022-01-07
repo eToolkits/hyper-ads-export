@@ -10,6 +10,9 @@
   --teal-800: #234e52;
   --teal-900: #1d4044;
 }
+html{
+  box-sizing: border-box;
+}
 .icon {
   width: 20px;
   height: 20px;

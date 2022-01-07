@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { ref, get } from 'firebase/database';
+import { useCookies } from 'react-cookie';
 import {
   InputLeftElement,
   InputGroup,
@@ -19,26 +22,31 @@ import {
   ModalFooter,
   FormErrorMessage,
   useToast,
+  Select,
 } from '@chakra-ui/react';
 import { v4 as uuid } from 'uuid';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Select } from '@chakra-ui/react';
 import { SearchNormal1, AddSquare } from 'iconsax-react';
 import GameItem from '../../components/GameItem';
-import { connect } from 'react-redux';
-import { AddGameAction, InitGameAction } from '../../action';
+import { AddGameAction, getUserData, InitGameAction } from '../../action';
 import { db } from './../../services/firebaseConfig';
-import { ref, get } from 'firebase/database';
 
 const HomePage = (props) => {
   const { listGame, initGameDispatch, addGameDispatch } = props;
+  const [Cookies, setCookie, removeCookie] = useCookies([
+    'access_token',
+    'refresh_token',
+  ]);
+  const userData = useSelector((store) => store.userData);
+  const dispatch = useDispatch();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listGameState, setListGameState] = React.useState(() => {});
   const [searchGameState, setSearchGameState] = React.useState();
   const nameRef = React.useRef();
   const finalRef = React.useRef();
+  const provider = new GoogleAuthProvider();
 
   const handleAddGame = (values, { setSubmitting, resetForm }) => {
     const { name, linkIOS, linkAndroid, engine } = values;
@@ -79,29 +87,54 @@ const HomePage = (props) => {
 
   useEffect(() => {
     const dataRef = ref(db, 'data/');
-    get(dataRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let convertToArr = [];
-          let data = snapshot.val();
-          for (const key in data) {
-            if (Object.hasOwnProperty.call(data, key)) {
-              const element = data[key];
-              convertToArr.push({ ...element });
+    if (userData.accessToken) {
+      get(dataRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            let convertToArr = [];
+            let data = snapshot.val();
+            for (const key in data) {
+              if (Object.hasOwnProperty.call(data, key)) {
+                const element = data[key];
+                convertToArr.push({ ...element });
+              }
             }
+            initGameDispatch(convertToArr);
+          } else {
+            console.log('No data available');
           }
-          console.log('send');
-          initGameDispatch(convertToArr);
-        } else {
-          console.log('No data available');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    const auth = getAuth();
+    console.log(userData);
+    if (!userData.accessToken) {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          setCookie('access_token', token, { path: '/' });
+          dispatch(getUserData(result.user));
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          toast({
+            title: `${errorMessage}`,
+            status: 'error',
+            isClosable: true,
+          });
+          removeCookie('access_token');
+        });
+    }
   }, []);
   return (
-    <>
+    <Box>
       <Text align="center" fontSize="30" fontWeight="bold">
         CHOOSE GAME
       </Text>
@@ -120,7 +153,11 @@ const HomePage = (props) => {
           />
         </InputGroup>
       </Box>
-      <Box display="flex" justifyContent="flex-start" flexWrap="wrap">
+      <Box
+        display={userData?.accessToken ? 'flex' : 'none'}
+        justifyContent="flex-start"
+        flexWrap="wrap"
+      >
         <Button
           m="3"
           onClick={onOpen}
@@ -226,7 +263,7 @@ const HomePage = (props) => {
           <GameItem key={game.id} gameDetail={game} />
         ))}
       </Box>
-    </>
+    </Box>
   );
 };
 

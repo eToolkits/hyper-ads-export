@@ -1,6 +1,7 @@
 {
   "name": "hyper-ads-export",
-  "author": "hungnm",
+  "author": "nmhung1234",
+  "description": "This app for export PA <3",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,6 +20,7 @@
     "framer-motion": "^4",
     "iconsax-react": "^0.0.4",
     "react": "^17.0.1",
+    "react-cookie": "^4.1.1",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.4.2",
     "react-icons": "^4.3.1",

@@ -4,11 +4,11 @@ export const NaviStyle = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 10px 0;
+  margin-right: 30px;
   padding: 20px;
   box-shadow: 0px 0px 10px #6b6b6b2d;
   width: fit-content;
-  height: calc(100vh - 20px);
+  height: calc(100vh - 60px);
   border-radius: 10px;
   transition: all 0.2s linear;
   .options {
@@ -63,6 +63,8 @@ export const NaviStyle = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+        user-select: none;
+        cursor: pointer;
         p {
           margin: 0 10px;
           line-height: 32px;

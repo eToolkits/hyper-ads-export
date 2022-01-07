@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AuthenicationScreen from '../../screen/Authentication';
+
+import AuthPage from '../../pages/Auth';
 
 const PublicRouter = (props) => {
   return (
     <Routes>
-      <Route path="/login" element={<AuthenicationScreen />} />
+      <Route exact path="/" element={<AuthPage />} />
     </Routes>
   );
 };

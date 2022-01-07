@@ -14,6 +14,7 @@ function createWindow() {
       nodeIntegration: true,
       enableRemoteModule: true,
       webSecurity: false,
+      nativeWindowOpen : true
     },
   });
   win.loadURL(

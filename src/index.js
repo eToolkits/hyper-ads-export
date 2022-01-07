@@ -19,7 +19,7 @@ ReactDOM.render(
     <Provider store={store}>
       <ChakraProvider>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App />
+          <App />
       </ChakraProvider>
     </Provider>
   </HashRouter>,
