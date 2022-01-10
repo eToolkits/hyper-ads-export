@@ -8,24 +8,29 @@ require("@electron/remote/main").initialize();
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    defaultwidth: 800,
+    defaultheight: 600,
+    fullscreenable : true,
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       webSecurity: false,
-      nativeWindowOpen : true
+      nativeWindowOpen: true
     },
   });
+  if (isDev) {
+    win.webContents.openDevTools();
+  }
   win.loadURL(
     isDev
       ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
+      : `file://${path.join(__dirname, "../build/index.html")}`, { userAgent: 'Chrome' }
   );
 }
 
 app.on("ready", createWindow);
-
+app.userAgentFallback = app.userAgentFallback.replace('Electron/' + process.versions.electron, '');
 // Quit when all windows are closed.
 app.on("window-all-closed", function () {
   // On OS X it is common for applications and their menu bar

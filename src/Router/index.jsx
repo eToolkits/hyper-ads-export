@@ -5,7 +5,6 @@ import PrivateRouter from './PrivateRouter';
 import PublicRouter from './PublicRouter';
 
 const RouterWrapper = () => {
-
   const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
 
   return (

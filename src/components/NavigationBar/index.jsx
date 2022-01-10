@@ -31,7 +31,10 @@ const NavigationBar = () => {
 
   const [navSize, setNavSize] = useState('small');
   const [location, setLocation] = useState('/home');
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token']);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'access_token',
+    'refresh_token',
+  ]);
 
   const handleLogOut = () => {
     removeCookie('access_token');
@@ -130,11 +133,7 @@ const NavigationBar = () => {
             <div className="sign-out" onClick={handleLogOut}>
               <p>Sign Out</p>
               <Box mx="5">
-                <Logout
-                  size="20"
-                  color="currentColor"
-                  variant="Outline"
-                />
+                <Logout size="20" color="currentColor" variant="Outline" />
               </Box>
             </div>
           ) : (
