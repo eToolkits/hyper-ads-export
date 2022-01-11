@@ -1,16 +1,14 @@
 const { app, BrowserWindow } = require("electron");
-
-const path = require("path");
 const isDev = require("electron-is-dev");
-
+const path = require('path');
 require("@electron/remote/main").initialize();
 
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    defaultwidth: 800,
-    defaultheight: 600,
-    fullscreenable : true,
+    width: 800,
+    height: 600,
+    fullscreenable: true,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
@@ -35,9 +33,9 @@ app.userAgentFallback = app.userAgentFallback.replace('Electron/' + process.vers
 app.on("window-all-closed", function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+  app.quit();
+  // if (process.platform !== "darwin") {
+  // }
 });
 
 app.on("activate", function () {

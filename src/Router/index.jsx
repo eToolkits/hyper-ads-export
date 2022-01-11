@@ -1,15 +1,15 @@
 import React from 'react';
-import { useCookies } from 'react-cookie';
+import {useSelector} from 'react-redux'
 
 import PrivateRouter from './PrivateRouter';
 import PublicRouter from './PublicRouter';
 
 const RouterWrapper = () => {
-  const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
-
+  const userData = useSelector(store => store.userData)
+  const accessToken = localStorage.getItem('accessToken')
   return (
     <React.Fragment>
-      {cookies.access_token ? <PrivateRouter /> : <PublicRouter />}
+      {(userData.accessToken || accessToken) ? <PrivateRouter /> : <PublicRouter />}
     </React.Fragment>
   );
 };

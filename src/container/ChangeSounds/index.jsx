@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react';
 import { ExportSquare, Map1, GalleryEdit } from 'iconsax-react';
 import DragDrop from '../../components/DragDrop';
-// import Loading from '../../components/Loading';
 import {
   readInFile,
   writeInFile,
@@ -99,7 +98,7 @@ const ChangeSoundsContainer = (props) => {
           item.toLowerCase().includes(`sound`)
       );
     let variableList;
-    if (recentFileEdit.length > 0) {
+    if (recentFileEdit?.length > 0) {
       const content = readInFile(`${TempFolder}/${recentFileEdit[0]}`);
       variableList = convertFileToArray(content);
     } else {
@@ -137,8 +136,10 @@ const ChangeSoundsContainer = (props) => {
         url: item[1],
       });
       if (index == variableList.length - 1) {
+        // console.log(dataTranformStateTemp)
         setVariableListState((pre) => [...dataTranformStateTemp]);
-        dataTranformStateTemp = [];
+        setVariableListState((pre) => [...dataTranformStateTemp]);
+        // dataTranformStateTemp = [];
       }
     });
   }, []);

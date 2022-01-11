@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { ref, get } from 'firebase/database';
-import { useCookies } from 'react-cookie';
 import {
   InputLeftElement,
   InputGroup,
@@ -34,10 +33,7 @@ import { db } from './../../services/firebaseConfig';
 
 const HomePage = (props) => {
   const { listGame, initGameDispatch, addGameDispatch } = props;
-  const [Cookies, setCookie, removeCookie] = useCookies([
-    'access_token',
-    'refresh_token',
-  ]);
+
   const userData = useSelector((store) => store.userData);
   const dispatch = useDispatch();
   const toast = useToast();
@@ -46,7 +42,6 @@ const HomePage = (props) => {
   const [searchGameState, setSearchGameState] = React.useState();
   const nameRef = React.useRef();
   const finalRef = React.useRef();
-  const provider = new GoogleAuthProvider();
 
   const handleAddGame = (values, { setSubmitting, resetForm }) => {
     const { name, linkIOS, linkAndroid, engine } = values;
@@ -112,25 +107,15 @@ const HomePage = (props) => {
 
   useEffect(() => {
     const auth = getAuth();
-    console.log(userData);
     if (!userData.accessToken) {
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          setCookie('access_token', token, { path: '/' });
-          dispatch(getUserData(result.user));
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          toast({
-            title: `${errorMessage}`,
-            status: 'error',
-            isClosable: true,
-          });
-          removeCookie('access_token');
-        });
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          dispatch(getUserData(user));
+        } else {
+          dispatch(getUserData(''));
+          localStorage.removeItem('accessToken');
+        }
+      });
     }
   }, []);
   return (

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useCookies } from 'react-cookie';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuth, signOut } from 'firebase/auth';
 import {
   Avatar,
   Box,
@@ -23,21 +22,28 @@ import {
 } from 'iconsax-react';
 
 import { NaviStyle } from './styles';
+import { getUserData } from '../../action';
 
 const NavigationBar = () => {
   const getlocation = useLocation();
+  const dispatch = useDispatch();
   const userData = useSelector((store) => store.userData);
   const { colorMode, toggleColorMode } = useColorMode();
 
   const [navSize, setNavSize] = useState('small');
   const [location, setLocation] = useState('/home');
-  const [cookies, setCookie, removeCookie] = useCookies([
-    'access_token',
-    'refresh_token',
-  ]);
 
   const handleLogOut = () => {
-    removeCookie('access_token');
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        localStorage.removeItem('accessToken');
+        dispatch(getUserData(""))
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
   useEffect(() => {
@@ -126,8 +132,8 @@ const NavigationBar = () => {
       </div>
       <div className="user-wrapper">
         <div className="user">
-          <Tooltip hasArrow label={userData?.displayName}>
-            <Avatar size="sm" name="Kola Tioluwani" src={userData?.photoURL} />
+          <Tooltip hasArrow label={userData?.email}>
+            <Avatar size="sm" name={userData?.email} src={userData?.photoURL} />
           </Tooltip>
           {navSize === 'large' ? (
             <div className="sign-out" onClick={handleLogOut}>
