@@ -19,6 +19,7 @@ import {
   Logout,
   GalleryEdit,
   AudioSquare,
+  Gameboy,
 } from 'iconsax-react';
 
 import { NaviStyle } from './styles';
@@ -39,7 +40,7 @@ const NavigationBar = () => {
       .then(() => {
         // Sign-out successful.
         localStorage.removeItem('accessToken');
-        dispatch(getUserData(""))
+        dispatch(getUserData(''));
       })
       .catch((error) => {
         // An error happened.
@@ -95,8 +96,23 @@ const NavigationBar = () => {
             {navSize === 'large' ? <p>Home</p> : ''}
           </div>
         </Link>
+        <Link to="/preview">
+          <div
+            className={location.includes('preview') ? 'item active' : 'item'}
+          >
+            <Box mx="5">
+              <Gameboy
+                size="20"
+                color="currentColor"
+                variant={location === '/export' ? 'Bold' : 'Outline'}
+              />
+            </Box>
+            {navSize === 'large' ? <p>Preview Game</p> : ''}
+          </div>
+        </Link>
         <div
           className={location.includes('changeassets') ? 'item active' : 'item'}
+          style={{ cursor: 'not-allowed' }}
         >
           <Box mx="5">
             <GalleryEdit
@@ -109,6 +125,7 @@ const NavigationBar = () => {
         </div>
         <div
           className={location.includes('changesounds') ? 'item active' : 'item'}
+          style={{ cursor: 'not-allowed' }}
         >
           <Box mx="5">
             <AudioSquare
@@ -119,7 +136,10 @@ const NavigationBar = () => {
           </Box>
           {navSize === 'large' ? <p>Change Sounds</p> : ''}
         </div>
-        <div className={location.includes('export') ? 'item active' : 'item'}>
+        <div
+          className={location.includes('export') ? 'item active' : 'item'}
+          style={{ cursor: 'not-allowed' }}
+        >
           <Box mx="5">
             <ExportSquare
               size="20"

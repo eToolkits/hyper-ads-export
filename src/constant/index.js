@@ -14,3 +14,4 @@ export const GET_USER_DATA = 'GET_USER_DATA';
 export const TYPE_IMG = "image/jpeg, image/png";
 export const TYPE_AUDIO = "audio/mp3, audio/mpeg";
 export const TYPE_JSON = ".json";
+export const TYPE_HTML = ".html";

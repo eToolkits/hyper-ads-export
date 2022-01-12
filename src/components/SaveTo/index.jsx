@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   FormControl,
   FormLabel,
@@ -7,12 +8,14 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { SaveToStyle } from './styles';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'iconsax-react';
 //use import syntax will error
 const electron = window.require('electron');
 let dialog = electron.remote.dialog;
 
 const SaveTo = (props) => {
-  const { handleExportAds } = props;
+  const { handleExportAds, exported } = props;
   const toast = useToast();
   const [ideaNameState, setIdeaNameState] = useState('');
   const [directoryState, setDirectoryState] = useState('Not selected yet');
@@ -80,9 +83,24 @@ const SaveTo = (props) => {
           </Button>
         </div>
       </div>
-      <Button colorScheme="teal" size="lg" onClick={checkValidAllField}>
-        Export Ads
-      </Button>
+      <Box display="flex">
+        <Button colorScheme="teal" size="lg" onClick={checkValidAllField}>
+          Export Ads
+        </Button>
+        <Link
+          to="/preview"
+          style={exported ? { display: 'block' } : { display: 'none' }}
+        >
+          <Button
+            ml="3"
+            colorScheme="teal"
+            size="lg"
+            rightIcon={<ArrowRight size="20" color="currentColor" />}
+          >
+            Preview Now
+          </Button>
+        </Link>
+      </Box>
     </SaveToStyle>
   );
 };

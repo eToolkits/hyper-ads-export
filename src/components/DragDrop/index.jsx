@@ -26,6 +26,12 @@ const TypeAccept = [
       return <Textarea type="text" value={result} alt="new map" rows="18" />;
     },
   },
+  {
+    type: Type.TYPE_HTML,
+    component: (data) => {
+      return <Textarea type="text" value={data} alt="new map" rows="3" isDisabled/>;
+    },
+  },
 ];
 
 const DragDrop = (props) => {

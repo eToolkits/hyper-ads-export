@@ -14,6 +14,7 @@ const ExportContaier = (props) => {
   const toast = useToast();
 
   const [listGameState, setListGameState] = React.useState();
+  const [exported, setExported] = React.useState(false);
 
   React.useEffect(() => {
     setListGameState((pre) => [...listGame]);
@@ -69,6 +70,7 @@ const ExportContaier = (props) => {
       };
     }
     const result = CombineAndExport(payload);
+    result ? setExported(true) : setExported(false);
     result
       ? toast({
           position: 'top',
@@ -87,7 +89,7 @@ const ExportContaier = (props) => {
   };
   return (
     <div>
-      <SaveTo handleExportAds={handleExportAds} />
+      <SaveTo handleExportAds={handleExportAds} exported={exported}/>
     </div>
   );
 };

@@ -21,6 +21,7 @@ const ExportPage = React.lazy(() => import('../../pages/Export'));
 const SelectIdeaPage = React.lazy(() =>
   import('../../pages/EditGame/SelectIdea')
 );
+const PreviewGamePage = React.lazy(() => import('../../pages/PreviewGame'));
 
 const PrivateRouter = () => {
   const location = useLocation();
@@ -73,6 +74,7 @@ const PrivateRouter = () => {
               path="/export/:idgame/:ididea/:exportbase"
               element={<ExportPage />}
             />
+            <Route path="/preview" element={<PreviewGamePage />} />
           </Routes>
         </React.Suspense>
       </Box>
