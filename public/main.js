@@ -10,6 +10,7 @@ function createWindow() {
     height: 600,
     fullscreenable: true,
     autoHideMenuBar: true,
+    title: "Hyper Ads Export",
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -17,6 +18,7 @@ function createWindow() {
       nativeWindowOpen: true
     },
   });
+  win.maximize();
   if (isDev) {
     win.webContents.openDevTools();
   }
