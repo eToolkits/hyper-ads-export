@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import listGameStore from "./listGameStore";
 import gameSelected from "./gameSelect";
+import listGameStore from "./listGameStore";
 import userData from "./userData";
 const myReducer = combineReducers({
   listGameStore,

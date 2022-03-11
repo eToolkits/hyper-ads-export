@@ -1,30 +1,33 @@
-import React from 'react';
-import SaveTo from '../../components/SaveTo';
+import { useToast } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useToast } from '@chakra-ui/react';
+import SaveTo from '../../components/SaveTo';
 import { CombineAndExport } from './../../function/combineSingle';
 
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
 const fs = window.require('fs');
 
 const ExportContaier = (props) => {
-  const { listGame } = props;
+  const { listGame, gameSelected } = props;
   const { idgame, ididea, exportbase } = useParams();
   const toast = useToast();
 
-  const [listGameState, setListGameState] = React.useState();
-  const [exported, setExported] = React.useState(false);
+  const [listGameState, setListGameState] = useState();
+  const [exported, setExported] = useState(false);
 
-  React.useEffect(() => {
-    setListGameState((pre) => [...listGame]);
+  useEffect(() => {
+    const deepClone = JSON.parse(JSON.stringify(listGame));
+    setListGameState((pre) => deepClone);
   }, [listGame]);
 
   const handleExportAds = (ideaName, directorySave) => {
+    console.log(idgame, ididea, exportbase);
+    console.log(listGameState.filter((game) => game.id == idgame));
     let payload;
-    const linkBaseCode = listGameState
-      .filter((game) => game.id === idgame)[0]
-      .idea.filter((item) => item.id === ididea)[0].linkBaseCode;
+    const linkBaseCode = gameSelected.idea.filter(
+      (item) => item.id == ididea
+    )[0].linkBaseCode;
     const fileNames = fs.readdirSync(linkBaseCode);
     const listFileTemp = fs.readdirSync(TempFolder);
 
@@ -89,7 +92,7 @@ const ExportContaier = (props) => {
   };
   return (
     <div>
-      <SaveTo handleExportAds={handleExportAds} exported={exported}/>
+      <SaveTo handleExportAds={handleExportAds} exported={exported} />
     </div>
   );
 };
@@ -97,6 +100,7 @@ const ExportContaier = (props) => {
 const mapStateToProps = (state) => {
   return {
     listGame: state.listGameStore,
+    gameSelected: state.gameSelected,
   };
 };
 export default connect(mapStateToProps, null)(ExportContaier);

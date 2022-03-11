@@ -1,23 +1,23 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import { AudioSquare, ExportSquare, GalleryEdit } from 'iconsax-react';
 import {
   Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
-  Th,
-  Flex,
   Button,
+  Flex,
+  Table,
+  Tbody,
+  Td,
   Textarea,
-  useToast,
+  Th,
+  Thead,
+  Tr,
+  useToast
 } from '@chakra-ui/react';
+import { AudioSquare, ExportSquare, GalleryEdit } from 'iconsax-react';
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import DragDrop from '../../components/DragDrop';
-import { writeInFile, readInFile } from '../../Utils';
 import { TYPE_JSON } from '../../constant';
+import { readInFile, writeInFile } from '../../Utils';
 
 const fs = window.require('fs');
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;
@@ -33,8 +33,8 @@ const ChangeMapContainer = (props) => {
   const locationSaveFile = `${TempFolder}/Map-${ididea}.json`;
   console.log('ChangeMapContainer loaded');
 
-  const [currentMapDataState, setCurrentMapDataState] = React.useState('');
-  const [newMapDataState, setNewMapDataState] = React.useState();
+  const [currentMapDataState, setCurrentMapDataState] = useState('');
+  const [newMapDataState, setNewMapDataState] = useState();
 
   const handleFile = (data) => {
     const readResult = readInFile(data.file.path);
@@ -53,7 +53,7 @@ const ChangeMapContainer = (props) => {
           isClosable: true,
           status: 'error',
         });
-  };  
+  };
   const handleChangePage = (route) => {
     if (newMapDataState) {
       const result = writeInFile(locationSaveFile, newMapDataState);
@@ -74,7 +74,7 @@ const ChangeMapContainer = (props) => {
     navigate(`${route}`);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const recentFileEdit = fs
       .readdirSync(TempFolder)
       .filter(

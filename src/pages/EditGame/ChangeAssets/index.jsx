@@ -1,4 +1,3 @@
-import React from "react";
 import ChangeAssetsContainer from "../../../container/ChangeAssets";
 
 const ChangeAssetsPage = (props) => {

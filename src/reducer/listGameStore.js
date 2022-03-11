@@ -1,6 +1,6 @@
 import * as Types from "../constant";
-import GameService from "./../services/Game.service";
 import { deepClone } from "../Utils";
+import GameService from "./../services/Game.service";
 const GameSV = new GameService();
 
 const findIndex = (arr, id) => {

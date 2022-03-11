@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
-  Flex,
   Box,
-  Heading,
-  FormControl,
-  FormLabel,
-  Input,
   Button,
   CircularProgress,
   ErrorMessage,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
   InputGroup,
-  InputRightElement,
+  InputRightElement
 } from '@chakra-ui/react';
-import { ViewOffIcon, ViewIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 const Login = ({ handleLogin, isLoading }) => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

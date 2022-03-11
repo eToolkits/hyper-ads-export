@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
   Input,
-  useToast,
+  useToast
 } from '@chakra-ui/react';
-import { SaveToStyle } from './styles';
-import { Link } from 'react-router-dom';
 import { ArrowRight } from 'iconsax-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { SaveToStyle } from './styles';
 //use import syntax will error
 const electron = window.require('electron');
 let dialog = electron.remote.dialog;

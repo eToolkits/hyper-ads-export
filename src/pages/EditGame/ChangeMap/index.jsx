@@ -1,4 +1,3 @@
-import React from 'react';
 import ChangeMapContainer from '../../../container/ChangeMap';
 
 const ChangeMapPage = () => {

@@ -1,7 +1,7 @@
-import React from 'react';
 import { Box } from '@chakra-ui/layout';
-import { useDropzone } from 'react-dropzone';
 import { Textarea } from '@chakra-ui/react';
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
 import { readInFile } from '../../Utils';
 import * as Type from './../../constant';
 const TypeAccept = [

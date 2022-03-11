@@ -1,33 +1,32 @@
-import React, { useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import {
-  InputLeftElement,
-  InputGroup,
-  Input,
   Box,
   Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  ModalFooter,
-  FormErrorMessage,
-  useToast,
-} from "@chakra-ui/react";
-import { v4 as uuid } from "uuid";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { SearchNormal1, AddSquare } from "iconsax-react";
-import IdeaItem from "../../../components/IdeaItem";
-import { AddIdeaAction } from "../../../action";
-import { useParams } from "react-router";
+  useToast
+} from '@chakra-ui/react';
+import { Formik } from 'formik';
+import { AddSquare, SearchNormal1 } from 'iconsax-react';
+import { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router';
+import { v4 as uuid } from 'uuid';
+import * as Yup from 'yup';
+import { AddIdeaAction } from '../../../action';
+import IdeaItem from '../../../components/IdeaItem';
 const SelectIdeaPage = (props) => {
   const { gameSelected, addIdeaDispatch } = props;
   const params = useParams();
@@ -35,11 +34,11 @@ const SelectIdeaPage = (props) => {
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [listIdeaState, setListIdeaState] = React.useState([]);
-  const [searchIdeaState, setSearchIdeaState] = React.useState();
+  const [listIdeaState, setListIdeaState] = useState([]);
+  const [searchIdeaState, setSearchIdeaState] = useState();
 
-  const nameRef = React.useRef();
-  const finalRef = React.useRef();
+  const nameRef = useRef();
+  const finalRef = useRef();
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     const { name, linkBaseCode } = values;
@@ -52,9 +51,9 @@ const SelectIdeaPage = (props) => {
     addIdeaDispatch(payload);
     setSubmitting(false);
     toast({
-      position: "top",
-      title: "Add game successfully!",
-      status: "success",
+      position: 'top',
+      title: 'Add game successfully!',
+      status: 'success',
       duration: 2000,
       isClosable: true,
     });
@@ -108,12 +107,12 @@ const SelectIdeaPage = (props) => {
         </Button>
         <Formik
           initialValues={{
-            name: "",
-            linkBaseCode: "",
+            name: '',
+            linkBaseCode: '',
           }}
           validationSchema={Yup.object({
-            name: Yup.string().required("Required"),
-            linkBaseCode: Yup.string().required("Required"),
+            name: Yup.string().required('Required'),
+            linkBaseCode: Yup.string().required('Required'),
           })}
           onSubmit={handleSubmit}
         >
@@ -130,7 +129,7 @@ const SelectIdeaPage = (props) => {
                   <ModalHeader>Add Idea</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody pb={6}>
-                    {" "}
+                    {' '}
                     <FormControl
                       isRequired
                       isInvalid={formik.touched.name && formik.errors.name}
@@ -140,7 +139,7 @@ const SelectIdeaPage = (props) => {
                         ref={nameRef}
                         type="text"
                         placeholder="Ex: Sky Raptor"
-                        {...formik.getFieldProps("name")}
+                        {...formik.getFieldProps('name')}
                       />
                       <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                     </FormControl>
@@ -155,7 +154,7 @@ const SelectIdeaPage = (props) => {
                       <Input
                         type="text"
                         placeholder="Ex: D:/order"
-                        {...formik.getFieldProps("linkBaseCode")}
+                        {...formik.getFieldProps('linkBaseCode')}
                       />
                       <FormErrorMessage>
                         {formik.errors.linkBaseCode}

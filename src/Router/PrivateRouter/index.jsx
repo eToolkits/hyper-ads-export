@@ -1,8 +1,7 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Box, Button } from '@chakra-ui/react';
 import { ArrowLeft } from 'iconsax-react';
-import { Button, Box } from '@chakra-ui/react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loading';
 import NavigationBar from '../../components/NavigationBar';
 

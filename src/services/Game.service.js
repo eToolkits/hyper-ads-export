@@ -1,5 +1,5 @@
-import { db } from "./firebaseConfig";
 import { ref, set, update } from "firebase/database";
+import { db } from "./firebaseConfig";
 export default class GameService {
   addGame(payload) {
     set(ref(db, `data/${payload.id}`), {

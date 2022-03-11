@@ -1,48 +1,47 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { Formik } from "formik";
-import * as Yup from "yup";
 import {
-  Input,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  ModalFooter,
-  FormErrorMessage,
-  useToast,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-} from "@chakra-ui/react";
-import { ArrowDown3, Trash } from "iconsax-react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { DeleteIdeaAction, UpdateIdeaAction } from "../../action";
+  useToast
+} from '@chakra-ui/react';
+import { Formik } from 'formik';
+import { ArrowDown3, Trash } from 'iconsax-react';
+import { useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import { DeleteIdeaAction, UpdateIdeaAction } from '../../action';
 
 const IdeaItem = (props) => {
   const { idGame, ideaDetail, updateIdeaDispatch, deleteIdeaDispatch } = props;
   const { id } = ideaDetail;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [ideaGameState, setIdeaGameState] = React.useState(ideaDetail);
-  const [isOpenAlert, setIsOpenAlert] = React.useState(false);
+  const [ideaGameState, setIdeaGameState] = useState(ideaDetail);
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
   const onCloseAlert = () => setIsOpenAlert(false);
-  const cancelAlertRef = React.useRef();
+  const cancelAlertRef = useRef();
 
   const toast = useToast();
-  const nameRef = React.useRef();
-  const finalRef = React.useRef();
+  const nameRef = useRef();
+  const finalRef = useRef();
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     const { name, linkBaseCode } = values;
@@ -56,9 +55,9 @@ const IdeaItem = (props) => {
 
     setSubmitting(false);
     toast({
-      position: "top",
-      title: "Edit game successfully!",
-      status: "success",
+      position: 'top',
+      title: 'Edit game successfully!',
+      status: 'success',
       duration: 2000,
       isClosable: true,
     });
@@ -76,9 +75,9 @@ const IdeaItem = (props) => {
   const handleDelete = async () => {
     deleteIdeaDispatch({ idGame, id });
     toast({
-      position: "top",
-      title: "Delete game successfully!",
-      status: "success",
+      position: 'top',
+      title: 'Delete game successfully!',
+      status: 'success',
       duration: 2000,
       isClosable: true,
     });
@@ -92,12 +91,12 @@ const IdeaItem = (props) => {
     <Box my="3" ml="3">
       <Formik
         initialValues={{
-          name: ideaGameState.name || "",
-          linkBaseCode: ideaGameState.linkBaseCode || "",
+          name: ideaGameState.name || '',
+          linkBaseCode: ideaGameState.linkBaseCode || '',
         }}
         validationSchema={Yup.object({
-          name: Yup.string().required("Required"),
-          linkBaseCode: Yup.string().required("Required"),
+          name: Yup.string().required('Required'),
+          linkBaseCode: Yup.string().required('Required'),
         })}
         onSubmit={handleSubmit}
       >
@@ -114,7 +113,7 @@ const IdeaItem = (props) => {
                 <ModalHeader>Edit Idea</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
-                  {" "}
+                  {' '}
                   <FormControl
                     isRequired
                     isInvalid={formik.touched.name && formik.errors.name}
@@ -124,7 +123,7 @@ const IdeaItem = (props) => {
                       ref={nameRef}
                       type="text"
                       placeholder={`Ex: ${ideaGameState.name}_classic`}
-                      {...formik.getFieldProps("name")}
+                      {...formik.getFieldProps('name')}
                     />
                     <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                   </FormControl>
@@ -138,7 +137,7 @@ const IdeaItem = (props) => {
                     <Input
                       type="text"
                       placeholder="Ex: https://apps.apple.com/us/app/sky-raptor/id1518974662"
-                      {...formik.getFieldProps("linkBaseCode")}
+                      {...formik.getFieldProps('linkBaseCode')}
                     />
                     <FormErrorMessage>
                       {formik.errors.linkBaseCode}

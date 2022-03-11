@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAuth, signOut } from 'firebase/auth';
 import {
   Avatar,
   Box,
   Button,
   Flex,
-  useColorMode,
   Tooltip,
+  useColorMode
 } from '@chakra-ui/react';
+import { getAuth, signOut } from 'firebase/auth';
 import {
-  ExportSquare,
-  Home2,
-  Category2,
-  Sun1,
-  Moon,
-  Logout,
-  GalleryEdit,
   AudioSquare,
+  Category2,
+  ExportSquare,
+  GalleryEdit,
   Gameboy,
+  Home2,
+  Logout,
+  Moon,
+  Sun1
 } from 'iconsax-react';
-
-import { NaviStyle } from './styles';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import { getUserData } from '../../action';
+import { NaviStyle } from './styles';
 
 const NavigationBar = () => {
   const getlocation = useLocation();

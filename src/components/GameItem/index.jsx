@@ -1,39 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    Box,
+    Button,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Select,
+    Text,
+    useDisclosure,
+    useToast
+} from '@chakra-ui/react';
 import { Formik } from 'formik';
+import { ArrowDown3, Trash } from 'iconsax-react';
+import { useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import {
-  Input,
-  Box,
-  Button,
-  Text,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  ModalFooter,
-  FormErrorMessage,
-  useToast,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-  Select,
-} from '@chakra-ui/react';
-import { ArrowDown3, Trash } from 'iconsax-react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import {
-  DeleteGameAction,
-  SelectGameAction,
-  UpdateGameAction,
+    DeleteGameAction,
+    SelectGameAction,
+    UpdateGameAction
 } from '../../action';
 
 const GameItem = (props) => {
@@ -44,15 +43,15 @@ const GameItem = (props) => {
     SelectGameDispatch,
   } = props;
   const { id } = gameDetail;
-  const [gameDetailState, setGameDetailState] = React.useState(gameDetail);
+  const [gameDetailState, setGameDetailState] = useState(gameDetail);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isOpenAlert, setIsOpenAlert] = React.useState(false);
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
   const onCloseAlert = () => setIsOpenAlert(false);
-  const cancelAlertRef = React.useRef();
+  const cancelAlertRef = useRef();
 
   const toast = useToast();
-  const nameRef = React.useRef();
-  const finalRef = React.useRef();
+  const nameRef = useRef();
+  const finalRef = useRef();
 
   const handleUpdate = async (values, { setSubmitting, resetForm }) => {
     const { name, linkStoreIOS, linkStoreAndroid, engine } = values;

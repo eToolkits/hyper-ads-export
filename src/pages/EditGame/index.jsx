@@ -1,8 +1,8 @@
-import React from 'react';
-import { Button, Text, Flex, Box } from '@chakra-ui/react';
-import { GalleryEdit, AudioSquare, ArrowRight, Map1 } from 'iconsax-react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { ArrowRight, AudioSquare, GalleryEdit, Map1 } from 'iconsax-react';
 import { Link, useParams } from 'react-router-dom';
 import useChangeMap from '../../hook/useChangeMap';
+
 const EditGame = () => {
   const useparams = useParams();
   const { ididea, idgame } = useparams;

@@ -1,4 +1,3 @@
-import React from 'react'
 import AuthenticationContainer from '../../container/Authentication'
 
 const AuthPage = props => {

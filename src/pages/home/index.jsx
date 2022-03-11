@@ -1,34 +1,18 @@
-import React, { useEffect } from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { ref, get } from 'firebase/database';
 import {
-  InputLeftElement,
-  InputGroup,
-  Input,
   Box,
-  Button,
-  Text,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  ModalFooter,
-  FormErrorMessage,
-  useToast,
-  Select,
+  Button, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text,
+  useDisclosure, useToast
 } from '@chakra-ui/react';
-import { v4 as uuid } from 'uuid';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { get, ref } from 'firebase/database';
 import { Formik } from 'formik';
+import { AddSquare, SearchNormal1 } from 'iconsax-react';
+import { useEffect, useRef, useState } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import * as Yup from 'yup';
-import { SearchNormal1, AddSquare } from 'iconsax-react';
-import GameItem from '../../components/GameItem';
 import { AddGameAction, getUserData, InitGameAction } from '../../action';
+import GameItem from '../../components/GameItem';
 import { db } from './../../services/firebaseConfig';
 
 const HomePage = (props) => {
@@ -38,10 +22,10 @@ const HomePage = (props) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [listGameState, setListGameState] = React.useState(() => {});
-  const [searchGameState, setSearchGameState] = React.useState();
-  const nameRef = React.useRef();
-  const finalRef = React.useRef();
+  const [listGameState, setListGameState] = useState(() => {});
+  const [searchGameState, setSearchGameState] = useState();
+  const nameRef = useRef();
+  const finalRef = useRef();
 
   const handleAddGame = (values, { setSubmitting, resetForm }) => {
     const { name, linkIOS, linkAndroid, engine } = values;

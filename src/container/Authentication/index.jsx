@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
 import { useToast } from '@chakra-ui/react';
-import logoMonster from './../../asset/LOGO.png';
-import { AuthContainerStyle } from './styles';
+import {
+  createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword
+} from 'firebase/auth';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { getUserData } from '../../action';
 import Login from '../../components/Login';
+import logoMonster from './../../asset/LOGO.png';
+import { AuthContainerStyle } from './styles';
 
 const AuthenticationContainer = () => {
   const dispatch = useDispatch();

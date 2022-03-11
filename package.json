@@ -44,7 +44,7 @@
   "build": {
     "extends": null,
     "appId": "com.example.electron-cra",
-    "productName": "Hyper Ads Export Setup",
+    "productName": "Hyper Ads Export",
     "copyright": "Copyright © 2021 Hungnm",
     "buildVersion": "1.0.0",
     "compression": "maximum",

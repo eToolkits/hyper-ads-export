@@ -38,7 +38,8 @@ const myReducer = (state = initialState, action) => {
       }
       GameSV.addIdea(state.id, action.payload);
       state = newState;
-      return state;
+      console.log("🚀 ~ file: gameSelect.js ~ line 41 ~ myReducer ~ newState", newState)
+      return newState;
     }
     case Types.UPDATE_IDEA: {
       const newState = deepCloneState(state);
@@ -47,7 +48,7 @@ const myReducer = (state = initialState, action) => {
       newState.idea[index] = { ...action.payload };
       GameSV.updateIdea(state.id, action.payload);
       state = newState;
-      return state;
+      return newState;
     }
     case Types.DELETE_IDEA: {
       const newState = deepCloneState(state);
@@ -56,7 +57,7 @@ const myReducer = (state = initialState, action) => {
       newState.idea.splice(index, 1);
       GameSV.deleteIdea(state.id, id);
       state = newState;
-      return state;
+      return newState;
     }
     default:
       return state;

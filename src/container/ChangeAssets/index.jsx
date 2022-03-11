@@ -1,32 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Image,
-  Button,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Box,
-  Flex,
-  useToast,
+  Box, Button, Flex, Image, Table, Tbody, Td, Th, Thead, Tr, useToast
 } from '@chakra-ui/react';
+import { AudioSquare, ExportSquare, Map1 } from 'iconsax-react';
+import { useEffect, useState } from 'react';
 import reactImageSize from 'react-image-size';
-import { ExportSquare, AudioSquare, Map1 } from 'iconsax-react';
+import { connect } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import DragDrop from '../../components/DragDrop';
-import {
-  readInFile,
-  writeInFile,
-  convertFileToArray,
-  convertAssetToBase64,
-  convertArrayToFile,
-  removeAllFile,
-} from './../../Utils';
 import { TYPE_IMG } from '../../constant';
 import useChangeMap from '../../hook/useChangeMap';
+import {
+  convertArrayToFile, convertAssetToBase64, convertFileToArray, readInFile, removeAllFile, writeInFile
+} from './../../Utils';
 
 const fs = window.require('fs');
 const TempFolder = process.env.REACT_APP_FOLDER_TEMPORAL;

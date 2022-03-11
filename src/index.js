@@ -1,16 +1,15 @@
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import { createBrowserHistory } from "history";
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter } from "react-router-dom";
-import { createBrowserHistory } from "history";
-import { ChakraProvider } from "@chakra-ui/react";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-import rootReducer from "./reducer";
-
-import "./index.css";
+import { HashRouter } from "react-router-dom";
+import { createStore } from "redux";
 import App from "./App";
-import { ColorModeScript } from "@chakra-ui/react";
+import "./index.css";
+import rootReducer from "./reducer";
 import theme from "./Theme";
+
 const store = createStore(rootReducer);
 const history = createBrowserHistory();
 
